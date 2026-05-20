@@ -12,19 +12,6 @@
   --radius: 16px;
 }
 
-body.dark {
-  --bg: #0f1713;
-  --surface: #15201a;
-  --surface-2: #1b2a22;
-  --ink: #e8f4ec;
-  --muted: #9eb8ab;
-  --line: #2f4539;
-  --brand: #58b261;
-  --brand-2: #7bc78b;
-  --accent: #55d2ef;
-  --shadow: 0 22px 52px rgba(0, 0, 0, 0.36);
-}
-
 * {
   box-sizing: border-box;
 }
@@ -651,7 +638,6 @@ footer {
   }
 
   .nav-links,
-  .theme-toggle,
   .cta-mini {
     display: none;
   }

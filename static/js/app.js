@@ -1,7 +1,6 @@
 const quoteForm = document.getElementById("quoteForm");
 const result = document.getElementById("result");
 const year = document.getElementById("year");
-const themeToggle = document.getElementById("themeToggle");
 
 const chatToggle = document.getElementById("chatToggle");
 const chatPanel = document.getElementById("chatPanel");
@@ -12,7 +11,6 @@ const chatName = document.getElementById("chatName");
 const chatPhone = document.getElementById("chatPhone");
 
 const WHATSAPP_NUMBER = "263718029974";
-const THEME_KEY = "genspech-theme";
 
 let chatContext = {
   machine: null,
@@ -21,24 +19,6 @@ let chatContext = {
 };
 
 year.textContent = new Date().getFullYear();
-
-function setTheme(mode) {
-  document.body.classList.toggle("dark", mode === "dark");
-  if (themeToggle) {
-    themeToggle.textContent = mode === "dark" ? "Light Mode" : "Dark Mode";
-  }
-}
-
-function initTheme() {
-  const stored = localStorage.getItem(THEME_KEY);
-  if (stored === "dark" || stored === "light") {
-    setTheme(stored);
-    return;
-  }
-
-  const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-  setTheme(prefersDark ? "dark" : "light");
-}
 
 function initRevealAnimations() {
   const revealNodes = document.querySelectorAll(".reveal");
@@ -129,17 +109,8 @@ function addMessageHtml(html, sender) {
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-initTheme();
 initRevealAnimations();
 initCountUps();
-
-if (themeToggle) {
-  themeToggle.addEventListener("click", () => {
-    const next = document.body.classList.contains("dark") ? "light" : "dark";
-    setTheme(next);
-    localStorage.setItem(THEME_KEY, next);
-  });
-}
 
 chatToggle.addEventListener("click", () => {
   const isHidden = chatPanel.hasAttribute("hidden");
