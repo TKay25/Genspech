@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}?v=4" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}?v=5" />
 </head>
 <body>
   <div class="bg-glow"></div>
@@ -55,13 +55,22 @@
           </div>
           <div class="hero-media">
             <img
-              src="{{ url_for('static', filename='images/hero-operations.svg') }}"
-              alt="Genspech operations dashboard illustration"
+              src="https://images.unsplash.com/photo-1541976590-713941681591?auto=format&fit=crop&w=1300&q=75"
+              alt="Professional construction and industrial equipment operations"
               width="1000"
               height="860"
               loading="eager"
               fetchpriority="high"
             />
+            <div class="hero-media-overlay">
+              <p class="overlay-label">Operational Snapshot</p>
+              <h3>Single Partner Execution</h3>
+              <ul>
+                <li>Equipment hire and dispatch</li>
+                <li>Construction material supply</li>
+                <li>Priority and urgent support lanes</li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
