@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Genspech Investments: machine hire, construction supplies, project management, and rapid quotation support." />
+  <title>Genspech Investments | Equipment, Energy, Construction</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Sora:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+</head>
+<body>
+  <div class="bg-glow"></div>
+  <header class="hero" id="home">
+    <nav class="top-nav shell">
+      <a class="brand" href="#home" aria-label="Genspech home">
+        <span class="brand-mark">G</span>
+        <span>
+          <strong>Genspech Investments</strong>
+          <small>Generic Service Provider</small>
+        </span>
+      </a>
+      <div class="nav-links">
+        <a href="#services">Services</a>
+        <a href="#machines">Machines</a>
+        <a href="#quote">Quotation</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <a class="btn cta-mini" href="#quote">Get Quote</a>
+    </nav>
+
+    <section class="hero-grid shell">
+      <div class="hero-copy reveal">
+        <p class="badge">Since 2019 • Harare, Zimbabwe</p>
+        <h1>Industrial Confidence For Every Build Stage</h1>
+        <p>
+          From generator hire to concrete equipment and full construction supplies,
+          Genspech helps projects move faster, safer, and on budget.
+        </p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#quote">Get Instant Estimate</a>
+          <a class="btn btn-ghost" href="tel:+263783044407">Call 0783 044 407</a>
+        </div>
+        <div class="hero-stats">
+          <article><strong>0</strong><span>Safety incident objective</span></article>
+          <article><strong>10%+</strong><span>Annual growth target</span></article>
+          <article><strong>24/7</strong><span>Emergency equipment support</span></article>
+        </div>
+      </div>
+      <div class="hero-media reveal delay-1">
+        <img
+          src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1200&q=75"
+          alt="Construction site with heavy equipment"
+          width="900"
+          height="1100"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+    </section>
+  </header>
+
+  <main>
+    <section class="section shell mission reveal" id="about">
+      <article>
+        <h2>Mission</h2>
+        <p>Deliver exceptional, tailored services that exceed client expectations through trust, integrity, and practical expertise.</p>
+      </article>
+      <article>
+        <h2>Vision</h2>
+        <p>Set new standards for quality, safety, and sustainable growth across equipment and construction support services.</p>
+      </article>
+      <article>
+        <h2>Objective</h2>
+        <p>Deliver projects on time and budget while expanding into new market opportunities with reliable operations.</p>
+      </article>
+    </section>
+
+    <section class="section shell services" id="services">
+      <div class="section-head reveal">
+        <p class="kicker">Core Functions</p>
+        <h2>What The Company Does Best</h2>
+      </div>
+      <div class="service-grid">
+        <article class="service-card reveal">
+          <h3>Generator Hiring</h3>
+          <p>Power for events, hospitals, industrial operations, factories, and emergency backup scenarios.</p>
+        </article>
+        <article class="service-card reveal delay-1">
+          <h3>Machine Hiring</h3>
+          <p>Self-loading mixers, boom pumps, static pumps, power floats, and poker vibrators for concrete excellence.</p>
+        </article>
+        <article class="service-card reveal delay-2">
+          <h3>Construction Supplies</h3>
+          <p>Copper pipes, ceiling boards, galvanized and PVC pipes, cables, waterproofing, and related site materials.</p>
+        </article>
+        <article class="service-card reveal delay-3">
+          <h3>Project Management</h3>
+          <p>Commercial interior and exterior delivery focused on schedule reliability and budget control.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section shell machines" id="machines">
+      <div class="section-head reveal">
+        <p class="kicker">Equipment Portfolio</p>
+        <h2>Built For Real Job Sites</h2>
+      </div>
+      <div class="machine-grid">
+        <figure class="machine-card reveal">
+          <img src="https://images.unsplash.com/photo-1517022812141-23620dba5c23?auto=format&fit=crop&w=1000&q=70" alt="Concrete mixer on site" width="760" height="520" loading="lazy" />
+          <figcaption>Concrete Mixers and Self Loading Units</figcaption>
+        </figure>
+        <figure class="machine-card reveal delay-1">
+          <img src="https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=1000&q=70" alt="Industrial generator" width="760" height="520" loading="lazy" />
+          <figcaption>Generator Sets for Continuous Power</figcaption>
+        </figure>
+        <figure class="machine-card reveal delay-2">
+          <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1000&q=70" alt="Road and infrastructure construction" width="760" height="520" loading="lazy" />
+          <figcaption>Road, Building, and Infrastructure Applications</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section shell quote" id="quote">
+      <div class="quote-intro reveal">
+        <p class="kicker">Instant Quotation</p>
+        <h2>Request A Quote In Seconds</h2>
+        <p>Select your machine and requirements, then continue by email or WhatsApp.</p>
+      </div>
+      <form id="quoteForm" class="quote-form reveal delay-1">
+        <div class="field-grid">
+          <label>Machine / Service
+            <select id="machine" required>
+              <option value="">Select an option</option>
+              <option value="generator">Generator Hire</option>
+              <option value="self-loader">Self Loading Concrete Mixer</option>
+              <option value="boom-pump">Boom Pump</option>
+              <option value="static-pump">Static Pump</option>
+              <option value="power-float">Power Float</option>
+              <option value="poker">Poker Vibrator</option>
+            </select>
+          </label>
+          <label>Hire Duration (Days)
+            <input id="days" type="number" min="1" max="365" value="1" required />
+          </label>
+          <label>Urgency
+            <select id="urgency" required>
+              <option value="standard">Standard (48h)</option>
+              <option value="priority">Priority (24h)</option>
+              <option value="urgent">Urgent (Same Day)</option>
+            </select>
+          </label>
+          <label>Your Name
+            <input id="name" type="text" placeholder="Full name" required />
+          </label>
+          <label>Phone Number
+            <input id="phone" type="tel" placeholder="e.g. 0718 029 974" required />
+          </label>
+        </div>
+        <button type="submit" class="btn btn-primary">Generate Quote</button>
+      </form>
+      <div id="result" class="result" aria-live="polite"></div>
+    </section>
+
+    <section class="section shell trust reveal">
+      <div>
+        <p class="kicker">Why Genspech</p>
+        <h2>Fast Deployment. Consistent Quality.</h2>
+      </div>
+      <ul>
+        <li>Rapid dispatch and flexible hire terms</li>
+        <li>Practical support for industrial and commercial teams</li>
+        <li>Equipment and material sourcing in one partner</li>
+      </ul>
+    </section>
+
+    <section class="section shell contact" id="contact">
+      <div class="section-head">
+        <p class="kicker">Contact</p>
+        <h2>Ready To Start?</h2>
+      </div>
+      <div class="contact-grid">
+        <a href="tel:+263783044407">0783 044 407</a>
+        <a href="tel:+263718029974">0718 029 974</a>
+        <a href="mailto:genspechinvest@gmail.com">genspechinvest@gmail.com</a>
+        <p>Hatfield, Harare</p>
+      </div>
+    </section>
+  </main>
+
+  <aside class="chatbot-shell" id="chatbotShell" aria-live="polite">
+    <button id="chatToggle" class="chat-toggle" type="button">Open Quotation Chatbot</button>
+    <section class="chat-panel" id="chatPanel" hidden>
+      <header>
+        <h3>Quotation Assistant</h3>
+        <p>Try: "generator for 2 days priority"</p>
+      </header>
+      <div class="chat-messages" id="chatMessages"></div>
+      <form id="chatIdentityForm" class="chat-identity-form">
+        <input id="chatName" type="text" placeholder="Your name (optional)" />
+        <input id="chatPhone" type="tel" placeholder="Your phone (optional)" />
+      </form>
+      <form id="chatForm" class="chat-form">
+        <input id="chatInput" type="text" placeholder="Type your request..." required />
+        <button type="submit" class="btn btn-primary">Send</button>
+      </form>
+    </section>
+  </aside>
+
+  <footer>
+    <div class="shell footer-row">
+      <p>© <span id="year"></span> Genspech Investments. Built for growth, quality, and reliability.</p>
+      <a href="/admin?key=genspech-admin" title="Change key in production">Admin Dashboard</a>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

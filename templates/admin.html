@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Genspech Admin Dashboard</title>
+  <style>
+    :root {
+      --ink: #122018;
+      --muted: #4e665c;
+      --line: #cde0d6;
+      --bg: #f6fdf8;
+      --brand: #2f7c32;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Manrope, Arial, sans-serif; color: var(--ink); background: var(--bg); }
+    .shell { width: min(1150px, 94vw); margin: 1rem auto 2rem; }
+    .head {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.8rem;
+      margin-bottom: 1rem;
+    }
+    .tile {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 0.9rem;
+      background: #fff;
+    }
+    .tile p { margin: 0; color: var(--muted); }
+    .tile h2 { margin: 0.3rem 0 0; color: var(--brand); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+      font-size: 0.94rem;
+    }
+    th, td { text-align: left; padding: 0.72rem; border-bottom: 1px solid #e5f0ea; }
+    th { background: #e8f7ec; color: #1e4f28; }
+    tr:hover td { background: #f7fcf8; }
+    .mono { font-family: Consolas, monospace; font-size: 0.86rem; }
+    @media (max-width: 900px) {
+      .head { grid-template-columns: 1fr; }
+      table { font-size: 0.82rem; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <h1>Genspech Quote Dashboard</h1>
+    <div class="head">
+      <article class="tile">
+        <p>Total Quotes</p>
+        <h2>{{ total_quotes }}</h2>
+      </article>
+      <article class="tile">
+        <p>Total Potential Value</p>
+        <h2>${{ '%.2f'|format(total_value) }}</h2>
+      </article>
+      <article class="tile">
+        <p>Last Updated</p>
+        <h2>{{ quotes[0].created_at.strftime('%Y-%m-%d %H:%M') if quotes else 'No data' }}</h2>
+      </article>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Created</th>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Machine</th>
+          <th>Days</th>
+          <th>Urgency</th>
+          <th>Total</th>
+          <th>Source</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in quotes %}
+        <tr>
+          <td class="mono">{{ row.id }}</td>
+          <td>{{ row.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+          <td>{{ row.name or '-' }}</td>
+          <td>{{ row.phone or '-' }}</td>
+          <td>{{ row.machine }}</td>
+          <td>{{ row.days }}</td>
+          <td>{{ row.urgency }}</td>
+          <td>${{ '%.2f'|format(row.total) }}</td>
+          <td>{{ row.source }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="9">No quote requests captured yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </main>
+</body>
+</html>
