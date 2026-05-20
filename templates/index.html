@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}?v=3" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}?v=4" />
 </head>
 <body>
   <div class="bg-glow"></div>
@@ -34,9 +34,9 @@
         </div>
       </nav>
 
-      <section class="hero-frame">
+      <section class="hero-frame reveal">
         <div class="hero-grid">
-          <div class="hero-copy reveal">
+          <div class="hero-copy">
             <p class="badge">Professional Construction Support Since 2019</p>
             <h1>Deliver Every Project With Speed, Power, And Precision</h1>
             <p>
@@ -53,7 +53,7 @@
               <article><strong><span class="count-up" data-target="24">24</span>/7</strong><span>Urgent dispatch support</span></article>
             </div>
           </div>
-          <div class="hero-media reveal delay-1">
+          <div class="hero-media">
             <img
               src="{{ url_for('static', filename='images/hero-operations.svg') }}"
               alt="Genspech operations dashboard illustration"
@@ -69,6 +69,21 @@
   </header>
 
   <main>
+    <section class="section shell summary reveal">
+      <article>
+        <p>Trusted by diverse sectors</p>
+        <h3>Industrial, Healthcare, Infrastructure, Commercial</h3>
+      </article>
+      <article>
+        <p>Integrated offering</p>
+        <h3>Equipment Hire + Supplies + Project Support</h3>
+      </article>
+      <article>
+        <p>Operations base</p>
+        <h3>Hatfield, Harare</h3>
+      </article>
+    </section>
+
     <section class="section shell mission reveal" id="about">
       <article>
         <h2>Mission</h2>
