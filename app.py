@@ -9,12 +9,23 @@ from typing import Any
 from flask import Flask, abort, jsonify, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 
+
+def normalize_database_url(url: str) -> str:
+    if url.startswith("postgres://"):
+        return "postgresql+pg8000://" + url[len("postgres://") :]
+    if url.startswith("postgresql://"):
+        return "postgresql+pg8000://" + url[len("postgresql://") :]
+    return url
+
+
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
+raw_database_url = os.getenv(
     "DATABASE_URL",
     "postgresql://lmsdatabase_8ag3_user:6WD9lOnHkiU7utlUUjT88m4XgEYQMTLb@dpg-ctp9h0aj1k6c739h9di0-a.oregon-postgres.render.com/lmsdatabase_8ag3",
 )
+app.config["SQLALCHEMY_DATABASE_URI"] = normalize_database_url(raw_database_url)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_pre_ping": True}
 
 db = SQLAlchemy(app)
 

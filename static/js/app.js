@@ -1,6 +1,7 @@
 const quoteForm = document.getElementById("quoteForm");
 const result = document.getElementById("result");
 const year = document.getElementById("year");
+const themeToggle = document.getElementById("themeToggle");
 
 const chatToggle = document.getElementById("chatToggle");
 const chatPanel = document.getElementById("chatPanel");
@@ -11,6 +12,7 @@ const chatName = document.getElementById("chatName");
 const chatPhone = document.getElementById("chatPhone");
 
 const WHATSAPP_NUMBER = "263718029974";
+const THEME_KEY = "genspech-theme";
 
 let chatContext = {
   machine: null,
@@ -19,6 +21,93 @@ let chatContext = {
 };
 
 year.textContent = new Date().getFullYear();
+
+function setTheme(mode) {
+  document.body.classList.toggle("dark", mode === "dark");
+  if (themeToggle) {
+    themeToggle.textContent = mode === "dark" ? "Light Mode" : "Dark Mode";
+  }
+}
+
+function initTheme() {
+  const stored = localStorage.getItem(THEME_KEY);
+  if (stored === "dark" || stored === "light") {
+    setTheme(stored);
+    return;
+  }
+
+  const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  setTheme(prefersDark ? "dark" : "light");
+}
+
+function initRevealAnimations() {
+  const revealNodes = document.querySelectorAll(".reveal");
+  if (!revealNodes.length) {
+    return;
+  }
+
+  if (!("IntersectionObserver" in window)) {
+    revealNodes.forEach((node) => node.classList.add("is-visible"));
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.2 },
+  );
+
+  revealNodes.forEach((node) => observer.observe(node));
+}
+
+function initCountUps() {
+  const counters = document.querySelectorAll(".count-up");
+  if (!counters.length) {
+    return;
+  }
+
+  const animateCounter = (node) => {
+    const target = Number(node.dataset.target || "0");
+    const duration = 1300;
+    const start = performance.now();
+
+    const frame = (time) => {
+      const progress = Math.min((time - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      node.textContent = String(Math.round(target * eased));
+      if (progress < 1) {
+        requestAnimationFrame(frame);
+      }
+    };
+
+    requestAnimationFrame(frame);
+  };
+
+  if (!("IntersectionObserver" in window)) {
+    counters.forEach(animateCounter);
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          animateCounter(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.45 },
+  );
+
+  counters.forEach((node) => observer.observe(node));
+}
 
 function buildWhatsAppLink(message) {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
@@ -30,6 +119,26 @@ function addMessage(text, sender) {
   node.textContent = text;
   chatMessages.appendChild(node);
   chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function addMessageHtml(html, sender) {
+  const node = document.createElement("div");
+  node.className = `msg ${sender}`;
+  node.innerHTML = html;
+  chatMessages.appendChild(node);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+initTheme();
+initRevealAnimations();
+initCountUps();
+
+if (themeToggle) {
+  themeToggle.addEventListener("click", () => {
+    const next = document.body.classList.contains("dark") ? "light" : "dark";
+    setTheme(next);
+    localStorage.setItem(THEME_KEY, next);
+  });
 }
 
 chatToggle.addEventListener("click", () => {
@@ -136,7 +245,7 @@ chatForm.addEventListener("submit", async (event) => {
       addMessage(quoteText, "bot");
 
       const whatsappLink = buildWhatsAppLink(quoteText);
-      addMessage(`Open WhatsApp to continue: ${whatsappLink}`, "bot");
+      addMessageHtml(`<a class="btn btn-primary" href="${whatsappLink}" target="_blank" rel="noopener noreferrer">Continue On WhatsApp</a>`, "bot");
     }
   } catch (error) {
     addMessage(error.message, "bot");
