@@ -2,276 +2,538 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="description" content="Genspech Investments: premium machine hire, construction supplies, and project delivery support across Zimbabwe." />
   <title>Genspech Investments | Professional Construction Solutions</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}?v=5" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #e65c1e;
+      --primary-dark: #c24b13;
+      --primary-glow: rgba(230, 92, 30, 0.25);
+      --bg-deep: #050b14;
+      --surface: #0f172a;
+      --surface-elevated: #1e293b;
+      --text-light: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border-dim: #2d3a4e;
+      --card-radius: 1.5rem;
+      --transition-smooth: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at 20% 30%, #0a0f1c, #03060c);
+      color: var(--text-light);
+      line-height: 1.5;
+      scroll-behavior: smooth;
+    }
+
+    /* modern glassmorphic + floating elements */
+    .bg-glow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      background: radial-gradient(ellipse at 60% 40%, rgba(230,92,30,0.08), transparent 70%);
+    }
+
+    .shell {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* react-like card & animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* header / nav */
+    .hero {
+      padding: 1.5rem 0 4rem;
+    }
+
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      margin-bottom: 3rem;
+      backdrop-filter: blur(12px);
+      background: rgba(15, 23, 42, 0.7);
+      border-radius: 3rem;
+      padding: 0.8rem 1.8rem;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+    }
+    .brand-mark {
+      background: var(--primary);
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 2rem;
+      font-weight: 800;
+      font-size: 1.8rem;
+      color: white;
+      box-shadow: 0 8px 20px -8px rgba(230,92,30,0.4);
+    }
+    .brand strong {
+      font-size: 1.3rem;
+      letter-spacing: -0.3px;
+      color: white;
+    }
+    .brand small {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      display: block;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      font-weight: 500;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-light);
+      transition: var(--transition-smooth);
+    }
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.8rem;
+      border-radius: 2.5rem;
+      font-weight: 600;
+      transition: var(--transition-smooth);
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      gap: 0.5rem;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 6px 14px rgba(230,92,30,0.3);
+    }
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: scale(0.97);
+    }
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border-dim);
+      color: white;
+    }
+    .btn-ghost:hover {
+      border-color: var(--primary);
+      background: rgba(230,92,30,0.1);
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    .hero-copy .badge {
+      background: rgba(230,92,30,0.2);
+      display: inline-block;
+      padding: 0.3rem 1rem;
+      border-radius: 2rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+    h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin: 1rem 0;
+      background: linear-gradient(to right, #fff, #e2e8f0);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero-stats {
+      display: flex;
+      gap: 2rem;
+      margin-top: 2.5rem;
+    }
+    .hero-stats strong {
+      font-size: 1.5rem;
+      color: var(--primary);
+    }
+    .hero-media img {
+      width: 100%;
+      border-radius: 2rem;
+      object-fit: cover;
+      box-shadow: 0 25px 40px -20px black;
+    }
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; text-align: center; }
+      .hero-stats { justify-content: center; }
+      .nav-links { display: none; }
+      .shell { padding: 0 1.25rem; }
+      h1 { font-size: 2.4rem; }
+    }
+    /* summary cards */
+    .summary {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 2rem;
+      margin: 4rem 0;
+      background: rgba(30,41,59,0.5);
+      backdrop-filter: blur(4px);
+      border-radius: 2rem;
+      padding: 2rem;
+    }
+    .summary article {
+      flex: 1;
+      text-align: center;
+    }
+    .mission, .trust {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      background: rgba(15,23,42,0.6);
+      border-radius: 2rem;
+      padding: 2rem;
+      margin: 2rem 0;
+    }
+    .service-grid, .sector-grid, .machine-grid, .process-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+    .service-card, .machine-card {
+      background: var(--surface-elevated);
+      border-radius: var(--card-radius);
+      padding: 1.8rem;
+      transition: transform 0.2s, border-color 0.2s;
+      border: 1px solid var(--border-dim);
+    }
+    .service-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-6px);
+    }
+    .quote-form {
+      background: var(--surface);
+      border-radius: 2rem;
+      padding: 2rem;
+      margin: 2rem 0;
+      border: 1px solid var(--border-dim);
+    }
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    label {
+      display: flex;
+      flex-direction: column;
+      font-weight: 500;
+      gap: 0.4rem;
+    }
+    input, select {
+      background: #0a0f1c;
+      border: 1px solid var(--border-dim);
+      padding: 0.75rem 1rem;
+      border-radius: 1rem;
+      color: white;
+      font-family: inherit;
+    }
+    .result {
+      background: rgba(0,0,0,0.5);
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      margin-top: 1rem;
+      border-left: 4px solid var(--primary);
+    }
+    .contact-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+    .contact-grid a, .contact-grid p {
+      background: var(--surface-elevated);
+      padding: 0.8rem 1.8rem;
+      border-radius: 3rem;
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+    }
+    /* chatbot - modern floating component */
+    .chatbot-shell {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 1000;
+    }
+    .chat-toggle {
+      background: var(--primary);
+      border: none;
+      padding: 0.9rem 1.6rem;
+      border-radius: 3rem;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      transition: transform 0.1s;
+    }
+    .chat-panel {
+      position: absolute;
+      bottom: 5rem;
+      right: 0;
+      width: 340px;
+      background: rgba(15,23,42,0.95);
+      backdrop-filter: blur(12px);
+      border-radius: 1.8rem;
+      padding: 1rem;
+      border: 1px solid rgba(255,255,255,0.2);
+      box-shadow: 0 20px 35px -12px black;
+    }
+    .chat-messages {
+      height: 260px;
+      overflow-y: auto;
+      background: #0a0f1c;
+      border-radius: 1rem;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      font-size: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .chat-messages .bot {
+      background: #1e293b;
+      padding: 0.5rem 0.8rem;
+      border-radius: 1rem;
+      align-self: flex-start;
+      max-width: 85%;
+    }
+    .chat-messages .user {
+      background: var(--primary);
+      align-self: flex-end;
+      border-radius: 1rem;
+      padding: 0.5rem 0.8rem;
+    }
+    .chat-form, .chat-identity-form {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .chat-form input, .chat-identity-form input {
+      flex: 1;
+      padding: 0.6rem;
+    }
+    footer {
+      border-top: 1px solid var(--border-dim);
+      margin-top: 4rem;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    @media (max-width: 560px) {
+      .chat-panel { width: 280px; right: -0.5rem; bottom: 4.5rem; }
+      .btn { padding: 0.5rem 1.2rem; }
+    }
+    button:focus, a:focus { outline: 2px solid var(--primary); outline-offset: 2px; }
+  </style>
 </head>
 <body>
-  <div class="bg-glow"></div>
-  <header class="hero" id="home">
-    <div class="shell">
-      <nav class="top-nav">
-        <a class="brand" href="#home" aria-label="Genspech home">
-          <span class="brand-mark">G</span>
-          <span>
-            <strong>Genspech Investments</strong>
-            <small>Equipment. Energy. Construction.</small>
-          </span>
-        </a>
-        <div class="nav-links">
-          <a href="#services">Services</a>
-          <a href="#machines">Fleet</a>
-          <a href="#quote">Quote</a>
-          <a href="#contact">Contact</a>
-        </div>
-        <div class="nav-actions">
-          <a class="btn cta-mini" href="#quote">Request Quote</a>
-        </div>
-      </nav>
+<div class="bg-glow"></div>
 
-      <section class="hero-frame reveal">
-        <div class="hero-grid">
-          <div class="hero-copy">
-            <p class="badge">Professional Construction Support Since 2019</p>
-            <h1>Deliver Every Project With Speed, Power, And Precision</h1>
-            <p>
-              Genspech combines machine hire, generator rental, construction materials,
-              and project delivery support into one dependable partner for industrial and commercial teams.
-            </p>
-            <div class="hero-ctas">
-              <a class="btn btn-primary" href="#quote">Get Instant Estimate</a>
-              <a class="btn btn-ghost" href="tel:+263783044407">Talk To Operations</a>
-            </div>
-            <div class="hero-stats">
-              <article><strong class="count-up" data-target="0">0</strong><span>Safety incidents target</span></article>
-              <article><strong><span class="count-up" data-target="10">10</span>%+</strong><span>Annual growth objective</span></article>
-              <article><strong><span class="count-up" data-target="24">24</span>/7</strong><span>Urgent dispatch support</span></article>
-            </div>
-          </div>
-          <div class="hero-media">
-            <img
-              src="https://images.unsplash.com/photo-1541976590-713941681591?auto=format&fit=crop&w=1300&q=75"
-              alt="Professional construction and industrial equipment operations"
-              width="1000"
-              height="860"
-              loading="eager"
-              fetchpriority="high"
-            />
-            <div class="hero-media-overlay">
-              <p class="overlay-label">Operational Snapshot</p>
-              <h3>Single Partner Execution</h3>
-              <ul>
-                <li>Equipment hire and dispatch</li>
-                <li>Construction material supply</li>
-                <li>Priority and urgent support lanes</li>
-              </ul>
-            </div>
-          </div>
+<header class="hero" id="home">
+  <div class="shell">
+    <nav class="top-nav">
+      <a class="brand" href="#home">
+        <span class="brand-mark">G</span>
+        <span><strong>Genspech Investments</strong><small>Equipment. Energy. Construction.</small></span>
+      </a>
+      <div class="nav-links"><a href="#services">Services</a><a href="#machines">Fleet</a><a href="#quote">Quote</a><a href="#contact">Contact</a></div>
+      <div class="nav-actions"><a class="btn cta-mini btn-primary" href="#quote">Request Quote</a></div>
+    </nav>
+    <div class="hero-frame reveal">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="badge">Professional Construction Support Since 2019</p>
+          <h1>Deliver Every Project With Speed, Power, And Precision</h1>
+          <p>Genspech combines machine hire, generator rental, construction materials, and project delivery support into one dependable partner for industrial and commercial teams.</p>
+          <div class="hero-ctas"><a class="btn btn-primary" href="#quote">Get Instant Estimate</a><a class="btn btn-ghost" href="tel:+263783044407">Talk To Operations</a></div>
+          <div class="hero-stats"><article><strong class="count-up" data-target="0">0</strong><span>Safety incidents target</span></article><article><strong><span class="count-up" data-target="10">10</span>%+</strong><span>Annual growth objective</span></article><article><strong><span class="count-up" data-target="24">24</span>/7</strong><span>Urgent dispatch support</span></article></div>
         </div>
-      </section>
+        <div class="hero-media"><img src="https://images.unsplash.com/photo-1541976590-713941681591?auto=format&fit=crop&w=1300&q=75" alt="construction equipment" width="1000" height="860" loading="eager" /></div>
+      </div>
     </div>
-  </header>
+  </div>
+</header>
 
-  <main>
-    <section class="section shell summary reveal">
-      <article>
-        <p>Trusted by diverse sectors</p>
-        <h3>Industrial, Healthcare, Infrastructure, Commercial</h3>
-      </article>
-      <article>
-        <p>Integrated offering</p>
-        <h3>Equipment Hire + Supplies + Project Support</h3>
-      </article>
-      <article>
-        <p>Operations base</p>
-        <h3>Hatfield, Harare</h3>
-      </article>
-    </section>
+<main>
+  <div class="shell summary reveal"><article><p>Trusted by diverse sectors</p><h3>Industrial, Healthcare, Infrastructure</h3></article><article><p>Integrated offering</p><h3>Equipment Hire + Supplies + Support</h3></article><article><p>Operations base</p><h3>Hatfield, Harare</h3></article></div>
 
-    <section class="section shell mission reveal" id="about">
-      <article>
-        <h2>Mission</h2>
-        <p>Deliver exceptional tailored services that exceed expectations through trust, reliability, and practical execution.</p>
-      </article>
-      <article>
-        <h2>Vision</h2>
-        <p>Set higher standards for quality, safety, and sustainable growth in construction and industrial support.</p>
-      </article>
-      <article>
-        <h2>Objective</h2>
-        <p>Deliver on time and on budget while expanding services into new markets through consistent operational excellence.</p>
-      </article>
-    </section>
+  <div class="shell mission reveal" id="about"><article><h2>Mission</h2><p>Deliver exceptional tailored services that exceed expectations through trust, reliability, and practical execution.</p></article><article><h2>Vision</h2><p>Set higher standards for quality, safety, and sustainable growth in construction and industrial support.</p></article><article><h2>Objective</h2><p>Deliver on time and on budget while expanding services into new markets through consistent operational excellence.</p></article></div>
 
-    <section class="section shell services" id="services">
-      <div class="section-head reveal">
-        <p class="kicker">Core Functions</p>
-        <h2>Integrated Services For Real-World Delivery</h2>
-      </div>
-      <div class="service-grid">
-        <article class="service-card reveal">
-          <h3>Generator Hire</h3>
-          <p>Reliable power solutions for events, hospitals, factories, mining, and emergency backup operations.</p>
-        </article>
-        <article class="service-card reveal delay-1">
-          <h3>Concrete Equipment Hire</h3>
-          <p>Self-loading mixers, boom pumps, static pumps, power floats, and poker vibrators for quality concrete work.</p>
-        </article>
-        <article class="service-card reveal delay-2">
-          <h3>Construction Supplies</h3>
-          <p>Copper pipes, PVC systems, cables, waterproofing materials, and site essentials for continuous productivity.</p>
-        </article>
-        <article class="service-card reveal delay-3">
-          <h3>Project Management</h3>
-          <p>Commercial interior and exterior project coordination focused on control, speed, and predictable outcomes.</p>
-        </article>
-      </div>
-    </section>
+  <section class="shell services" id="services"><div class="section-head reveal"><p class="kicker">Core Functions</p><h2>Integrated Services For Real-World Delivery</h2></div><div class="service-grid"><article class="service-card reveal"><h3>Generator Hire</h3><p>Reliable power solutions for events, hospitals, factories, mining, and emergency backup operations.</p></article><article class="service-card reveal delay-1"><h3>Concrete Equipment Hire</h3><p>Self-loading mixers, boom pumps, static pumps, power floats, and poker vibrators for quality concrete work.</p></article><article class="service-card reveal delay-2"><h3>Construction Supplies</h3><p>Copper pipes, PVC systems, cables, waterproofing materials, and site essentials for continuous productivity.</p></article><article class="service-card reveal delay-3"><h3>Project Management</h3><p>Commercial interior and exterior project coordination focused on control, speed, and predictable outcomes.</p></article></div></section>
 
-    <section class="section shell sectors reveal">
-      <div class="section-head">
-        <p class="kicker">Sectors Served</p>
-        <h2>Where Genspech Creates Value</h2>
-      </div>
-      <div class="sector-grid">
-        <article><h3>Industrial Sites</h3><p>Equipment uptime and power continuity for uninterrupted operations.</p></article>
-        <article><h3>Healthcare</h3><p>Backup generators and support for critical facility resilience.</p></article>
-        <article><h3>Mining & Infrastructure</h3><p>Heavy-duty machine support for demanding field conditions.</p></article>
-        <article><h3>Commercial Builds</h3><p>Materials and machinery to keep schedules moving.</p></article>
-      </div>
-    </section>
+  <section class="shell machines" id="machines"><div class="section-head reveal"><p class="kicker">Equipment Portfolio</p><h2>Modern Fleet For Demanding Jobs</h2></div><div class="machine-grid"><figure class="machine-card reveal"><img src="https://placehold.co/760x520/1e293b/ffffff?text=Concrete+Mixers" alt="concrete" width="760" height="520" loading="lazy" style="border-radius:1rem; width:100%;" /><figcaption>Concrete Mixers and Self Loading Units</figcaption></figure><figure class="machine-card reveal delay-1"><img src="https://placehold.co/760x520/1e293b/ffffff?text=Generator+Fleet" alt="generators" loading="lazy" style="border-radius:1rem; width:100%;" /><figcaption>Generator Sets for Continuous Power</figcaption></figure><figure class="machine-card reveal delay-2"><img src="https://placehold.co/760x520/1e293b/ffffff?text=Infrastructure" alt="infra" loading="lazy" style="border-radius:1rem; width:100%;" /><figcaption>Road, Building, and Infrastructure Applications</figcaption></figure></div></section>
 
-    <section class="section shell machines" id="machines">
-      <div class="section-head reveal">
-        <p class="kicker">Equipment Portfolio</p>
-        <h2>Modern Fleet For Demanding Jobs</h2>
-      </div>
-      <div class="machine-grid">
-        <figure class="machine-card reveal">
-          <img src="{{ url_for('static', filename='images/fleet-concrete.svg') }}" alt="Concrete equipment illustration" width="760" height="520" loading="lazy" />
-          <figcaption>Concrete Mixers and Self Loading Units</figcaption>
-        </figure>
-        <figure class="machine-card reveal delay-1">
-          <img src="{{ url_for('static', filename='images/fleet-generator.svg') }}" alt="Generator fleet illustration" width="760" height="520" loading="lazy" />
-          <figcaption>Generator Sets for Continuous Power</figcaption>
-        </figure>
-        <figure class="machine-card reveal delay-2">
-          <img src="{{ url_for('static', filename='images/fleet-infrastructure.svg') }}" alt="Infrastructure projects illustration" width="760" height="520" loading="lazy" />
-          <figcaption>Road, Building, and Infrastructure Applications</figcaption>
-        </figure>
-      </div>
-    </section>
+  <section class="shell quote" id="quote"><div class="quote-intro reveal"><p class="kicker">Instant Quotation</p><h2>Get A Professional Quote In Under A Minute</h2><p>Submit requirements once, receive an estimate, then continue instantly via email or WhatsApp.</p></div>
+    <form id="quoteForm" class="quote-form reveal delay-1"><div class="field-grid"><label>Machine / Service<select id="machine" required><option value="">Select an option</option><option value="generator">Generator Hire</option><option value="self-loader">Self Loading Concrete Mixer</option><option value="boom-pump">Boom Pump</option><option value="static-pump">Static Pump</option><option value="power-float">Power Float</option><option value="poker">Poker Vibrator</option></select></label><label>Hire Duration (Days)<input id="days" type="number" min="1" max="365" value="1" required /></label><label>Urgency<select id="urgency" required><option value="standard">Standard (48h)</option><option value="priority">Priority (24h)</option><option value="urgent">Urgent (Same Day)</option></select></label><label>Your Name<input id="name" type="text" placeholder="Full name" required /></label><label>Phone Number<input id="phone" type="tel" placeholder="e.g. 0718 029 974" required /></label></div><button type="submit" class="btn btn-primary">Generate Quote</button></form>
+    <div id="result" class="result" aria-live="polite"></div>
+  </section>
 
-    <section class="section shell quote" id="quote">
-      <div class="quote-intro reveal">
-        <p class="kicker">Instant Quotation</p>
-        <h2>Get A Professional Quote In Under A Minute</h2>
-        <p>Submit requirements once, receive an estimate, then continue instantly via email or WhatsApp.</p>
-      </div>
-      <form id="quoteForm" class="quote-form reveal delay-1">
-        <div class="field-grid">
-          <label>Machine / Service
-            <select id="machine" required>
-              <option value="">Select an option</option>
-              <option value="generator">Generator Hire</option>
-              <option value="self-loader">Self Loading Concrete Mixer</option>
-              <option value="boom-pump">Boom Pump</option>
-              <option value="static-pump">Static Pump</option>
-              <option value="power-float">Power Float</option>
-              <option value="poker">Poker Vibrator</option>
-            </select>
-          </label>
-          <label>Hire Duration (Days)
-            <input id="days" type="number" min="1" max="365" value="1" required />
-          </label>
-          <label>Urgency
-            <select id="urgency" required>
-              <option value="standard">Standard (48h)</option>
-              <option value="priority">Priority (24h)</option>
-              <option value="urgent">Urgent (Same Day)</option>
-            </select>
-          </label>
-          <label>Your Name
-            <input id="name" type="text" placeholder="Full name" required />
-          </label>
-          <label>Phone Number
-            <input id="phone" type="tel" placeholder="e.g. 0718 029 974" required />
-          </label>
-        </div>
-        <button type="submit" class="btn btn-primary">Generate Quote</button>
-      </form>
-      <div id="result" class="result" aria-live="polite"></div>
-    </section>
+  <div class="shell trust reveal"><div><p class="kicker">Why Genspech</p><h2>Fast Deployment. Strong Standards. Clear Communication.</h2></div><ul><li>Rapid dispatch and flexible hire terms</li><li>Practical support for industrial and commercial teams</li><li>Equipment and material sourcing in one partner</li></ul></div>
 
-    <section class="section shell trust reveal">
-      <div>
-        <p class="kicker">Why Genspech</p>
-        <h2>Fast Deployment. Strong Standards. Clear Communication.</h2>
-      </div>
-      <ul>
-        <li>Rapid dispatch and flexible hire terms</li>
-        <li>Practical support for industrial and commercial teams</li>
-        <li>Equipment and material sourcing in one partner</li>
-      </ul>
-    </section>
+  <section class="shell process reveal"><div class="section-head"><p class="kicker">How It Works</p><h2>Simple, Reliable Engagement Flow</h2></div><div class="process-grid"><article><span>01</span><h3>Request</h3><p>Tell us your machine, timeline, and site needs.</p></article><article><span>02</span><h3>Estimate</h3><p>Receive instant estimate and confirm operational details.</p></article><article><span>03</span><h3>Deploy</h3><p>We dispatch equipment or supplies based on urgency.</p></article><article><span>04</span><h3>Deliver</h3><p>Project continues with quality support and clear follow-up.</p></article></div></section>
 
-    <section class="section shell process reveal">
-      <div class="section-head">
-        <p class="kicker">How It Works</p>
-        <h2>Simple, Reliable Engagement Flow</h2>
-      </div>
-      <div class="process-grid">
-        <article><span>01</span><h3>Request</h3><p>Tell us your machine, timeline, and site needs.</p></article>
-        <article><span>02</span><h3>Estimate</h3><p>Receive instant estimate and confirm operational details.</p></article>
-        <article><span>03</span><h3>Deploy</h3><p>We dispatch equipment or supplies based on urgency.</p></article>
-        <article><span>04</span><h3>Deliver</h3><p>Project continues with quality support and clear follow-up.</p></article>
-      </div>
-    </section>
+  <section class="shell contact" id="contact"><div class="section-head"><p class="kicker">Contact</p><h2>Ready To Start?</h2></div><div class="contact-grid"><a href="tel:+263783044407">0783 044 407</a><a href="tel:+263718029974">0718 029 974</a><a href="mailto:genspechinvest@gmail.com">genspechinvest@gmail.com</a><p>Hatfield, Harare</p></div></section>
+</main>
 
-    <section class="section shell contact" id="contact">
-      <div class="section-head">
-        <p class="kicker">Contact</p>
-        <h2>Ready To Start?</h2>
-      </div>
-      <div class="contact-grid">
-        <a href="tel:+263783044407">0783 044 407</a>
-        <a href="tel:+263718029974">0718 029 974</a>
-        <a href="mailto:genspechinvest@gmail.com">genspechinvest@gmail.com</a>
-        <p>Hatfield, Harare</p>
-      </div>
-    </section>
-  </main>
+<aside class="chatbot-shell" id="chatbotShell">
+  <button id="chatToggle" class="chat-toggle" type="button">💬 Quotation Assistant</button>
+  <section class="chat-panel" id="chatPanel" hidden><header><h3>Quotation Assistant</h3><p>Try: "generator for 2 days priority"</p></header><div class="chat-messages" id="chatMessages"></div><form id="chatIdentityForm" class="chat-identity-form"><input id="chatName" type="text" placeholder="Your name (optional)" /><input id="chatPhone" type="tel" placeholder="Phone (optional)" /></form><form id="chatForm" class="chat-form"><input id="chatInput" type="text" placeholder="Type your request..." required /><button type="submit" class="btn btn-primary">Send</button></form></section>
+</aside>
 
-  <aside class="chatbot-shell" id="chatbotShell" aria-live="polite">
-    <button id="chatToggle" class="chat-toggle" type="button">Open Quotation Chatbot</button>
-    <section class="chat-panel" id="chatPanel" hidden>
-      <header>
-        <h3>Quotation Assistant</h3>
-        <p>Try: "generator for 2 days priority"</p>
-      </header>
-      <div class="chat-messages" id="chatMessages"></div>
-      <form id="chatIdentityForm" class="chat-identity-form">
-        <input id="chatName" type="text" placeholder="Your name (optional)" />
-        <input id="chatPhone" type="tel" placeholder="Your phone (optional)" />
-      </form>
-      <form id="chatForm" class="chat-form">
-        <input id="chatInput" type="text" placeholder="Type your request..." required />
-        <button type="submit" class="btn btn-primary">Send</button>
-      </form>
-    </section>
-  </aside>
+<footer><div class="shell footer-row"><p>© <span id="year"></span> Genspech Investments. Built for growth, quality, and reliability.</p><a href="/admin" style="color:var(--primary);">Admin Dashboard</a></div></footer>
 
-  <footer>
-    <div class="shell footer-row">
-      <p>© <span id="year"></span> Genspech Investments. Built for growth, quality, and reliability.</p>
-      <a href="/admin" title="Append ?key=YOUR_ADMIN_DASHBOARD_KEY">Admin Dashboard</a>
-    </div>
-  </footer>
+<script>
+  // ---- react-like frontend interactions ----
+  const RATES = { generator: 180, "self-loader": 420, "boom-pump": 650, "static-pump": 480, "power-float": 120, poker: 90 };
+  const URGENCY_MULTIPLIER = { standard: 1, priority: 1.15, urgent: 1.3 };
+  const MACHINE_NAMES = { generator: "Generator Hire", "self-loader": "Self Loading Concrete Mixer", "boom-pump": "Boom Pump", "static-pump": "Static Pump", "power-float": "Power Float", poker: "Poker Vibrator" };
+  
+  const quoteForm = document.getElementById('quoteForm');
+  const resultDiv = document.getElementById('result');
+  const buildQuote = (machine, days, urgency) => {
+    if (!RATES[machine]) throw new Error('Invalid machine');
+    const daily = RATES[machine];
+    const subtotal = daily * days;
+    const total = subtotal * URGENCY_MULTIPLIER[urgency];
+    return { machine, machineName: MACHINE_NAMES[machine], days, urgency, dailyRate: daily, subtotal, total };
+  };
+  quoteForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const machine = document.getElementById('machine').value;
+    const days = parseInt(document.getElementById('days').value);
+    const urgency = document.getElementById('urgency').value;
+    const name = document.getElementById('name').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    if (!machine) { resultDiv.innerHTML = '<p style="color:#ff8a5c;">⚠️ Please select a machine type.</p>'; return; }
+    if (days < 1 || days > 365) { resultDiv.innerHTML = '<p>Days must be between 1 and 365.</p>'; return; }
+    try {
+      const quote = buildQuote(machine, days, urgency);
+      const payload = { machine, days, urgency, name, phone };
+      const response = await fetch('/api/quote', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      const data = await response.json();
+      if (data.ok) {
+        resultDiv.innerHTML = `<div style="background:#0f172a; padding:1rem; border-radius:1rem"><strong>✨ Estimate ready</strong><br/>${quote.machineName} | ${quote.days} day(s) | ${urgency.toUpperCase()}<br/><strong style="font-size:1.6rem;">$${quote.total.toFixed(2)}</strong><br/><small>Quote ID: ${data.quoteId} — we’ll reach out shortly.</small></div>`;
+      } else { resultDiv.innerHTML = `<p>Error: ${data.error}</p>`; }
+    } catch(err) { resultDiv.innerHTML = `<p>Service error. Please refresh.</p>`; }
+  });
 
-  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  // chatbot logic (mirroring python logic with pure frontend state)
+  const machineAliases = { generator: "generator", genset: "generator", "self loader": "self-loader", "self loading": "self-loader", mixer: "self-loader", boom: "boom-pump", "boom pump": "boom-pump", static: "static-pump", "static pump": "static-pump", "power float": "power-float", float: "power-float", poker: "poker", vibrator: "poker" };
+  const extractMachine = (msg) => { const low = msg.toLowerCase(); for(let [alias, key] of Object.entries(machineAliases)) if(low.includes(alias)) return key; return null; };
+  const extractDays = (msg) => { const match = msg.match(/\b(\d{1,3})\s*(?:day|days|d)\b/i); if(match) return parseInt(match[1]); const standalone = msg.match(/\b(\d{1,3})\b/); return standalone ? parseInt(standalone[1]) : null; };
+  const extractUrgency = (msg) => { const low = msg.toLowerCase(); if(low.includes("urgent")||low.includes("same day")) return "urgent"; if(low.includes("priority")||low.includes("24h")) return "priority"; if(low.includes("standard")||low.includes("48h")) return "standard"; return null; };
+  let chatContext = { machine: null, days: null, urgency: "standard" };
+  const chatMessages = document.getElementById('chatMessages');
+  const chatInput = document.getElementById('chatInput');
+  const chatForm = document.getElementById('chatForm');
+  const chatToggle = document.getElementById('chatToggle');
+  const chatPanel = document.getElementById('chatPanel');
+  const chatNameInput = document.getElementById('chatName');
+  const chatPhoneInput = document.getElementById('chatPhone');
+  const addMessage = (text, isUser = false) => { const div = document.createElement('div'); div.className = isUser ? 'user' : 'bot'; div.innerText = text; chatMessages.appendChild(div); chatMessages.scrollTop = chatMessages.scrollHeight; };
+  const chatbotReply = async (message) => {
+    const cleaned = message.trim();
+    const lower = cleaned.toLowerCase();
+    if (lower === "reset" || lower === "start over") {
+      chatContext = { machine: null, days: null, urgency: "standard" };
+      return "Chat reset. Tell me machine type, number of days, and urgency (standard, priority, urgent).";
+    }
+    let machine = extractMachine(cleaned);
+    let days = extractDays(cleaned);
+    let urgency = extractUrgency(cleaned);
+    if(machine) chatContext.machine = machine;
+    if(days !== null) chatContext.days = days;
+    if(urgency) chatContext.urgency = urgency;
+    if (lower.includes("hello") || lower.includes("hi")) return "Hi, I can prepare a hire estimate. Example: 'generator for 3 days urgent'.";
+    let missing = [];
+    if(!chatContext.machine) missing.push("machine");
+    if(!chatContext.days) missing.push("days");
+    if(missing.length) {
+      if(missing.includes("machine") && missing.includes("days")) return "Tell me the machine and number of days. Example: boom pump for 2 days.";
+      if(missing.includes("machine")) return "Which machine do you need? Generator, self loader, boom pump, static pump, power float, or poker vibrator?";
+      return "How many days do you want to hire for?";
+    }
+    try {
+      const quote = buildQuote(chatContext.machine, chatContext.days, chatContext.urgency);
+      const payload = { machine: quote.machine, days: quote.days, urgency: quote.urgency, name: chatNameInput.value.trim() || null, phone: chatPhoneInput.value.trim() || null };
+      const res = await fetch('/api/chatbot', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: cleaned, context: chatContext, name: payload.name, phone: payload.phone }) });
+      const data = await res.json();
+      if(data.ok && data.quote) {
+        return `Estimated total for ${quote.machineName} (${quote.days} day(s), ${quote.urgency}) is $${quote.total.toFixed(2)}. Reply with 'reset' to start another quote.`;
+      } else return `Calculation failed. Try again.`;
+    } catch(e) { return "Sorry, quote service unavailable."; }
+  };
+  chatForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const msg = chatInput.value.trim();
+    if(!msg) return;
+    addMessage(msg, true);
+    chatInput.value = '';
+    const botResponse = await chatbotReply(msg);
+    addMessage(botResponse, false);
+  });
+  chatToggle?.addEventListener('click', () => { const hidden = chatPanel.hidden; chatPanel.hidden = !hidden; if(hidden && chatMessages.children.length===0) addMessage("👋 Hi! I'm the Genspech quote bot. Tell me machine + days + urgency. Example: 'boom pump for 2 days priority'", false); });
+  // reveal animations
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); }); }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
+  reveals.forEach(r => observer.observe(r));
+  document.getElementById('year').innerText = new Date().getFullYear();
+  // count-up simple
+  const counters = document.querySelectorAll('.count-up');
+  counters.forEach(c => { const target = parseInt(c.getAttribute('data-target')); if(target===0) c.innerText = '0'; else { let current = 0; const update = () => { if(current <= target) { c.innerText = current; current+= Math.ceil(target/20); if(current<=target) setTimeout(update, 30); } }; update(); } });
+</script>
 </body>
 </html>
