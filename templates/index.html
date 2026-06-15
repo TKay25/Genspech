@@ -49,10 +49,6 @@
       padding: 0 2rem;
     }
 
-    section, .summary, .mission-cards, .trust-block, .process, .contact, .history-block, .supplies-grid, .feature-grid {
-      scroll-margin-top: 1.5rem;
-    }
-
     .reveal {
       opacity: 0;
       transform: translateY(18px);
@@ -238,18 +234,6 @@
       text-align: center;
     }
 
-    .history-block h2 {
-      color: var(--brand-green);
-      margin-bottom: 1rem;
-    }
-
-    .history-block .date {
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--brand-green-dark);
-      margin-bottom: 0.5rem;
-    }
-
     .mission-cards {
       display: flex;
       flex-wrap: wrap;
@@ -318,22 +302,14 @@
       color: var(--brand-green-soft);
     }
 
-    .service-grid,
-    .machine-grid,
-    .process-grid,
-    .supplies-grid,
-    .feature-grid {
+    .service-grid, .machine-grid, .process-grid, .supplies-grid, .feature-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1.5rem;
       margin: 1.5rem 0;
     }
 
-    .service-card,
-    .machine-card,
-    .process-grid article,
-    .supply-card,
-    .feature-card {
+    .service-card, .machine-card, .process-grid article, .supply-card, .feature-card {
       background: var(--pure-white);
       border-radius: var(--card-radius);
       padding: 1.2rem;
@@ -342,10 +318,7 @@
       box-shadow: var(--shadow-sm);
     }
 
-    .service-card:hover,
-    .machine-card:hover,
-    .supply-card:hover,
-    .feature-card:hover {
+    .service-card:hover, .machine-card:hover, .supply-card:hover, .feature-card:hover {
       border-color: var(--brand-green);
       transform: translateY(-3px);
       box-shadow: var(--shadow-md);
@@ -366,16 +339,6 @@
       color: var(--brand-green);
       text-align: center;
       font-size: 0.9rem;
-    }
-
-    .supply-card h4 {
-      color: var(--brand-green);
-      margin-bottom: 0.5rem;
-    }
-
-    .feature-card h4 {
-      color: var(--brand-green);
-      margin-bottom: 0.5rem;
     }
 
     .generator-uses {
@@ -431,12 +394,6 @@
       border-radius: 0.9rem;
       font-family: inherit;
       font-size: 0.9rem;
-    }
-
-    input:focus, select:focus {
-      outline: none;
-      border-color: var(--brand-green);
-      box-shadow: 0 0 0 3px rgba(43, 110, 92, 0.08);
     }
 
     .result {
@@ -522,17 +479,7 @@
       border: 1px solid #f59e0b;
     }
 
-    .certificate-badge i {
-      color: #f59e0b;
-      font-size: 1.5rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .certificate-badge p {
-      font-size: 0.75rem;
-      color: #92400e;
-    }
-
+    /* ========== CHAT ASSISTANT WITH FULL CLICKABLE UI ========== */
     .chatbot-shell {
       position: fixed;
       bottom: 1.5rem;
@@ -552,9 +499,6 @@
       display: flex;
       align-items: center;
       gap: 0.6rem;
-      position: relative;
-      transition: transform 0.2s ease, background 0.2s ease;
-      z-index: 2;
       box-shadow: 0 4px 15px rgba(43, 110, 92, 0.4);
       animation: pulse-green 2s infinite;
     }
@@ -575,9 +519,9 @@
       position: absolute;
       bottom: 5rem;
       right: 0;
-      width: 380px;
+      width: 400px;
       max-width: calc(100vw - 2rem);
-      height: 550px;
+      height: 580px;
       max-height: calc(100vh - 7rem);
       background: var(--pure-white);
       border-radius: 1.25rem;
@@ -594,24 +538,30 @@
 
     .chat-header {
       background: var(--brand-green);
-      padding: 0.7rem 1rem;
+      padding: 0.8rem 1rem;
       color: white;
       flex-shrink: 0;
     }
 
     .chat-header h3 {
       color: white;
-      font-size: 0.9rem;
+      font-size: 1rem;
       font-weight: 700;
+      margin-bottom: 0.2rem;
+    }
+
+    .chat-header p {
+      font-size: 0.7rem;
+      opacity: 0.9;
     }
 
     .chat-messages {
       flex: 1;
       overflow-y: auto;
-      padding: 0.8rem;
+      padding: 1rem;
       display: flex;
       flex-direction: column;
-      gap: 0.6rem;
+      gap: 0.75rem;
       background: var(--light-grey);
     }
 
@@ -625,27 +575,31 @@
     .message.bot { align-self: flex-start; }
 
     .message-bubble {
-      padding: 0.5rem 0.8rem;
-      border-radius: 1rem;
-      font-size: 0.75rem;
+      padding: 0.6rem 1rem;
+      border-radius: 1.2rem;
+      font-size: 0.8rem;
       line-height: 1.4;
     }
 
     .user .message-bubble {
       background: var(--brand-green);
       color: white;
+      border-bottom-right-radius: 0.25rem;
     }
 
     .bot .message-bubble {
       background: var(--pure-white);
       border: var(--border-visible);
+      color: var(--text-primary);
+      border-bottom-left-radius: 0.25rem;
     }
 
+    /* Quick Reply Chips - FULLY CLICKABLE */
     .quick-replies {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.4rem;
-      padding: 0.6rem;
+      gap: 0.5rem;
+      padding: 0.75rem;
       background: var(--pure-white);
       border-top: 1px solid var(--light-grey-border);
       flex-shrink: 0;
@@ -654,58 +608,107 @@
     .quick-chip {
       background: var(--brand-green-light);
       border: 1px solid var(--brand-green-soft);
-      padding: 0.3rem 0.8rem;
+      padding: 0.4rem 1rem;
       border-radius: 2rem;
-      font-size: 0.65rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--brand-green-dark);
       cursor: pointer;
+      transition: all 0.2s ease;
     }
 
+    .quick-chip:hover {
+      background: var(--brand-green);
+      color: white;
+      border-color: var(--brand-green);
+      transform: scale(1.02);
+    }
+
+    .quick-chip:active {
+      transform: scale(0.98);
+    }
+
+    /* Urgency Selector */
     .chat-selector {
-      padding: 0.5rem;
+      padding: 0.6rem 0.75rem;
       background: var(--pure-white);
       border-top: 1px solid var(--light-grey-border);
       display: flex;
-      gap: 0.4rem;
+      gap: 0.5rem;
+      align-items: center;
       flex-wrap: wrap;
+      flex-shrink: 0;
+    }
+
+    .chat-selector label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-right: 0.25rem;
     }
 
     .urgency-badge {
       background: var(--light-grey);
       border: var(--border-visible);
-      padding: 0.2rem 0.6rem;
+      padding: 0.3rem 0.9rem;
       border-radius: 2rem;
-      font-size: 0.62rem;
+      font-size: 0.7rem;
+      font-weight: 500;
       cursor: pointer;
+      transition: all 0.2s ease;
     }
 
     .urgency-badge.active {
       background: var(--brand-green);
       color: white;
+      border-color: var(--brand-green);
     }
 
+    .urgency-badge:hover:not(.active) {
+      background: var(--brand-green-soft);
+      transform: scale(1.02);
+    }
+
+    /* Chat Input Form */
     .chat-form {
       display: flex;
-      gap: 0.4rem;
-      padding: 0.6rem;
+      gap: 0.5rem;
+      padding: 0.75rem;
       background: var(--pure-white);
       border-top: 1px solid var(--light-grey-border);
+      flex-shrink: 0;
     }
 
     .chat-form input {
       flex: 1;
-      padding: 0.5rem;
-      font-size: 0.75rem;
+      padding: 0.6rem 1rem;
+      font-size: 0.8rem;
       border: var(--border-visible);
-      border-radius: 1.5rem;
+      border-radius: 2rem;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .chat-form input:focus {
+      border-color: var(--brand-green);
+      box-shadow: 0 0 0 2px rgba(43, 110, 92, 0.1);
     }
 
     .chat-form button {
-      padding: 0.4rem 1rem;
-      border-radius: 1.5rem;
+      padding: 0.5rem 1.2rem;
+      border-radius: 2rem;
+      font-size: 0.8rem;
+      font-weight: 600;
       background: var(--brand-green);
       color: white;
       border: none;
       cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .chat-form button:hover {
+      background: var(--brand-green-dark);
+      transform: scale(0.98);
     }
 
     footer {
@@ -750,7 +753,7 @@
     }
 
     @media (max-width: 560px) {
-      .chat-panel { width: 320px; }
+      .chat-panel { width: 340px; }
       .mission-card { min-width: 100%; }
       h2 { font-size: 1.4rem; }
       .brand-logo { height: 40px; }
@@ -795,107 +798,27 @@
   </div>
 
   <div class="shell mission-cards reveal">
-    <div class="mission-card">
-      <h3>Mission</h3>
-      <p>To deliver exceptional, tailored services that exceed client expectations, fostering long term relationships built on trust, integrity & expertise. We strive to provide innovative solutions, leveraging industry insights & best practices to drive growth, efficiency & success for our clients & partners.</p>
-    </div>
-    <div class="mission-card">
-      <h3>Vision</h3>
-      <p>To become a leading investment company, setting new standards for quality safety, & sustainability, building long term relationships with our partners.</p>
-    </div>
-    <div class="mission-card">
-      <h3>Objectives</h3>
-      <ul>
-        <li>Deliver projects on time & within budget</li>
-        <li>Achieve a safety incident rate of zero</li>
-        <li>Increase revenue growth by 10% annually</li>
-        <li>Expand services to new markets (sustainable energy, healthcare)</li>
-      </ul>
-    </div>
+    <div class="mission-card"><h3>Mission</h3><p>To deliver exceptional, tailored services that exceed client expectations, fostering long term relationships built on trust, integrity & expertise.</p></div>
+    <div class="mission-card"><h3>Vision</h3><p>To become a leading investment company, setting new standards for quality safety, & sustainability, building long term relationships with our partners.</p></div>
+    <div class="mission-card"><h3>Objectives</h3><ul><li>Deliver projects on time & within budget</li><li>Achieve a safety incident rate of zero</li><li>Increase revenue growth by 10% annually</li><li>Expand services to new markets</li></ul></div>
   </div>
 
   <section class="shell services" id="services"><div class="section-head reveal"><p class="kicker">Equipment Hire</p><h2>Generator Hire</h2></div>
     <div class="service-grid">
-      <div class="service-card reveal">
-        <i class="fas fa-bolt" style="font-size: 2rem; color: var(--brand-green); margin-bottom: 0.5rem;"></i>
-        <h3>Generator Hire</h3>
-        <p>Reliable power solutions for various applications. Perfect for events, functions, factories, mining sites, industrial sites, hospitals, and emergency backup.</p>
-        <div class="generator-uses"><span>Events</span><span>Factories</span><span>Mining</span><span>Hospitals</span><span>Emergency Backup</span></div>
-      </div>
-      <div class="service-card reveal">
-        <i class="fas fa-truck-mixer" style="font-size: 2rem; color: var(--brand-green); margin-bottom: 0.5rem;"></i>
-        <h3>Concrete Equipment Hire</h3>
-        <p>Self-loading mixers, boom pumps, static pumps, power floats, and poker vibrators for quality concrete work.</p>
-      </div>
-      <div class="service-card reveal">
-        <i class="fas fa-hard-hat" style="font-size: 2rem; color: var(--brand-green); margin-bottom: 0.5rem;"></i>
-        <h3>Project Management</h3>
-        <p>Commercial interior and exterior construction projects delivered on time and within budget with quality support.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="shell"><div class="section-head reveal"><p class="kicker">Specialized Equipment</p><h2>Self Loading Concrete Mixer</h2></div>
-    <div class="feature-grid">
-      <div class="feature-card reveal"><h4><i class="fas fa-sync-alt"></i> Self Loading Capability</h4><p>The machine can load its own mixer drum with aggregates, cement & water eliminating the need for separate loading equipment.</p></div>
-      <div class="feature-card reveal"><h4><i class="fas fa-blender"></i> Mixing & Blending</h4><p>The machine mixes & blends concrete ingredients to produce a uniform mixture.</p></div>
-      <div class="feature-card reveal"><h4><i class="fas fa-truck"></i> Transportation</h4><p>The machine can transport mixed concrete to the desired location.</p></div>
+      <div class="service-card reveal"><i class="fas fa-bolt" style="font-size: 2rem; color: var(--brand-green); margin-bottom: 0.5rem;"></i><h3>Generator Hire</h3><p>Reliable power solutions for events, factories, mining sites, hospitals, and emergency backup.</p><div class="generator-uses"><span>Events</span><span>Factories</span><span>Mining</span><span>Hospitals</span></div></div>
+      <div class="service-card reveal"><i class="fas fa-truck-mixer" style="font-size: 2rem; color: var(--brand-green); margin-bottom: 0.5rem;"></i><h3>Concrete Equipment Hire</h3><p>Self-loading mixers, boom pumps, static pumps, power floats, and poker vibrators.</p></div>
+      <div class="service-card reveal"><i class="fas fa-hard-hat" style="font-size: 2rem; color: var(--brand-green); margin-bottom: 0.5rem;"></i><h3>Project Management</h3><p>Commercial interior and exterior construction projects delivered on time and within budget.</p></div>
     </div>
   </section>
 
   <section class="shell machines" id="machines"><div class="section-head reveal"><p class="kicker">Our Fleet</p><h2>Machines We Hire</h2></div>
     <div class="machine-grid">
-      <figure class="machine-card reveal">
-        <img src="{{ url_for('static', filename='images/concrete-mixer.jpg') }}" alt="Concrete Mixer Machine" loading="lazy" onerror="this.src='https://placehold.co/600x400/eef7f4/2b6e5c?text=Concrete+Mixer'">
-        <figcaption>Concrete Mixer - combines cement, water & aggregates</figcaption>
-      </figure>
-      <figure class="machine-card reveal">
-        <img src="{{ url_for('static', filename='images/static-pump.jpg') }}" alt="Static Pump" loading="lazy" onerror="this.src='https://placehold.co/600x400/eef7f4/2b6e5c?text=Static+Pump'">
-        <figcaption>Static Pump - essential for efficient concrete pumping</figcaption>
-      </figure>
-      <figure class="machine-card reveal">
-        <img src="{{ url_for('static', filename='images/boom-pump.jpg') }}" alt="Boom Pump" loading="lazy" onerror="this.src='https://placehold.co/600x400/eef7f4/2b6e5c?text=Boom+Pump'">
-        <figcaption>Boom Pump - precision & reliability in concrete placement</figcaption>
-      </figure>
-      <figure class="machine-card reveal">
-        <img src="{{ url_for('static', filename='images/power-float.jpg') }}" alt="Power Float" loading="lazy" onerror="this.src='https://placehold.co/600x400/eef7f4/2b6e5c?text=Power+Float'">
-        <figcaption>Power Float - smooth & finish concrete surfaces</figcaption>
-      </figure>
-      <figure class="machine-card reveal">
-        <img src="{{ url_for('static', filename='images/poker-vibrator.jpg') }}" alt="Poker Vibrator" loading="lazy" onerror="this.src='https://placehold.co/600x400/eef7f4/2b6e5c?text=Poker+Vibrator'">
-        <figcaption>Poker Vibrator - eliminate air pockets in concrete</figcaption>
-      </figure>
-      <figure class="machine-card reveal">
-        <img src="{{ url_for('static', filename='images/electric-mixer.jpg') }}" alt="Electric Concrete Mixer" loading="lazy" onerror="this.src='https://placehold.co/600x400/eef7f4/2b6e5c?text=Electric+Mixer'">
-        <figcaption>Electric Concrete Mixer - efficient & eco-friendly</figcaption>
-      </figure>
-    </div>
-  </section>
-
-  <section class="shell"><div class="section-head reveal"><p class="kicker">Finishing Equipment</p><h2>Power Float & Poker Vibrator</h2></div>
-    <div class="service-grid">
-      <div class="service-card reveal"><h3>Power Float</h3><p>A power float is a machine used to smooth and finish concrete surfaces. It consists of a rotating disc or plate that floats on the concrete surface, removing imperfections and creating a smooth finish.</p></div>
-      <div class="service-card reveal"><h3>Poker (Concrete Vibrator)</h3><p>A poker, also known as a concrete vibrator, is a tool used to consolidate and eliminate air pockets in freshly poured concrete. It consists of a vibrating shaft inserted into concrete to remove air bubbles and ensure a dense, uniform finish.</p></div>
-    </div>
-  </section>
-
-  <section class="shell" id="supplies"><div class="section-head reveal"><p class="kicker">Materials Supply</p><h2>Construction Supplies</h2></div>
-    <p style="text-align: center; margin-bottom: 1rem;">We offer a wide range of construction supplies, including waterproofing materials, electrical wires, and fiber mesh.</p>
-    <div class="supplies-grid">
-      <div class="supply-card reveal"><h4><i class="fas fa-water"></i> Copper Pipes</h4><p>High-quality copper pipes for plumbing systems</p></div>
-      <div class="supply-card reveal"><h4><i class="fas fa-border-all"></i> Ceiling Boards</h4><p>Durable ceiling solutions for modern interiors</p></div>
-      <div class="supply-card reveal"><h4><i class="fas fa-pipe"></i> Galvanized & PVC Pipes</h4><p>Rust-resistant galvanized and versatile PVC pipes</p></div>
-      <div class="supply-card reveal"><h4><i class="fas fa-door-open"></i> Garage Doors & Awnings</h4><p>Secure garage doors and stylish awnings</p></div>
-      <div class="supply-card reveal"><h4><i class="fas fa-bolt"></i> Electrical Wires & Cables</h4><p>Safe and reliable electrical wiring solutions</p></div>
-      <div class="supply-card reveal"><h4><i class="fas fa-layer-group"></i> Waterproofing Materials</h4><p>Protect your structures with quality waterproofing</p></div>
-    </div>
-  </section>
-
-  <section class="shell"><div class="section-head reveal"><p class="kicker">Eco-Friendly Solutions</p><h2>Electric Concrete Mixer</h2></div>
-    <div class="feature-grid">
-      <div class="feature-card reveal"><h4><i class="fas fa-charging-station"></i> Efficient Mixing</h4><p>Quickly and thoroughly mixes concrete for various applications.</p></div>
-      <div class="feature-card reveal"><h4><i class="fas fa-smile"></i> Easy to Use</h4><p>Simple operation and minimal maintenance required.</p></div>
-      <div class="feature-card reveal"><h4><i class="fas fa-leaf"></i> Environmentally Friendly</h4><p>Produces less noise and emissions compared to gas-powered mixers.</p></div>
+      <figure class="machine-card reveal"><img src="{{ url_for('static', filename='images/concrete-mixer.jpg') }}" alt="Concrete Mixer" onerror="this.src='https://placehold.co/600x400/eef7f4/2b6e5c?text=Concrete+Mixer'"><figcaption>Concrete Mixer - combines cement, water & aggregates</figcaption></figure>
+      <figure class="machine-card reveal"><img src="{{ url_for('static', filename='images/static-pump.jpg') }}" alt="Static Pump" onerror="this.src='https://placehold.co/600x400/eef7f4/2b6e5c?text=Static+Pump'"><figcaption>Static Pump - essential for efficient concrete pumping</figcaption></figure>
+      <figure class="machine-card reveal"><img src="{{ url_for('static', filename='images/boom-pump.jpg') }}" alt="Boom Pump" onerror="this.src='https://placehold.co/600x400/eef7f4/2b6e5c?text=Boom+Pump'"><figcaption>Boom Pump - precision & reliability in concrete placement</figcaption></figure>
+      <figure class="machine-card reveal"><img src="{{ url_for('static', filename='images/power-float.jpg') }}" alt="Power Float" onerror="this.src='https://placehold.co/600x400/eef7f4/2b6e5c?text=Power+Float'"><figcaption>Power Float - smooth & finish concrete surfaces</figcaption></figure>
+      <figure class="machine-card reveal"><img src="{{ url_for('static', filename='images/poker-vibrator.jpg') }}" alt="Poker Vibrator" onerror="this.src='https://placehold.co/600x400/eef7f4/2b6e5c?text=Poker+Vibrator'"><figcaption>Poker Vibrator - eliminate air pockets in concrete</figcaption></figure>
+      <figure class="machine-card reveal"><img src="{{ url_for('static', filename='images/electric-mixer.jpg') }}" alt="Electric Mixer" onerror="this.src='https://placehold.co/600x400/eef7f4/2b6e5c?text=Electric+Mixer'"><figcaption>Electric Concrete Mixer - efficient & eco-friendly</figcaption></figure>
     </div>
   </section>
 
@@ -913,20 +836,33 @@
   <section class="shell contact" id="contact"><div class="section-head"><p class="kicker">Contact</p><h2>Ready To Start?</h2></div><div class="contact-grid"><a href="tel:+263783044407"><i class="fas fa-phone"></i> 0783 044 407</a><a href="tel:+263718029974"><i class="fas fa-phone-alt"></i> 0718 029 974</a><a href="mailto:genspechinvest@gmail.com"><i class="fas fa-envelope"></i> genspechinvest@gmail.com</a><p><i class="fas fa-map-marker-alt"></i> Hatfield, Harare</p></div></section>
 </main>
 
+<!-- FULLY FUNCTIONAL QUOTATION ASSISTANT WITH CLICKABLE CHIPS -->
 <aside class="chatbot-shell" id="chatbotShell">
   <button id="chatToggle" class="chat-toggle"><i class="fas fa-comment-dots"></i> Quotation Assistant</button>
   <div class="chat-panel hidden-panel" id="chatPanel">
-    <div class="chat-header"><h3><i class="fas fa-robot"></i> Quote Assistant</h3></div>
+    <div class="chat-header">
+      <h3><i class="fas fa-robot"></i> Quote Assistant</h3>
+      <p>Try: "generator for 3 days priority"</p>
+    </div>
     <div class="chat-messages" id="chatMessages"></div>
     <div class="quick-replies" id="quickReplies"></div>
-    <div class="chat-selector" id="urgencySelector"><span data-urgency="standard" class="urgency-badge active">Standard</span><span data-urgency="priority" class="urgency-badge">Priority</span><span data-urgency="urgent" class="urgency-badge">Urgent</span></div>
-    <form id="chatForm" class="chat-form"><input id="chatInput" type="text" placeholder="Type your request..." autocomplete="off" /><button type="submit">Send</button></form>
+    <div class="chat-selector">
+      <label><i class="fas fa-tachometer-alt"></i> Urgency:</label>
+      <span data-urgency="standard" class="urgency-badge active">Standard</span>
+      <span data-urgency="priority" class="urgency-badge">Priority (+15%)</span>
+      <span data-urgency="urgent" class="urgency-badge">Urgent (+30%)</span>
+    </div>
+    <form id="chatForm" class="chat-form">
+      <input id="chatInput" type="text" placeholder="Type your request..." autocomplete="off">
+      <button type="submit"><i class="fas fa-paper-plane"></i> Send</button>
+    </form>
   </div>
 </aside>
 
-<footer><div class="shell footer-row"><p>© <span id="year"></span> Genspech Investments. Built for growth, quality, and reliability.</p><a href="/admin">Admin Dashboard</a></div></footer>
+<footer><div class="shell footer-row"><p>© <span id="year"></span> Genspech Investments</p><a href="/admin">Admin Dashboard</a></div></footer>
 
 <script>
+  // Quote calculation for main form
   const RATES = { generator: 180, "self-loader": 420, "boom-pump": 650, "static-pump": 480, "power-float": 120, poker: 90 };
   const URGENCY_MULTIPLIER = { standard: 1, priority: 1.15, urgent: 1.3 };
   const MACHINE_NAMES = { generator: "Generator Hire", "self-loader": "Self Loading Mixer", "boom-pump": "Boom Pump", "static-pump": "Static Pump", "power-float": "Power Float", poker: "Poker Vibrator" };
@@ -956,7 +892,7 @@
     }
   });
 
-  // Chatbot logic
+  // ========== CHAT ASSISTANT WITH FULL CLICKABLE FUNCTIONALITY ==========
   let chatContext = { machine: null, days: null, urgency: "standard" };
   const chatMessages = document.getElementById('chatMessages');
   const chatInput = document.getElementById('chatInput');
@@ -965,72 +901,131 @@
   const chatPanel = document.getElementById('chatPanel');
   const quickRepliesDiv = document.getElementById('quickReplies');
   
+  const formatTime = () => new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  
   const addMessage = (text, isUser = false) => {
-    const div = document.createElement('div'); div.className = `message ${isUser ? 'user' : 'bot'}`;
+    const div = document.createElement('div');
+    div.className = `message ${isUser ? 'user' : 'bot'}`;
     div.innerHTML = `<div class="message-bubble">${text}</div>`;
     chatMessages.appendChild(div);
     chatMessages.scrollTop = chatMessages.scrollHeight;
   };
   
+  // Update quick reply chips based on current context
   const updateQuickReplies = () => {
     let replies = [];
-    if (!chatContext.machine) replies = ["Generator", "Boom Pump", "Self Loader", "Power Float"];
-    else if (!chatContext.days) replies = ["2 days", "3 days", "5 days", "7 days"];
-    else replies = ["Calculate quote", "Reset"];
+    if (!chatContext.machine) {
+      replies = ["Generator", "Boom Pump", "Self Loader", "Power Float", "Poker"];
+    } else if (!chatContext.days) {
+      replies = ["2 days", "3 days", "5 days", "7 days", "10 days"];
+    } else {
+      replies = ["Calculate quote", "Reset", "Change machine", "Change days"];
+    }
+    
     quickRepliesDiv.innerHTML = replies.map(r => `<span class="quick-chip">${r}</span>`).join('');
-    document.querySelectorAll('.quick-chip').forEach(chip => chip.addEventListener('click', () => { chatInput.value = chip.innerText; chatForm.dispatchEvent(new Event('submit')); }));
-  };
-  
-  const sendToBackend = async (message, context) => {
-    const res = await fetch('/api/chatbot', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message, context, name: '', phone: '' })
+    
+    // Add click event listeners to all chips
+    document.querySelectorAll('.quick-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        chatInput.value = chip.innerText;
+        chatForm.dispatchEvent(new Event('submit'));
+      });
     });
-    return await res.json();
   };
   
+  // Send message to backend
+  const sendToBackend = async (message, context) => {
+    try {
+      const res = await fetch('/api/chatbot', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message, context, name: '', phone: '' })
+      });
+      return await res.json();
+    } catch (err) {
+      return { ok: false, error: 'Network error' };
+    }
+  };
+  
+  // Process user message
   chatForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const msg = chatInput.value.trim();
     if(!msg) return;
+    
     addMessage(msg, true);
     chatInput.value = '';
+    
     const data = await sendToBackend(msg, chatContext);
+    
     if (data.ok) {
       chatContext = data.context;
       addMessage(data.response, false);
       if (data.quote) {
-        addMessage(`💰 ${MACHINE_NAMES[data.quote.machine]} (${data.quote.days}d, ${data.quote.urgency}) = $${data.quote.total}`, false);
+        addMessage(`💰 Total: $${data.quote.total} for ${data.quote.machineName} (${data.quote.days} days, ${data.quote.urgency})`, false);
       }
       updateQuickReplies();
+      
+      // Update urgency badges to match context
+      if (chatContext.urgency) {
+        document.querySelectorAll('.urgency-badge').forEach(badge => {
+          if (badge.getAttribute('data-urgency') === chatContext.urgency) {
+            badge.classList.add('active');
+          } else {
+            badge.classList.remove('active');
+          }
+        });
+      }
     } else {
-      addMessage("Sorry, something went wrong.", false);
+      addMessage("Sorry, something went wrong. Please try again.", false);
     }
   });
   
+  // Urgency badge click handlers
   document.querySelectorAll('.urgency-badge').forEach(badge => {
-    badge.addEventListener('click', () => {
+    badge.addEventListener('click', async () => {
       const urgency = badge.getAttribute('data-urgency');
       chatContext.urgency = urgency;
+      
+      // Update visual active state
       document.querySelectorAll('.urgency-badge').forEach(b => b.classList.remove('active'));
       badge.classList.add('active');
+      
       addMessage(`⚡ Urgency set to ${urgency.toUpperCase()}`, false);
+      
+      // If we have both machine and days, calculate quote automatically
+      if (chatContext.machine && chatContext.days) {
+        const msg = `calculate quote with ${urgency} urgency`;
+        const data = await sendToBackend(msg, chatContext);
+        if (data.ok && data.quote) {
+          addMessage(`💰 Total: $${data.quote.total} for ${data.quote.machineName} (${data.quote.days} days, ${data.quote.urgency})`, false);
+        }
+      }
     });
   });
   
+  // Toggle chat panel
   chatToggle?.addEventListener('click', () => {
     const isHidden = chatPanel.classList.contains('hidden-panel');
     if (isHidden) {
       chatPanel.classList.remove('hidden-panel');
-      if (chatMessages.children.length === 0) addMessage("👋 Hi! Tell me machine + days + urgency. Try 'generator 3 days priority'", false);
+      if (chatMessages.children.length === 0) {
+        addMessage("👋 Hi! I'm your Genspech quote assistant. Tell me:", false);
+        addMessage("📌 Machine type (Generator, Boom Pump, Self Loader, Power Float, Poker)", false);
+        addMessage("📅 Number of days", false);
+        addMessage("⚡ Urgency (Standard, Priority, Urgent)", false);
+        addMessage("💡 Try: 'generator for 3 days priority'", false);
+        updateQuickReplies();
+      }
     } else {
       chatPanel.classList.add('hidden-panel');
     }
   });
   
   // Reveal animations
-  const observer = new IntersectionObserver((entries) => { entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.1 });
+  const observer = new IntersectionObserver((entries) => { 
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }); 
+  }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(r => observer.observe(r));
   document.getElementById('year').innerText = new Date().getFullYear();
 </script>
