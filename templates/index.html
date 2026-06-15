@@ -47,8 +47,7 @@
       padding: 0 2rem;
     }
 
-    /* tighter spacing, reduced empty areas */
-    section, .summary, .mission, .trust, .process, .contact {
+    section, .summary, .mission-block, .trust, .process, .contact {
       scroll-margin-top: 1.5rem;
     }
 
@@ -63,7 +62,7 @@
       transform: translateY(0);
     }
 
-    /* header - compact but elegant */
+    /* header */
     .hero {
       padding: 0.8rem 0 2rem;
       background: linear-gradient(135deg, var(--pure-white) 0%, var(--brand-green-light) 100%);
@@ -219,26 +218,14 @@
     }
 
     @media (max-width: 900px) {
-      .hero-grid {
-        grid-template-columns: 1fr;
-        text-align: center;
-        gap: 1.5rem;
-      }
-      .hero-stats {
-        justify-content: center;
-      }
-      .nav-links {
-        display: none;
-      }
-      .shell {
-        padding: 0 1.25rem;
-      }
-      h1 {
-        font-size: 2.2rem;
-      }
+      .hero-grid { grid-template-columns: 1fr; text-align: center; gap: 1.5rem; }
+      .hero-stats { justify-content: center; }
+      .nav-links { display: none; }
+      .shell { padding: 0 1.25rem; }
+      h1 { font-size: 2.2rem; }
     }
 
-    /* compact cards with cleaner spacing */
+    /* summary */
     .summary {
       display: flex;
       flex-wrap: wrap;
@@ -251,17 +238,60 @@
       border: 1px solid var(--light-grey-border);
     }
 
-    .mission {
+    /* === NEATER MISSION CARDS (modern glass/card style) === */
+    .mission-cards {
       display: flex;
       flex-wrap: wrap;
-      gap: 1.5rem;
-      background: var(--light-grey);
-      border-radius: 1.5rem;
-      padding: 1.5rem;
-      margin: 1.5rem 0;
-      border: 1px solid var(--light-grey-border);
+      gap: 2rem;
+      margin: 1.8rem 0 2rem;
+      justify-content: center;
     }
 
+    .mission-card {
+      flex: 1;
+      min-width: 240px;
+      background: var(--pure-white);
+      border-radius: 1.5rem;
+      padding: 1.8rem 1.5rem;
+      transition: transform 0.25s ease, box-shadow 0.3s ease;
+      border: 1px solid var(--light-grey-border);
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mission-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--brand-green-soft);
+    }
+
+    .mission-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 48px;
+      background: var(--brand-green);
+      border-radius: 0 4px 4px 0;
+    }
+
+    .mission-card h3 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--brand-green-dark);
+      letter-spacing: -0.3px;
+    }
+
+    .mission-card p {
+      color: var(--text-secondary);
+      line-height: 1.5;
+      font-size: 0.95rem;
+    }
+
+    /* rest of styles */
     .service-grid,
     .sector-grid,
     .machine-grid,
@@ -415,7 +445,7 @@
       font-size: 0.85rem;
     }
 
-    /* chatbot refined */
+    /* chatbot */
     .chatbot-shell {
       position: fixed;
       bottom: 1.5rem;
@@ -549,20 +579,10 @@
     }
 
     @media (max-width: 560px) {
-      .chat-panel {
-        width: 280px;
-        right: -0.5rem;
-        bottom: 4rem;
-      }
-      .btn {
-        padding: 0.5rem 1rem;
-      }
-      h2 {
-        font-size: 1.5rem;
-      }
-      .shell {
-        padding: 0 1rem;
-      }
+      .chat-panel { width: 280px; right: -0.5rem; bottom: 4rem; }
+      .btn { padding: 0.5rem 1rem; }
+      h2 { font-size: 1.5rem; }
+      .mission-card { min-width: 100%; }
     }
   </style>
 </head>
@@ -596,7 +616,21 @@
 <main>
   <div class="shell summary reveal"><article><p>Trusted by diverse sectors</p><h3>Industrial, Healthcare, Infrastructure</h3></article><article><p>Integrated offering</p><h3>Equipment Hire + Supplies + Support</h3></article><article><p>Operations base</p><h3>Hatfield, Harare</h3></article></div>
 
-  <div class="shell mission reveal" id="about"><article><h2>Mission</h2><p>Deliver exceptional tailored services that exceed expectations through trust, reliability, and practical execution.</p></article><article><h2>Vision</h2><p>Set higher standards for quality, safety, and sustainable growth in construction and industrial support.</p></article><article><h2>Objective</h2><p>Deliver on time and on budget while expanding services into new markets through consistent operational excellence.</p></article></div>
+  <!-- Neater Mission/Vision/Objective Cards (redesigned) -->
+  <div class="shell mission-cards reveal" id="about">
+    <div class="mission-card">
+      <h3>Mission</h3>
+      <p>Deliver exceptional tailored services that exceed expectations through trust, reliability, and practical execution.</p>
+    </div>
+    <div class="mission-card">
+      <h3>Vision</h3>
+      <p>Set higher standards for quality, safety, and sustainable growth in construction and industrial support.</p>
+    </div>
+    <div class="mission-card">
+      <h3>Objective</h3>
+      <p>Deliver on time and on budget while expanding services into new markets through consistent operational excellence.</p>
+    </div>
+  </div>
 
   <section class="shell services" id="services"><div class="section-head reveal"><p class="kicker">Core Functions</p><h2>Integrated Services For Real-World Delivery</h2></div><div class="service-grid"><article class="service-card reveal"><h3>Generator Hire</h3><p>Reliable power solutions for events, hospitals, factories, mining, and emergency backup operations.</p></article><article class="service-card reveal delay-1"><h3>Concrete Equipment Hire</h3><p>Self-loading mixers, boom pumps, static pumps, power floats, and poker vibrators for quality concrete work.</p></article><article class="service-card reveal delay-2"><h3>Construction Supplies</h3><p>Copper pipes, PVC systems, cables, waterproofing materials, and site essentials for continuous productivity.</p></article><article class="service-card reveal delay-3"><h3>Project Management</h3><p>Commercial interior and exterior project coordination focused on control, speed, and predictable outcomes.</p></article></div></section>
 
@@ -622,7 +656,7 @@
 <footer><div class="shell footer-row"><p>© <span id="year"></span> Genspech Investments. Built for growth, quality, and reliability.</p><a href="/admin">Admin Dashboard</a></div></footer>
 
 <script>
-  // quote & chatbot functionality
+  // Quote & Chatbot logic (same as before, fully functional)
   const RATES = { generator: 180, "self-loader": 420, "boom-pump": 650, "static-pump": 480, "power-float": 120, poker: 90 };
   const URGENCY_MULTIPLIER = { standard: 1, priority: 1.15, urgent: 1.3 };
   const MACHINE_NAMES = { generator: "Generator Hire", "self-loader": "Self Loading Concrete Mixer", "boom-pump": "Boom Pump", "static-pump": "Static Pump", "power-float": "Power Float", poker: "Poker Vibrator" };
@@ -657,7 +691,7 @@
     } catch(err) { resultDiv.innerHTML = `<p>Service error. Please refresh.</p>`; }
   });
 
-  // Chatbot with same refined style
+  // Chatbot
   const machineAliases = { generator: "generator", genset: "generator", "self loader": "self-loader", "self loading": "self-loader", mixer: "self-loader", boom: "boom-pump", "boom pump": "boom-pump", static: "static-pump", "static pump": "static-pump", "power float": "power-float", float: "power-float", poker: "poker", vibrator: "poker" };
   const extractMachine = (msg) => { const low = msg.toLowerCase(); for(let [alias, key] of Object.entries(machineAliases)) if(low.includes(alias)) return key; return null; };
   const extractDays = (msg) => { const match = msg.match(/\b(\d{1,3})\s*(?:day|days|d)\b/i); if(match) return parseInt(match[1]); const standalone = msg.match(/\b(\d{1,3})\b/); return standalone ? parseInt(standalone[1]) : null; };
@@ -712,7 +746,7 @@
   
   chatToggle?.addEventListener('click', () => { const hidden = chatPanel.hidden; chatPanel.hidden = !hidden; if(hidden && chatMessages.children.length===0) addMessage("👋 Hi! I'm the Genspech quote bot. Tell me machine + days + urgency. Example: 'boom pump for 2 days priority'", false); });
   
-  // reveal + countup
+  // reveal + counters
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); }); }, { threshold: 0.1 });
   reveals.forEach(r => observer.observe(r));
