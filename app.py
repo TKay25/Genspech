@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import os
 import re
 from dataclasses import dataclass
@@ -251,7 +249,6 @@ def save_quote_request(
 
 @app.before_request
 def init_db() -> None:
-    # Keep auto-creation simple for lightweight deployments on Render.
     db.create_all()
 
 
