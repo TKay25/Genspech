@@ -21,16 +21,16 @@
       --brand-green-soft: #d4ede7;
       --brand-green-dark: #1f5547;
       --light-grey: #f8fafc;
-      --light-grey-border: #eef2f6;
+      --light-grey-border: #e2e8f0;
       --pure-white: #ffffff;
       --text-primary: #1e2a2a;
       --text-secondary: #4a5b58;
-      --text-muted: #7c8b88;
       --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.04);
       --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.05);
       --shadow-lg: 0 20px 30px -12px rgba(0, 0, 0, 0.08);
       --card-radius: 1.25rem;
       --transition-smooth: all 0.25s ease;
+      --border-visible: 1.5px solid #cbd5e1;
     }
 
     body {
@@ -47,7 +47,7 @@
       padding: 0 2rem;
     }
 
-    section, .summary, .mission-block, .trust, .process, .contact {
+    section, .summary, .mission-cards, .trust-block, .process, .contact {
       scroll-margin-top: 1.5rem;
     }
 
@@ -80,7 +80,7 @@
       backdrop-filter: blur(4px);
       border-radius: 3rem;
       padding: 0.5rem 1.6rem;
-      border: 1px solid rgba(43, 110, 92, 0.15);
+      border: var(--border-visible);
       box-shadow: var(--shadow-sm);
     }
 
@@ -153,6 +153,7 @@
       background: var(--brand-green);
       color: white;
       box-shadow: 0 2px 8px rgba(43, 110, 92, 0.25);
+      border: 1px solid var(--brand-green-dark);
     }
 
     .btn-primary:hover {
@@ -162,7 +163,7 @@
 
     .btn-ghost {
       background: transparent;
-      border: 1px solid #dce5e2;
+      border: var(--border-visible);
       color: var(--brand-green);
     }
 
@@ -187,6 +188,7 @@
       font-weight: 600;
       margin-bottom: 0.6rem;
       color: var(--brand-green-dark);
+      border: 1px solid var(--brand-green-soft);
     }
 
     h1 {
@@ -215,6 +217,7 @@
       object-fit: cover;
       box-shadow: var(--shadow-md);
       max-height: 380px;
+      border: var(--border-visible);
     }
 
     @media (max-width: 900px) {
@@ -225,7 +228,7 @@
       h1 { font-size: 2.2rem; }
     }
 
-    /* summary */
+    /* summary cards */
     .summary {
       display: flex;
       flex-wrap: wrap;
@@ -235,10 +238,10 @@
       background: var(--light-grey);
       border-radius: 1.5rem;
       padding: 1.2rem 1.8rem;
-      border: 1px solid var(--light-grey-border);
+      border: var(--border-visible);
     }
 
-    /* === NEATER MISSION CARDS (modern glass/card style) === */
+    /* ===== MISSION CARDS: GREEN BACKGROUND + WHITE TEXT + VISIBLE BORDER ===== */
     .mission-cards {
       display: flex;
       flex-wrap: wrap;
@@ -250,20 +253,22 @@
     .mission-card {
       flex: 1;
       min-width: 240px;
-      background: var(--pure-white);
+      background: var(--brand-green);
       border-radius: 1.5rem;
       padding: 1.8rem 1.5rem;
       transition: transform 0.25s ease, box-shadow 0.3s ease;
-      border: 1px solid var(--light-grey-border);
-      box-shadow: var(--shadow-sm);
+      border: 2px solid rgba(255,255,255,0.35);
+      box-shadow: var(--shadow-md);
       position: relative;
       overflow: hidden;
+      color: white;
     }
 
     .mission-card:hover {
       transform: translateY(-6px);
-      box-shadow: var(--shadow-lg);
-      border-color: var(--brand-green-soft);
+      box-shadow: 0 20px 30px -12px rgba(0,0,0,0.2);
+      background: var(--brand-green-dark);
+      border-color: rgba(255,255,255,0.6);
     }
 
     .mission-card::before {
@@ -273,25 +278,26 @@
       left: 0;
       width: 4px;
       height: 48px;
-      background: var(--brand-green);
+      background: white;
       border-radius: 0 4px 4px 0;
+      opacity: 0.7;
     }
 
     .mission-card h3 {
       font-size: 1.6rem;
       font-weight: 700;
       margin-bottom: 0.75rem;
-      color: var(--brand-green-dark);
+      color: white;
       letter-spacing: -0.3px;
     }
 
     .mission-card p {
-      color: var(--text-secondary);
+      color: rgba(255,255,255,0.88);
       line-height: 1.5;
       font-size: 0.95rem;
     }
 
-    /* rest of styles */
+    /* service grids, machine grids, sector, process - all with visible borders */
     .service-grid,
     .sector-grid,
     .machine-grid,
@@ -303,16 +309,26 @@
     }
 
     .service-card,
-    .machine-card {
+    .machine-card,
+    .sector-grid article,
+    .process-grid article {
       background: var(--pure-white);
       border-radius: var(--card-radius);
       padding: 1.2rem;
       transition: transform 0.2s, box-shadow 0.2s;
-      border: 1px solid var(--light-grey-border);
+      border: var(--border-visible);
       box-shadow: var(--shadow-sm);
     }
 
-    .service-card:hover {
+    .service-card:hover,
+    .sector-grid article:hover,
+    .process-grid article:hover {
+      border-color: var(--brand-green);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .machine-card:hover {
       border-color: var(--brand-green);
       transform: translateY(-3px);
       box-shadow: var(--shadow-md);
@@ -323,6 +339,7 @@
       border-radius: 0.8rem;
       margin-bottom: 0.8rem;
       background: var(--brand-green-light);
+      border: 1px solid var(--light-grey-border);
     }
 
     .machine-card figcaption {
@@ -332,15 +349,6 @@
       font-size: 0.9rem;
     }
 
-    .sector-grid article,
-    .process-grid article {
-      background: var(--pure-white);
-      padding: 1.2rem;
-      border-radius: 1rem;
-      border: 1px solid var(--light-grey-border);
-      transition: var(--transition-smooth);
-    }
-
     .process-grid span {
       font-size: 1.6rem;
       font-weight: 800;
@@ -348,12 +356,13 @@
       opacity: 0.7;
     }
 
+    /* quote form */
     .quote-form {
       background: var(--light-grey);
       border-radius: 1.5rem;
       padding: 1.5rem;
       margin: 1.5rem 0;
-      border: 1px solid var(--light-grey-border);
+      border: var(--border-visible);
     }
 
     .field-grid {
@@ -375,7 +384,7 @@
     input,
     select {
       background: var(--pure-white);
-      border: 1px solid var(--light-grey-border);
+      border: var(--border-visible);
       padding: 0.6rem 0.9rem;
       border-radius: 0.9rem;
       color: var(--text-primary);
@@ -396,10 +405,13 @@
       border-radius: 1.2rem;
       padding: 1rem;
       margin-top: 0.8rem;
-      border-left: 3px solid var(--brand-green);
+      border-left: 4px solid var(--brand-green);
+      border: var(--border-visible);
+      border-left-width: 4px;
       box-shadow: var(--shadow-sm);
     }
 
+    /* contact cards */
     .contact-grid {
       display: flex;
       flex-wrap: wrap;
@@ -417,7 +429,7 @@
       color: var(--brand-green);
       font-weight: 600;
       transition: var(--transition-smooth);
-      border: 1px solid var(--light-grey-border);
+      border: var(--border-visible);
       font-size: 0.9rem;
     }
 
@@ -427,22 +439,57 @@
       border-color: var(--brand-green);
     }
 
-    .trust ul {
-      list-style: none;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.8rem;
-      justify-content: center;
-      margin-top: 0.8rem;
+    /* ===== WHY GENSPECH - DARK GREEN BG, WHITE TEXT, VISIBLE BORDER ===== */
+    .trust-block {
+      background: var(--brand-green);
+      border-radius: 2rem;
+      padding: 2rem 2rem;
+      margin: 2rem 0;
+      text-align: center;
+      box-shadow: var(--shadow-md);
+      border: 2px solid rgba(255,255,255,0.3);
     }
 
-    .trust li {
-      background: var(--pure-white);
-      padding: 0.4rem 1rem;
-      border-radius: 2rem;
-      border: 1px solid var(--light-grey-border);
+    .trust-block .kicker {
+      color: var(--brand-green-soft);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 1.5px;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .trust-block h2 {
+      color: white;
+      font-size: 1.9rem;
+      font-weight: 700;
+      margin-bottom: 1.2rem;
+    }
+
+    .trust-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      list-style: none;
+    }
+
+    .trust-list li {
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(2px);
+      padding: 0.5rem 1.4rem;
+      border-radius: 3rem;
       font-weight: 500;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
+      color: white;
+      border: 1px solid rgba(255,255,255,0.35);
+      transition: var(--transition-smooth);
+    }
+
+    .trust-list li:hover {
+      background: rgba(255,255,255,0.25);
+      transform: translateY(-2px);
+      border-color: white;
     }
 
     /* chatbot */
@@ -455,7 +502,7 @@
 
     .chat-toggle {
       background: var(--brand-green);
-      border: none;
+      border: 1px solid rgba(255,255,255,0.3);
       padding: 0.7rem 1.4rem;
       border-radius: 3rem;
       font-weight: 700;
@@ -472,6 +519,7 @@
     .chat-toggle:hover {
       background: var(--brand-green-dark);
       transform: scale(1.02);
+      border-color: white;
     }
 
     .chat-panel {
@@ -482,7 +530,7 @@
       background: var(--pure-white);
       border-radius: 1.5rem;
       padding: 0.9rem;
-      border: 1px solid var(--light-grey-border);
+      border: var(--border-visible);
       box-shadow: var(--shadow-lg);
     }
 
@@ -497,6 +545,7 @@
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
+      border: var(--border-visible);
     }
 
     .chat-messages .bot {
@@ -505,7 +554,7 @@
       border-radius: 1rem;
       align-self: flex-start;
       max-width: 85%;
-      border: 1px solid var(--light-grey-border);
+      border: var(--border-visible);
     }
 
     .chat-messages .user {
@@ -514,6 +563,7 @@
       align-self: flex-end;
       border-radius: 1rem;
       padding: 0.5rem 0.8rem;
+      border: 1px solid var(--brand-green-dark);
     }
 
     .chat-form,
@@ -528,10 +578,12 @@
       flex: 1;
       padding: 0.5rem;
       font-size: 0.8rem;
+      border: var(--border-visible);
+      border-radius: 0.8rem;
     }
 
     footer {
-      border-top: 1px solid var(--light-grey-border);
+      border-top: var(--border-visible);
       margin-top: 2rem;
       padding: 1.2rem;
       text-align: center;
@@ -551,6 +603,15 @@
       color: var(--brand-green);
       text-decoration: none;
       font-weight: 500;
+      border: var(--border-visible);
+      padding: 0.3rem 1rem;
+      border-radius: 2rem;
+      transition: var(--transition-smooth);
+    }
+
+    .footer-row a:hover {
+      background: var(--brand-green-light);
+      border-color: var(--brand-green);
     }
 
     .section-head {
@@ -583,6 +644,7 @@
       .btn { padding: 0.5rem 1rem; }
       h2 { font-size: 1.5rem; }
       .mission-card { min-width: 100%; }
+      .trust-block h2 { font-size: 1.5rem; }
     }
   </style>
 </head>
@@ -616,7 +678,7 @@
 <main>
   <div class="shell summary reveal"><article><p>Trusted by diverse sectors</p><h3>Industrial, Healthcare, Infrastructure</h3></article><article><p>Integrated offering</p><h3>Equipment Hire + Supplies + Support</h3></article><article><p>Operations base</p><h3>Hatfield, Harare</h3></article></div>
 
-  <!-- Neater Mission/Vision/Objective Cards (redesigned) -->
+  <!-- Mission Cards: Green Background + White Font + Visible Border -->
   <div class="shell mission-cards reveal" id="about">
     <div class="mission-card">
       <h3>Mission</h3>
@@ -632,16 +694,25 @@
     </div>
   </div>
 
-  <section class="shell services" id="services"><div class="section-head reveal"><p class="kicker">Core Functions</p><h2>Integrated Services For Real-World Delivery</h2></div><div class="service-grid"><article class="service-card reveal"><h3>Generator Hire</h3><p>Reliable power solutions for events, hospitals, factories, mining, and emergency backup operations.</p></article><article class="service-card reveal delay-1"><h3>Concrete Equipment Hire</h3><p>Self-loading mixers, boom pumps, static pumps, power floats, and poker vibrators for quality concrete work.</p></article><article class="service-card reveal delay-2"><h3>Construction Supplies</h3><p>Copper pipes, PVC systems, cables, waterproofing materials, and site essentials for continuous productivity.</p></article><article class="service-card reveal delay-3"><h3>Project Management</h3><p>Commercial interior and exterior project coordination focused on control, speed, and predictable outcomes.</p></article></div></section>
+  <section class="shell services" id="services"><div class="section-head reveal"><p class="kicker">Core Functions</p><h2>Integrated Services For Real-World Delivery</h2></div><div class="service-grid"><article class="service-card reveal"><h3>Generator Hire</h3><p>Reliable power solutions for events, hospitals, factories, mining, and emergency backup operations.</p></article><article class="service-card reveal"><h3>Concrete Equipment Hire</h3><p>Self-loading mixers, boom pumps, static pumps, power floats, and poker vibrators for quality concrete work.</p></article><article class="service-card reveal"><h3>Construction Supplies</h3><p>Copper pipes, PVC systems, cables, waterproofing materials, and site essentials for continuous productivity.</p></article><article class="service-card reveal"><h3>Project Management</h3><p>Commercial interior and exterior project coordination focused on control, speed, and predictable outcomes.</p></article></div></section>
 
-  <section class="shell machines" id="machines"><div class="section-head reveal"><p class="kicker">Equipment Portfolio</p><h2>Modern Fleet For Demanding Jobs</h2></div><div class="machine-grid"><figure class="machine-card reveal"><img src="https://placehold.co/760x520/eef7f4/2b6e5c?text=Concrete+Mixers" alt="concrete mixers" /><figcaption>Concrete Mixers and Self Loading Units</figcaption></figure><figure class="machine-card reveal delay-1"><img src="https://placehold.co/760x520/eef7f4/2b6e5c?text=Generator+Fleet" alt="generators" /><figcaption>Generator Sets for Continuous Power</figcaption></figure><figure class="machine-card reveal delay-2"><img src="https://placehold.co/760x520/eef7f4/2b6e5c?text=Infrastructure+Projects" alt="infrastructure" /><figcaption>Road, Building, and Infrastructure Applications</figcaption></figure></div></section>
+  <section class="shell machines" id="machines"><div class="section-head reveal"><p class="kicker">Equipment Portfolio</p><h2>Modern Fleet For Demanding Jobs</h2></div><div class="machine-grid"><figure class="machine-card reveal"><img src="https://placehold.co/760x520/eef7f4/2b6e5c?text=Concrete+Mixers" alt="concrete mixers" /><figcaption>Concrete Mixers and Self Loading Units</figcaption></figure><figure class="machine-card reveal"><img src="https://placehold.co/760x520/eef7f4/2b6e5c?text=Generator+Fleet" alt="generators" /><figcaption>Generator Sets for Continuous Power</figcaption></figure><figure class="machine-card reveal"><img src="https://placehold.co/760x520/eef7f4/2b6e5c?text=Infrastructure+Projects" alt="infrastructure" /><figcaption>Road, Building, and Infrastructure Applications</figcaption></figure></div></section>
 
   <section class="shell quote" id="quote"><div class="quote-intro reveal"><p class="kicker">Instant Quotation</p><h2>Get A Professional Quote In Under A Minute</h2><p style="font-size:0.9rem;">Submit requirements once, receive an estimate, then continue instantly via email or WhatsApp.</p></div>
-    <form id="quoteForm" class="quote-form reveal delay-1"><div class="field-grid"><label>Machine / Service<select id="machine" required><option value="">Select an option</option><option value="generator">Generator Hire</option><option value="self-loader">Self Loading Concrete Mixer</option><option value="boom-pump">Boom Pump</option><option value="static-pump">Static Pump</option><option value="power-float">Power Float</option><option value="poker">Poker Vibrator</option></select></label><label>Hire Duration (Days)<input id="days" type="number" min="1" max="365" value="1" required /></label><label>Urgency<select id="urgency" required><option value="standard">Standard (48h)</option><option value="priority">Priority (24h)</option><option value="urgent">Urgent (Same Day)</option></select></label><label>Your Name<input id="name" type="text" placeholder="Full name" required /></label><label>Phone Number<input id="phone" type="tel" placeholder="e.g. 0718 029 974" required /></label></div><button type="submit" class="btn btn-primary">Generate Quote</button></form>
+    <form id="quoteForm" class="quote-form reveal"><div class="field-grid"><label>Machine / Service<select id="machine" required><option value="">Select an option</option><option value="generator">Generator Hire</option><option value="self-loader">Self Loading Concrete Mixer</option><option value="boom-pump">Boom Pump</option><option value="static-pump">Static Pump</option><option value="power-float">Power Float</option><option value="poker">Poker Vibrator</option></select></label><label>Hire Duration (Days)<input id="days" type="number" min="1" max="365" value="1" required /></label><label>Urgency<select id="urgency" required><option value="standard">Standard (48h)</option><option value="priority">Priority (24h)</option><option value="urgent">Urgent (Same Day)</option></select></label><label>Your Name<input id="name" type="text" placeholder="Full name" required /></label><label>Phone Number<input id="phone" type="tel" placeholder="e.g. 0718 029 974" required /></label></div><button type="submit" class="btn btn-primary">Generate Quote</button></form>
     <div id="result" class="result" aria-live="polite"></div>
   </section>
 
-  <div class="shell trust reveal"><div><p class="kicker">Why Genspech</p><h2>Fast Deployment. Strong Standards. Clear Communication.</h2></div><ul><li>Rapid dispatch and flexible hire terms</li><li>Practical support for industrial and commercial teams</li><li>Equipment and material sourcing in one partner</li></ul></div>
+  <!-- Why Genspech with dark green background, white text, visible border -->
+  <div class="shell trust-block reveal">
+    <p class="kicker">Why Genspech</p>
+    <h2>Fast Deployment. Strong Standards. Clear Communication.</h2>
+    <ul class="trust-list">
+      <li>Rapid dispatch and flexible hire terms</li>
+      <li>Practical support for industrial and commercial teams</li>
+      <li>Equipment and material sourcing in one partner</li>
+    </ul>
+  </div>
 
   <section class="shell process reveal"><div class="section-head"><p class="kicker">How It Works</p><h2>Simple, Reliable Engagement Flow</h2></div><div class="process-grid"><article><span>01</span><h3>Request</h3><p>Tell us your machine, timeline, and site needs.</p></article><article><span>02</span><h3>Estimate</h3><p>Receive instant estimate and confirm operational details.</p></article><article><span>03</span><h3>Deploy</h3><p>We dispatch equipment or supplies based on urgency.</p></article><article><span>04</span><h3>Deliver</h3><p>Project continues with quality support and clear follow-up.</p></article></div></section>
 
@@ -656,7 +727,7 @@
 <footer><div class="shell footer-row"><p>© <span id="year"></span> Genspech Investments. Built for growth, quality, and reliability.</p><a href="/admin">Admin Dashboard</a></div></footer>
 
 <script>
-  // Quote & Chatbot logic (same as before, fully functional)
+  // Quote & Chatbot logic (fully functional)
   const RATES = { generator: 180, "self-loader": 420, "boom-pump": 650, "static-pump": 480, "power-float": 120, poker: 90 };
   const URGENCY_MULTIPLIER = { standard: 1, priority: 1.15, urgent: 1.3 };
   const MACHINE_NAMES = { generator: "Generator Hire", "self-loader": "Self Loading Concrete Mixer", "boom-pump": "Boom Pump", "static-pump": "Static Pump", "power-float": "Power Float", poker: "Poker Vibrator" };
@@ -686,12 +757,12 @@
       const response = await fetch('/api/quote', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
       const data = await response.json();
       if (data.ok) {
-        resultDiv.innerHTML = `<div style="background:var(--brand-green-light); padding:0.8rem; border-radius:1rem"><strong>✨ Estimate ready</strong><br/>${quote.machineName} | ${quote.days} day(s) | ${urgency.toUpperCase()}<br/><strong style="font-size:1.4rem; color:var(--brand-green);">$${quote.total}</strong><br/><small>Quote ID: ${data.quoteId} — we’ll reach out shortly.</small></div>`;
+        resultDiv.innerHTML = `<div style="background:var(--brand-green-light); padding:0.8rem; border-radius:1rem; border:1px solid var(--brand-green-soft);"><strong>✨ Estimate ready</strong><br/>${quote.machineName} | ${quote.days} day(s) | ${urgency.toUpperCase()}<br/><strong style="font-size:1.4rem; color:var(--brand-green);">$${quote.total}</strong><br/><small>Quote ID: ${data.quoteId} — we’ll reach out shortly.</small></div>`;
       } else { resultDiv.innerHTML = `<p>Error: ${data.error}</p>`; }
     } catch(err) { resultDiv.innerHTML = `<p>Service error. Please refresh.</p>`; }
   });
 
-  // Chatbot
+  // Chatbot (simplified for demo, matches backend structure)
   const machineAliases = { generator: "generator", genset: "generator", "self loader": "self-loader", "self loading": "self-loader", mixer: "self-loader", boom: "boom-pump", "boom pump": "boom-pump", static: "static-pump", "static pump": "static-pump", "power float": "power-float", float: "power-float", poker: "poker", vibrator: "poker" };
   const extractMachine = (msg) => { const low = msg.toLowerCase(); for(let [alias, key] of Object.entries(machineAliases)) if(low.includes(alias)) return key; return null; };
   const extractDays = (msg) => { const match = msg.match(/\b(\d{1,3})\s*(?:day|days|d)\b/i); if(match) return parseInt(match[1]); const standalone = msg.match(/\b(\d{1,3})\b/); return standalone ? parseInt(standalone[1]) : null; };
