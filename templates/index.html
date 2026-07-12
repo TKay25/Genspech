@@ -231,7 +231,31 @@
       padding: 2rem;
       margin: 2rem 0;
       border: var(--border-visible);
+      text-align: left;
+    }
+
+    .history-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .history-text {
       text-align: center;
+    }
+
+    .history-image img {
+      width: 100%;
+      border-radius: 1.2rem;
+      object-fit: cover;
+      max-height: 300px;
+      box-shadow: var(--shadow-md);
+      border: var(--border-visible);
+    }
+
+    @media (max-width: 768px) {
+      .history-grid { grid-template-columns: 1fr; }
     }
 
     .mission-cards {
@@ -324,6 +348,17 @@
       box-shadow: var(--shadow-md);
     }
 
+    .service-img, .supply-img {
+      width: 100%;
+      height: 140px;
+      object-fit: contain;
+      margin-bottom: 0.8rem;
+      padding: 0.5rem;
+      background: var(--brand-green-light);
+      border-radius: 0.8rem;
+      border: 1px solid var(--light-grey-border);
+    }
+
     .machine-card img {
       width: 100%;
       border-radius: 0.8rem;
@@ -355,6 +390,28 @@
       font-size: 0.7rem;
       font-weight: 500;
       color: var(--brand-green-dark);
+    }
+
+    .process-layout {
+      display: grid;
+      grid-template-columns: 0.8fr 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .process-visual img {
+      width: 100%;
+      max-height: 260px;
+      object-fit: contain;
+      background: var(--brand-green-light);
+      border-radius: 1rem;
+      padding: 1rem;
+      border: var(--border-visible);
+    }
+
+    @media (max-width: 768px) {
+      .process-layout { grid-template-columns: 1fr; }
+      .process-visual { display: none; }
     }
 
     .process-grid span {
@@ -435,8 +492,15 @@
       border-radius: 2rem;
       padding: 2rem;
       margin: 2rem 0;
-      text-align: center;
       border: 2px solid rgba(255,255,255,0.3);
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .trust-content {
+      text-align: center;
     }
 
     .trust-block .kicker {
@@ -451,6 +515,19 @@
       color: white;
       font-size: 1.6rem;
       margin-bottom: 1.2rem;
+    }
+
+    .trust-image img {
+      width: 100%;
+      max-height: 200px;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      opacity: 0.85;
+    }
+
+    @media (max-width: 768px) {
+      .trust-block { grid-template-columns: 1fr; }
+      .trust-image { display: none; }
     }
 
     .trust-list {
@@ -474,9 +551,30 @@
       background: linear-gradient(135deg, #fef3c7, #fde68a);
       border-radius: 1rem;
       padding: 1rem;
-      text-align: center;
       margin: 1.5rem 0;
       border: 1px solid #f59e0b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    .cert-logo {
+      height: 40px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .cert-text {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .cert-text p {
+      margin: 0;
     }
 
     /* ========== CHAT ASSISTANT WITH FULL CLICKABLE UI ========== */
@@ -728,10 +826,32 @@
       gap: 0.8rem;
     }
 
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .footer-logo {
+      height: 32px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
     .footer-row a {
       color: var(--brand-green);
       text-decoration: none;
       font-weight: 500;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
     }
 
     .section-head {
@@ -784,7 +904,7 @@
           <div class="hero-ctas" style="margin: 1rem 0;"><a class="btn btn-primary" href="#quote">Get Instant Estimate</a><a class="btn btn-ghost" href="tel:+263783044407">Talk To Operations</a></div>
           <div class="hero-stats"><article><strong>2019</strong><span>Established</span></article><article><strong>10%+</strong><span>Annual Growth</span></article><article><strong>0</strong><span>Safety Target</span></article><article><strong>24/7</strong><span>Support</span></article></div>
         </div>
-        <div class="hero-media"><img src="https://images.unsplash.com/photo-1541976590-713941681591?auto=format&fit=crop&w=1300&q=75" alt="construction equipment" loading="eager" /></div>
+        <div class="hero-media"><img src="{{ url_for('static', filename='images/hero-operations.svg') }}" alt="Genspech Operations" loading="eager" style="max-height:400px; object-fit:contain;" /></div>
       </div>
     </div>
   </div>
@@ -792,9 +912,16 @@
 
 <main>
   <div class="shell history-block reveal" id="about">
-    <p class="date"><i class="fas fa-calendar-alt"></i> October 2019</p>
-    <h2>Company History</h2>
-    <p>GENSPECH company focuses on supplying hardware, machines, generators, and concrete mixers. We are a generic service provider, more into providing services that can also provide products. Since our founding, we've grown to become a trusted partner for industrial and commercial clients across Zimbabwe.</p>
+    <div class="history-grid">
+      <div class="history-text">
+        <p class="date"><i class="fas fa-calendar-alt"></i> October 2019</p>
+        <h2>Company History</h2>
+        <p>GENSPECH company focuses on supplying hardware, machines, generators, and concrete mixers. We are a generic service provider, more into providing services that can also provide products. Since our founding, we've grown to become a trusted partner for industrial and commercial clients across Zimbabwe.</p>
+      </div>
+      <div class="history-image">
+        <img src="{{ url_for('static', filename='images/concrete-mixer.jpg') }}" alt="Genspech concrete mixing equipment" loading="lazy" />
+      </div>
+    </div>
   </div>
 
   <div class="shell mission-cards reveal">
@@ -805,20 +932,53 @@
 
   <section class="shell services" id="services"><div class="section-head reveal"><p class="kicker">Equipment Hire</p><h2>Generator Hire</h2></div>
     <div class="service-grid">
-      <div class="service-card reveal"><i class="fas fa-bolt" style="font-size: 2rem; color: var(--brand-green); margin-bottom: 0.5rem;"></i><h3>Generator Hire</h3><p>Reliable power solutions for events, factories, mining sites, hospitals, and emergency backup.</p><div class="generator-uses"><span>Events</span><span>Factories</span><span>Mining</span><span>Hospitals</span></div></div>
-      <div class="service-card reveal"><i class="fas fa-truck-mixer" style="font-size: 2rem; color: var(--brand-green); margin-bottom: 0.5rem;"></i><h3>Concrete Equipment Hire</h3><p>Self-loading mixers, boom pumps, static pumps, power floats, and poker vibrators.</p></div>
-      <div class="service-card reveal"><i class="fas fa-hard-hat" style="font-size: 2rem; color: var(--brand-green); margin-bottom: 0.5rem;"></i><h3>Project Management</h3><p>Commercial interior and exterior construction projects delivered on time and within budget.</p></div>
+      <div class="service-card reveal">
+        <img src="{{ url_for('static', filename='images/fleet-generator.svg') }}" alt="Generator" class="service-img" loading="lazy" />
+        <h3>Generator Hire</h3>
+        <p>Reliable power solutions for events, factories, mining sites, hospitals, and emergency backup.</p>
+        <div class="generator-uses"><span>Events</span><span>Factories</span><span>Mining</span><span>Hospitals</span></div>
+      </div>
+      <div class="service-card reveal">
+        <img src="{{ url_for('static', filename='images/fleet-concrete.svg') }}" alt="Concrete Equipment" class="service-img" loading="lazy" />
+        <h3>Concrete Equipment Hire</h3>
+        <p>Self-loading mixers, boom pumps, static pumps, power floats, and poker vibrators.</p>
+      </div>
+      <div class="service-card reveal">
+        <img src="{{ url_for('static', filename='images/fleet-infrastructure.svg') }}" alt="Infrastructure" class="service-img" loading="lazy" />
+        <h3>Project Management</h3>
+        <p>Commercial interior and exterior construction projects delivered on time and within budget.</p>
+      </div>
     </div>
   </section>
 
   <section class="shell machines" id="machines"><div class="section-head reveal"><p class="kicker">Our Fleet</p><h2>Machines We Hire</h2></div>
     <div class="machine-grid">
-      <figure class="machine-card reveal"><img src="{{ url_for('static', filename='images/concrete-mixer.jpg') }}" alt="Concrete Mixer" onerror="this.src='https://placehold.co/600x400/eef7f4/2b6e5c?text=Concrete+Mixer'"><figcaption>Concrete Mixer - combines cement, water & aggregates</figcaption></figure>
-      <figure class="machine-card reveal"><img src="{{ url_for('static', filename='images/static-pump.jpg') }}" alt="Static Pump" onerror="this.src='https://placehold.co/600x400/eef7f4/2b6e5c?text=Static+Pump'"><figcaption>Static Pump - essential for efficient concrete pumping</figcaption></figure>
-      <figure class="machine-card reveal"><img src="{{ url_for('static', filename='images/boom-pump.jpg') }}" alt="Boom Pump" onerror="this.src='https://placehold.co/600x400/eef7f4/2b6e5c?text=Boom+Pump'"><figcaption>Boom Pump - precision & reliability in concrete placement</figcaption></figure>
-      <figure class="machine-card reveal"><img src="{{ url_for('static', filename='images/power-float.jpg') }}" alt="Power Float" onerror="this.src='https://placehold.co/600x400/eef7f4/2b6e5c?text=Power+Float'"><figcaption>Power Float - smooth & finish concrete surfaces</figcaption></figure>
-      <figure class="machine-card reveal"><img src="{{ url_for('static', filename='images/poker-vibrator.jpg') }}" alt="Poker Vibrator" onerror="this.src='https://placehold.co/600x400/eef7f4/2b6e5c?text=Poker+Vibrator'"><figcaption>Poker Vibrator - eliminate air pockets in concrete</figcaption></figure>
-      <figure class="machine-card reveal"><img src="{{ url_for('static', filename='images/electric-mixer.jpg') }}" alt="Electric Mixer" onerror="this.src='https://placehold.co/600x400/eef7f4/2b6e5c?text=Electric+Mixer'"><figcaption>Electric Concrete Mixer - efficient & eco-friendly</figcaption></figure>
+      <figure class="machine-card reveal"><img src="{{ url_for('static', filename='images/concrete-mixer.jpg') }}" alt="Concrete Mixer"><figcaption>Concrete Mixer - combines cement, water & aggregates</figcaption></figure>
+      <figure class="machine-card reveal"><img src="{{ url_for('static', filename='images/concrete3.jpeg') }}" alt="Concrete Pumping"><figcaption>Static Pump - essential for efficient concrete pumping</figcaption></figure>
+      <figure class="machine-card reveal"><img src="{{ url_for('static', filename='images/concrete4.jpeg') }}" alt="Boom Pump"><figcaption>Boom Pump - precision & reliability in concrete placement</figcaption></figure>
+      <figure class="machine-card reveal"><img src="{{ url_for('static', filename='images/concrete5.jpeg') }}" alt="Power Float"><figcaption>Power Float - smooth & finish concrete surfaces</figcaption></figure>
+      <figure class="machine-card reveal"><img src="{{ url_for('static', filename='images/concrete6.jpeg') }}" alt="Poker Vibrator"><figcaption>Poker Vibrator - eliminate air pockets in concrete</figcaption></figure>
+      <figure class="machine-card reveal"><img src="{{ url_for('static', filename='images/mobile concrete mixer.jpeg') }}" alt="Mobile Concrete Mixer"><figcaption>Mobile Concrete Mixer - efficient & portable mixing solution</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="shell supplies" id="supplies"><div class="section-head reveal"><p class="kicker">Materials & Supplies</p><h2>Construction Supplies</h2></div>
+    <div class="supplies-grid">
+      <div class="supply-card reveal">
+        <img src="{{ url_for('static', filename='images/mixer 2.jpeg') }}" alt="Concrete Mixer" class="supply-img" loading="lazy" />
+        <h3>Concrete Mixers</h3>
+        <p>High-capacity mixers for consistent concrete batches on any job site.</p>
+      </div>
+      <div class="supply-card reveal">
+        <img src="{{ url_for('static', filename='images/concrete-mixer.jpg') }}" alt="Concrete Batching" class="supply-img" loading="lazy" />
+        <h3>Ready-Mix Concrete</h3>
+        <p>Quality-assured concrete supply for foundations, slabs, and structures.</p>
+      </div>
+      <div class="supply-card reveal">
+        <img src="{{ url_for('static', filename='images/fleet-generator.svg') }}" alt="Power Solutions" class="supply-img" loading="lazy" />
+        <h3>Power Solutions</h3>
+        <p>Generators & power distribution for sites without grid access.</p>
+      </div>
     </div>
   </section>
 
@@ -827,11 +987,42 @@
     <div id="result" class="result"></div>
   </section>
 
-  <div class="shell trust-block reveal"><p class="kicker">Why Genspech</p><h2>Fast Deployment. Strong Standards. Clear Communication.</h2><ul class="trust-list"><li>Rapid dispatch & flexible terms</li><li>Practical industrial support</li><li>Equipment + material sourcing</li><li>24/7 emergency response</li><li>ZIMRA registered & compliant</li></ul></div>
+  <div class="shell trust-block reveal">
+    <div class="trust-content">
+      <p class="kicker">Why Genspech</p>
+      <h2>Fast Deployment. Strong Standards. Clear Communication.</h2>
+      <ul class="trust-list"><li>Rapid dispatch & flexible terms</li><li>Practical industrial support</li><li>Equipment + material sourcing</li><li>24/7 emergency response</li><li>ZIMRA registered & compliant</li></ul>
+    </div>
+    <div class="trust-image">
+      <img src="{{ url_for('static', filename='images/fleet-infrastructure.svg') }}" alt="Infrastructure & Operations" loading="lazy" />
+    </div>
+  </div>
 
-  <div class="shell certificate-badge reveal"><i class="fas fa-certificate"></i><p>ZIMRA Registered & Compliant | Certificate of Registration | Tax Clearance Available</p></div>
+  <div class="shell certificate-badge reveal">
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Genspech" class="cert-logo" loading="lazy" />
+    <div class="cert-text">
+      <i class="fas fa-certificate"></i>
+      <p>ZIMRA Registered & Compliant | Certificate of Registration | Tax Clearance Available</p>
+    </div>
+  </div>
 
-  <section class="shell process reveal"><div class="section-head"><p class="kicker">How It Works</p><h2>Simple Engagement Flow</h2></div><div class="process-grid"><article><span>01</span><h3>Request</h3><p>Tell us machine, timeline, site needs.</p></article><article><span>02</span><h3>Estimate</h3><p>Receive instant estimate.</p></article><article><span>03</span><h3>Deploy</h3><p>Dispatch based on urgency.</p></article><article><span>04</span><h3>Deliver</h3><p>Quality support & follow-up.</p></article></div></section>
+  <section class="shell process reveal">
+    <div class="section-head">
+      <p class="kicker">How It Works</p>
+      <h2>Simple Engagement Flow</h2>
+    </div>
+    <div class="process-layout">
+      <div class="process-visual">
+        <img src="{{ url_for('static', filename='images/hero-operations.svg') }}" alt="Our Process" class="process-svg" loading="lazy" />
+      </div>
+      <div class="process-grid">
+        <article><span>01</span><h3>Request</h3><p>Tell us machine, timeline, site needs.</p></article>
+        <article><span>02</span><h3>Estimate</h3><p>Receive instant estimate.</p></article>
+        <article><span>03</span><h3>Deploy</h3><p>Dispatch based on urgency.</p></article>
+        <article><span>04</span><h3>Deliver</h3><p>Quality support & follow-up.</p></article>
+      </div>
+    </div>
+  </section>
 
   <section class="shell contact" id="contact"><div class="section-head"><p class="kicker">Contact</p><h2>Ready To Start?</h2></div><div class="contact-grid"><a href="tel:+263783044407"><i class="fas fa-phone"></i> 0783 044 407</a><a href="tel:+263718029974"><i class="fas fa-phone-alt"></i> 0718 029 974</a><a href="mailto:genspechinvest@gmail.com"><i class="fas fa-envelope"></i> genspechinvest@gmail.com</a><p><i class="fas fa-map-marker-alt"></i> Hatfield, Harare</p></div></section>
 </main>
@@ -859,7 +1050,22 @@
   </div>
 </aside>
 
-<footer><div class="shell footer-row"><p>© <span id="year"></span> Genspech Investments</p><a href="/admin">Admin Dashboard</a></div></footer>
+<footer><div class="shell footer-row">
+  <div class="footer-brand">
+    <img src="{{ url_for('static', filename='images/logo-white.png') }}" alt="Genspech" class="footer-logo" loading="lazy" />
+    <p>© <span id="year"></span> Genspech Investments</p>
+  </div>
+  <div class="footer-links">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#machines">Fleet</a>
+    <a href="#supplies">Supplies</a>
+    <a href="#quote">Quote</a>
+    <a href="#contact">Contact</a>
+    <a href="/admin">Admin</a>
+  </div>
+</div></footer>
 
 <script>
   // Quote calculation for main form
