@@ -959,7 +959,10 @@
       <figure class="machine-card reveal"><img src="{{ url_for('static', filename='images/concrete5.jpeg') }}" alt="Power Float"><figcaption>Power Float - smooth & finish concrete surfaces</figcaption></figure>
       <figure class="machine-card reveal"><img src="{{ url_for('static', filename='images/concrete6.jpeg') }}" alt="Poker Vibrator"><figcaption>Poker Vibrator - eliminate air pockets in concrete</figcaption></figure>
       <figure class="machine-card reveal"><img src="{{ url_for('static', filename='images/mobile concrete mixer.jpeg') }}" alt="Mobile Concrete Mixer"><figcaption>Mobile Concrete Mixer - efficient & portable mixing solution</figcaption></figure>
+      <figure class="machine-card reveal"><img src="{{ url_for('static', filename='images/concrete-mixer.jpg') }}" alt="3.5 Cubic Concrete Mixer"><figcaption>3.5 Cubic Concrete Mixer - $550/day dry rate (fuel ~60L/day) ⛽</figcaption></figure>
+      <figure class="machine-card reveal"><img src="{{ url_for('static', filename='images/mixer 2.jpeg') }}" alt="1 Cubic Manual Loading Mixer"><figcaption>1 Cubic Manual Loading Mixer (Blue) - $200/day</figcaption></figure>
     </div>
+    <p style="text-align:center; margin-top:0.5rem; font-size:0.85rem; color:var(--text-secondary);"><i class="fas fa-clock"></i> Our standard day is a 9-hour shift. Fuel surcharges may apply based on consumption.</p>
   </section>
 
   <section class="shell supplies" id="supplies"><div class="section-head reveal"><p class="kicker">Materials & Supplies</p><h2>Construction Supplies</h2></div>
@@ -967,7 +970,7 @@
       <div class="supply-card reveal">
         <img src="{{ url_for('static', filename='images/mixer 2.jpeg') }}" alt="Concrete Mixer" class="supply-img" loading="lazy" />
         <h3>Concrete Mixers</h3>
-        <p>High-capacity mixers for consistent concrete batches on any job site.</p>
+        <p>3.5 Cubic (dry rate $550/day) &amp; 1 Cubic Manual Loading ($200/day). Fuel ~60L/day. Standard day = 9hr shift.</p>
       </div>
       <div class="supply-card reveal">
         <img src="{{ url_for('static', filename='images/concrete-mixer.jpg') }}" alt="Concrete Batching" class="supply-img" loading="lazy" />
@@ -983,7 +986,7 @@
   </section>
 
   <section class="shell quote" id="quote"><div class="quote-intro reveal"><p class="kicker">Instant Quotation</p><h2>Get A Quote In Under A Minute</h2></div>
-    <form id="quoteForm" class="quote-form"><div class="field-grid"><label>Machine/Service<select id="machine"><option value="">Select</option><option value="generator">Generator Hire</option><option value="self-loader">Self Loading Mixer</option><option value="boom-pump">Boom Pump</option><option value="static-pump">Static Pump</option><option value="power-float">Power Float</option><option value="poker">Poker Vibrator</option></select></label><label>Days<input id="days" type="number" min="1" value="1" /></label><label>Urgency<select id="urgency"><option value="standard">Standard</option><option value="priority">Priority</option><option value="urgent">Urgent</option></select></label><label>Name<input id="name" placeholder="Full name" /></label><label>Phone<input id="phone" placeholder="0718 029 974" /></label></div><button type="submit" class="btn btn-primary">Generate Quote</button></form>
+    <form id="quoteForm" class="quote-form"><div class="field-grid"><label>Machine/Service<select id="machine"><option value="">Select</option><option value="generator">Generator Hire</option><option value="self-loader">Self Loading Mixer</option><option value="boom-pump">Boom Pump</option><option value="static-pump">Static Pump</option><option value="power-float">Power Float</option><option value="poker">Poker Vibrator</option><option value="3.5-cubic">3.5 Cubic Concrete Mixer (Dry Rate)</option><option value="1-cubic-manual">1 Cubic Manual Loading Mixer</option></select></label><label>Days<input id="days" type="number" min="1" value="1" /></label><label>Urgency<select id="urgency"><option value="standard">Standard</option><option value="priority">Priority</option><option value="urgent">Urgent</option></select></label><label>Name<input id="name" placeholder="Full name" /></label><label>Phone<input id="phone" placeholder="0718 029 974" /></label></div><button type="submit" class="btn btn-primary">Generate Quote</button><p style="margin-top:0.8rem; font-size:0.75rem; color:var(--text-secondary);"><i class="fas fa-clock"></i> 1 day = 9-hour shift | <i class="fas fa-gas-pump"></i> 3.5 Cubic fuel: ~60L/day (not included in dry rate)</p></form>
     <div id="result" class="result"></div>
   </section>
 
@@ -1033,7 +1036,7 @@
   <div class="chat-panel hidden-panel" id="chatPanel">
     <div class="chat-header">
       <h3><i class="fas fa-robot"></i> Quote Assistant</h3>
-      <p>Try: "generator for 3 days priority"</p>
+      <p>Try: "3.5 cubic for 3 days" or "generator urgent"</p>
     </div>
     <div class="chat-messages" id="chatMessages"></div>
     <div class="quick-replies" id="quickReplies"></div>
@@ -1069,9 +1072,9 @@
 
 <script>
   // Quote calculation for main form
-  const RATES = { generator: 180, "self-loader": 420, "boom-pump": 650, "static-pump": 480, "power-float": 120, poker: 90 };
+  const RATES = { generator: 180, "self-loader": 420, "boom-pump": 650, "static-pump": 480, "power-float": 120, poker: 90, "3.5-cubic": 550, "1-cubic-manual": 200 };
   const URGENCY_MULTIPLIER = { standard: 1, priority: 1.15, urgent: 1.3 };
-  const MACHINE_NAMES = { generator: "Generator Hire", "self-loader": "Self Loading Mixer", "boom-pump": "Boom Pump", "static-pump": "Static Pump", "power-float": "Power Float", poker: "Poker Vibrator" };
+  const MACHINE_NAMES = { generator: "Generator Hire", "self-loader": "Self Loading Mixer", "boom-pump": "Boom Pump", "static-pump": "Static Pump", "power-float": "Power Float", poker: "Poker Vibrator", "3.5-cubic": "3.5 Cubic Concrete Mixer (Dry Rate)", "1-cubic-manual": "1 Cubic Manual Loading Mixer" };
 
   document.getElementById('quoteForm')?.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -1121,7 +1124,7 @@
   const updateQuickReplies = () => {
     let replies = [];
     if (!chatContext.machine) {
-      replies = ["Generator", "Boom Pump", "Self Loader", "Power Float", "Poker"];
+      replies = ["Generator", "Boom Pump", "Self Loader", "Power Float", "Poker", "3.5 Cubic", "1 Cubic Manual"];
     } else if (!chatContext.days) {
       replies = ["2 days", "3 days", "5 days", "7 days", "10 days"];
     } else {
@@ -1217,10 +1220,10 @@
       chatPanel.classList.remove('hidden-panel');
       if (chatMessages.children.length === 0) {
         addMessage("👋 Hi! I'm your Genspech quote assistant. Tell me:", false);
-        addMessage("📌 Machine type (Generator, Boom Pump, Self Loader, Power Float, Poker)", false);
-        addMessage("📅 Number of days", false);
+        addMessage("📌 Machine type (Generator, Boom Pump, Self Loader, 3.5 Cubic Mixer, 1 Cubic Manual, Power Float, Poker)", false);
+        addMessage("📅 Number of days (1 day = 9hr shift)", false);
         addMessage("⚡ Urgency (Standard, Priority, Urgent)", false);
-        addMessage("💡 Try: 'generator for 3 days priority'", false);
+        addMessage("💡 Try: '3.5 cubic for 3 days' or 'generator for 3 days priority'", false);
         updateQuickReplies();
       }
     } else {

@@ -34,6 +34,8 @@ RATES = {
     "static-pump": 480.0,
     "power-float": 120.0,
     "poker": 90.0,
+    "3.5-cubic": 550.0,
+    "1-cubic-manual": 200.0,
 }
 
 URGENCY_MULTIPLIER = {
@@ -49,6 +51,8 @@ MACHINE_NAMES = {
     "static-pump": "Static Pump",
     "power-float": "Power Float",
     "poker": "Poker Vibrator",
+    "3.5-cubic": "3.5 Cubic Concrete Mixer (Dry Rate)",
+    "1-cubic-manual": "1 Cubic Manual Loading Mixer",
 }
 
 MACHINE_ALIASES = {
@@ -66,6 +70,12 @@ MACHINE_ALIASES = {
     "float": "power-float",
     "poker": "poker",
     "vibrator": "poker",
+    "3.5 cubic": "3.5-cubic",
+    "3.5cu": "3.5-cubic",
+    "dry rate": "3.5-cubic",
+    "1 cubic": "1-cubic-manual",
+    "manual loading": "1-cubic-manual",
+    "blue": "1-cubic-manual",
 }
 
 
