@@ -300,6 +300,11 @@
     /* ============ SUPPLIES ============ */
     .supplies-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
     .supply-card .media { height: 9rem; }
+    .supplies-sub { margin-top: 3rem; margin-bottom: 1.6rem; }
+    .supplies-sub .kicker { margin-bottom: .4rem; }
+    .supplies-sub h3 { font-family: var(--font-head); font-weight: 800; font-size: 1.7rem; text-transform: uppercase; color: var(--foreground); line-height: 1; }
+    .supplies-sub .title-bar { width: 4.25rem; height: 4px; background: var(--primary); margin-top: .7rem; }
+    .hire-btn { margin-top: 1.1rem; width: 100%; }
     @media (max-width: 900px) { .supplies-grid { grid-template-columns: 1fr; } }
 
     /* ============ QUOTE ============ */
@@ -764,6 +769,71 @@
           <div class="body"><p>Generators &amp; power distribution for sites without grid access.</p></div>
         </div>
       </div>
+
+      <div class="supplies-sub reveal">
+        <p class="kicker">Machines Available For Hire</p>
+        <h3>Machines We Hire</h3>
+        <div class="title-bar"></div>
+      </div>
+
+      <div class="supplies-grid">
+        <div class="card media-card supply-card reveal">
+          <div class="media"><img src="{{ url_for('static', filename='images/concrete-mixer.jpg') }}" alt="Concrete Mixer" loading="lazy"><h3>Concrete Mixer</h3></div>
+          <div class="body">
+            <p>Combines cement, water &amp; aggregates for reliable site mixing.</p>
+            <a class="btn btn-primary hire-btn" href="#quote" data-machine="3.5-cubic"><i class="fas fa-truck"></i> Request to Hire</a>
+          </div>
+        </div>
+        <div class="card media-card supply-card reveal">
+          <div class="media"><img src="{{ url_for('static', filename='images/concrete3.jpeg') }}" alt="Static Pump" loading="lazy"><h3>Static Pump</h3></div>
+          <div class="body">
+            <p>Essential for efficient concrete pumping on any site.</p>
+            <a class="btn btn-primary hire-btn" href="#quote" data-machine="static-pump"><i class="fas fa-truck"></i> Request to Hire</a>
+          </div>
+        </div>
+        <div class="card media-card supply-card reveal">
+          <div class="media"><img src="{{ url_for('static', filename='images/concrete4.jpeg') }}" alt="Boom Pump" loading="lazy"><h3>Boom Pump</h3></div>
+          <div class="body">
+            <p>Precision &amp; reliability in concrete placement.</p>
+            <a class="btn btn-primary hire-btn" href="#quote" data-machine="boom-pump"><i class="fas fa-truck"></i> Request to Hire</a>
+          </div>
+        </div>
+        <div class="card media-card supply-card reveal">
+          <div class="media"><img src="{{ url_for('static', filename='images/concrete5.jpeg') }}" alt="Power Float" loading="lazy"><h3>Power Float</h3></div>
+          <div class="body">
+            <p>Smooth &amp; finish concrete surfaces to a high standard.</p>
+            <a class="btn btn-primary hire-btn" href="#quote" data-machine="power-float"><i class="fas fa-truck"></i> Request to Hire</a>
+          </div>
+        </div>
+        <div class="card media-card supply-card reveal">
+          <div class="media"><img src="{{ url_for('static', filename='images/concrete6.jpeg') }}" alt="Poker Vibrator" loading="lazy"><h3>Poker Vibrator</h3></div>
+          <div class="body">
+            <p>Eliminate air pockets in fresh concrete.</p>
+            <a class="btn btn-primary hire-btn" href="#quote" data-machine="poker"><i class="fas fa-truck"></i> Request to Hire</a>
+          </div>
+        </div>
+        <div class="card media-card supply-card reveal">
+          <div class="media"><img src="{{ url_for('static', filename='images/mobile concrete mixer.jpeg') }}" alt="Mobile Concrete Mixer" loading="lazy"><h3>Mobile Concrete Mixer</h3></div>
+          <div class="body">
+            <p>Efficient &amp; portable mixing solution for remote sites.</p>
+            <a class="btn btn-primary hire-btn" href="#quote" data-machine="self-loader"><i class="fas fa-truck"></i> Request to Hire</a>
+          </div>
+        </div>
+        <div class="card media-card supply-card reveal">
+          <div class="media"><img src="{{ url_for('static', filename='images/concrete-mixer.jpg') }}" alt="3.5 Cubic Concrete Mixer" loading="lazy"><h3>3.5 Cubic Mixer</h3></div>
+          <div class="body">
+            <p>High-output mixing — $550/day dry rate (fuel ~60L/day).</p>
+            <a class="btn btn-primary hire-btn" href="#quote" data-machine="3.5-cubic"><i class="fas fa-truck"></i> Request to Hire</a>
+          </div>
+        </div>
+        <div class="card media-card supply-card reveal">
+          <div class="media"><img src="{{ url_for('static', filename='images/mixer 2.jpeg') }}" alt="1 Cubic Manual Loading Mixer" loading="lazy"><h3>1 Cubic Manual Mixer</h3></div>
+          <div class="body">
+            <p>Compact manual-loading blue unit — $200/day.</p>
+            <a class="btn btn-primary hire-btn" href="#quote" data-machine="1-cubic-manual"><i class="fas fa-truck"></i> Request to Hire</a>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1106,6 +1176,17 @@
     } finally {
       if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = submitHtml; }
     }
+  });
+
+  // ============ REQUEST TO HIRE (pre-select machine in quote form) ============
+  document.querySelectorAll('.hire-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const machineKey = btn.getAttribute('data-machine');
+      if (machineKey) {
+        const sel = document.getElementById('machine');
+        if (sel) sel.value = machineKey;
+      }
+    });
   });
 
   // ============ CHAT ASSISTANT (FULL CLICKABLE FUNCTIONALITY) ============
