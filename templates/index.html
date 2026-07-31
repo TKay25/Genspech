@@ -274,21 +274,33 @@
     .media-card .body { padding: 1.25rem 1.25rem 1.4rem; }
     .media-card .body p { color: var(--muted-foreground); font-size: .92rem; line-height: 1.6; }
 
-    /* ============ SERVICES ============ */
-    .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-    .service-top {
-      background: var(--bg); border-bottom: 1px solid var(--border); border-top: 3px solid var(--primary);
-      height: 9.5rem; display: flex; align-items: center; justify-content: center; padding: 1.25rem;
+    /* ============ SERVICES / GENERATOR ============ */
+    .gen-feature {
+      display: grid; grid-template-columns: 1fr 1.1fr; gap: 3rem; align-items: center;
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 2.5rem; box-shadow: var(--shadow-md);
     }
-    .service-top img { max-height: 100%; max-width: 100%; object-fit: contain; }
-    .service-card .body h3 { font-family: var(--font-head); font-weight: 800; font-size: 1.45rem; text-transform: uppercase; color: var(--foreground); margin-bottom: .45rem; }
-    .uses { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .9rem; }
-    .uses span {
-      background: var(--muted); border: 1px solid var(--border); color: var(--foreground);
-      font-size: .7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em;
-      padding: .25rem .6rem; border-radius: 2px;
+    .gen-visual {
+      background: var(--bg); border: 1px solid var(--border); border-top: 3px solid var(--primary);
+      border-radius: var(--radius); display: flex; align-items: center; justify-content: center;
+      padding: 2rem; min-height: 18rem;
     }
-    @media (max-width: 900px) { .service-grid { grid-template-columns: 1fr; } }
+    .gen-visual img { max-width: 100%; max-height: 14rem; object-fit: contain; }
+    .gen-content h3 { font-family: var(--font-head); font-weight: 800; font-size: 1.9rem; text-transform: uppercase; color: var(--foreground); margin-bottom: .5rem; }
+    .gen-content > p { color: var(--muted-foreground); font-size: 1rem; line-height: 1.7; margin-bottom: 1.3rem; max-width: 34rem; }
+    .gen-icons { display: grid; grid-template-columns: repeat(4, 1fr); gap: .75rem; margin-bottom: 1.6rem; }
+    .gen-icon {
+      background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1rem .5rem; text-align: center;
+      transition: transform .2s, box-shadow .2s, border-color .2s;
+    }
+    .gen-icon:hover { transform: translateY(-2px); border-color: var(--primary); box-shadow: var(--shadow-sm); }
+    .gen-icon i { font-size: 1.4rem; color: var(--primary); margin-bottom: .45rem; display: block; }
+    .gen-icon span { display: block; font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--foreground); }
+    @media (max-width: 900px) {
+      .gen-feature { grid-template-columns: 1fr; gap: 1.5rem; padding: 1.5rem; }
+      .gen-icons { grid-template-columns: repeat(2, 1fr); }
+    }
 
     /* ============ SUPPLIES ============ */
     .supplies-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
@@ -661,28 +673,20 @@
         <h2 class="section-title">Generator Hire</h2>
         <div class="title-bar"></div>
       </div>
-      <div class="service-grid">
-        <div class="card service-card reveal">
-          <div class="service-top"><img src="{{ url_for('static', filename='images/fleet-generator.svg') }}" alt="Generator" loading="lazy" /></div>
-          <div class="body">
-            <h3>Generator Hire</h3>
-            <p>Reliable power solutions for events, factories, mining sites, hospitals, and emergency backup.</p>
-            <div class="uses"><span>Events</span><span>Factories</span><span>Mining</span><span>Hospitals</span></div>
-          </div>
+      <div class="gen-feature reveal">
+        <div class="gen-visual">
+          <img src="{{ url_for('static', filename='images/fleet-generator.svg') }}" alt="Generator" loading="lazy" />
         </div>
-        <div class="card service-card reveal">
-          <div class="service-top"><img src="{{ url_for('static', filename='images/fleet-concrete.svg') }}" alt="Concrete Equipment" loading="lazy" /></div>
-          <div class="body">
-            <h3>Concrete Equipment Hire</h3>
-            <p>Self-loading mixers, boom pumps, static pumps, power floats, and poker vibrators.</p>
+        <div class="gen-content">
+          <h3>Reliable Power, On Demand</h3>
+          <p>Reliable power solutions for events, factories, mining sites, hospitals, and emergency backup.</p>
+          <div class="gen-icons">
+            <div class="gen-icon"><i class="fas fa-calendar-days"></i><span>Events</span></div>
+            <div class="gen-icon"><i class="fas fa-industry"></i><span>Factories</span></div>
+            <div class="gen-icon"><i class="fas fa-hard-hat"></i><span>Mining</span></div>
+            <div class="gen-icon"><i class="fas fa-hospital"></i><span>Hospitals</span></div>
           </div>
-        </div>
-        <div class="card service-card reveal">
-          <div class="service-top"><img src="{{ url_for('static', filename='images/fleet-infrastructure.svg') }}" alt="Infrastructure" loading="lazy" /></div>
-          <div class="body">
-            <h3>Project Management</h3>
-            <p>Commercial interior and exterior construction projects delivered on time and within budget.</p>
-          </div>
+          <a class="btn btn-primary" href="#quote"><i class="fas fa-bolt"></i> Request a Generator</a>
         </div>
       </div>
     </div>
