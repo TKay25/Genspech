@@ -793,7 +793,7 @@
             <div class="gen-icon"><i class="fas fa-hard-hat"></i><span>Mining</span></div>
             <div class="gen-icon"><i class="fas fa-hospital"></i><span>Hospitals</span></div>
           </div>
-          <a class="btn btn-primary" href="#quote"><i class="fas fa-bolt"></i> Request a Generator</a>
+          <a class="btn btn-primary hire-btn" href="#quote" data-machine="generator"><i class="fas fa-bolt"></i> Request a Generator</a>
         </div>
       </div>
     </div>
@@ -1247,10 +1247,15 @@
       const img = new Image();
       img.onload = () => {
         try {
+          // Downscale so the embedded logo stays small (keeps the PDF light)
+          const MAX_W = 260;
+          const scale = Math.min(1, MAX_W / img.naturalWidth);
+          const w = Math.round(img.naturalWidth * scale);
+          const h = Math.round(img.naturalHeight * scale);
           const c = document.createElement('canvas');
-          c.width = img.naturalWidth;
-          c.height = img.naturalHeight;
-          c.getContext('2d').drawImage(img, 0, 0);
+          c.width = w;
+          c.height = h;
+          c.getContext('2d').drawImage(img, 0, 0, w, h);
           resolve(c.toDataURL('image/png'));
         } catch (e) { resolve(null); }
       };
