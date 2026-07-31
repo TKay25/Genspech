@@ -73,11 +73,7 @@
       display: flex; align-items: center; justify-content: space-between; gap: 1rem;
     }
     .brand { display: flex; align-items: center; gap: .65rem; }
-    .brand-mark {
-      width: 2rem; height: 2rem; background: var(--primary); flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center; border-radius: 2px;
-    }
-    .brand-mark span { color: var(--primary-foreground); font-family: var(--font-head); font-weight: 900; font-size: 1rem; line-height: 1; }
+    .brand-logo { height: 2.2rem; width: auto; object-fit: contain; flex-shrink: 0; }
     .brand-name {
       display: block; color: #fff; font-family: var(--font-head); font-weight: 900;
       font-size: 1.15rem; text-transform: uppercase; letter-spacing: .02em; line-height: 1;
@@ -530,7 +526,7 @@
 <header class="navbar">
   <div class="nav-inner">
     <a class="brand" href="#home">
-      <div class="brand-mark"><span>G</span></div>
+      <img class="brand-logo" src="{{ url_for('static', filename='images/logo.png') }}" alt="Genspech" />
       <div>
         <span class="brand-name">Genspech Investments</span>
         <span class="brand-tag">Equipment. Energy. Construction.</span>
