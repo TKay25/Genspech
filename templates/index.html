@@ -143,12 +143,16 @@
     .hero-slide.bg-1 { background-image: url("{{ url_for('static', filename='images/concrete-mixer.jpg') }}"); }
     .hero-slide.bg-2 { background-image: url("{{ url_for('static', filename='images/generator.jpg') }}"); }
     .hero-slide.bg-3 { background-image: url("{{ url_for('static', filename='images/concrete4.jpeg') }}"); }
-    .hero-slide.bg-4 { background-image: url("{{ url_for('static', filename='images/mobile concrete mixer.jpeg') }}"); }
+    .hero-slide.bg-4 { background-image: url("{{ url_for('static', filename='images/concrete3.jpeg') }}"); }
+    .hero-slide.bg-5 { background-image: url("{{ url_for('static', filename='images/mobile concrete mixer.jpeg') }}"); }
+    .hero-slide.bg-6 { background-image: url("{{ url_for('static', filename='images/concrete5.jpeg') }}"); }
     .hero::before {
       content: ''; position: absolute; inset: 0; z-index: 2;
-      background: linear-gradient(90deg, rgba(10,13,12,0.94) 0%, rgba(10,13,12,0.78) 40%, rgba(10,13,12,0.45) 100%);
+      background:
+        linear-gradient(90deg, rgba(10,13,12,0.94) 0%, rgba(10,13,12,0.78) 40%, rgba(10,13,12,0.45) 100%),
+        linear-gradient(0deg, rgba(10,13,12,0.9) 0%, rgba(10,13,12,0.35) 30%, transparent 55%);
     }
-    .hero-inner { position: relative; z-index: 3; width: 100%; max-width: 1152px; margin: 0 auto; padding: 5rem 1.5rem 6.5rem; }
+    .hero-inner { position: relative; z-index: 3; width: 100%; max-width: 1152px; margin: 0 auto; padding: clamp(4rem, 8vh, 6.5rem) 1.5rem 7rem; }
     .hero-controls { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
     .hero-arrow {
       position: absolute; top: 50%; transform: translateY(-50%);
@@ -174,7 +178,7 @@
     .badge {
       display: inline-block; background: var(--primary); color: var(--primary-foreground);
       font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .16em;
-      padding: .45rem .95rem; margin-bottom: 1.4rem;
+      padding: .5rem 1rem; margin-bottom: 1.6rem;
     }
     .hero h1 {
       font-family: var(--font-head); font-weight: 900;
@@ -182,7 +186,7 @@
       letter-spacing: -.01em; color: #fff; margin-bottom: 1.25rem; text-wrap: balance;
     }
     .hero h1 .accent { color: var(--primary-bright); }
-    .hero-sub { color: rgba(255,255,255,0.82); font-size: 1.12rem; max-width: 34rem; line-height: 1.65; margin-bottom: 1.9rem; }
+    .hero-sub { color: rgba(255,255,255,0.85); font-size: 1.15rem; max-width: 34rem; line-height: 1.7; margin-bottom: 2.2rem; }
     .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
 
     .hero-stats {
@@ -196,8 +200,9 @@
     .hero-stats span { display: block; margin-top: .35rem; font-size: .68rem; font-weight: 600; text-transform: uppercase; letter-spacing: .14em; color: rgba(255,255,255,0.65); }
     @media (max-width: 700px) {
       .hero { min-height: auto; }
-      .hero-inner { padding: 4rem 1.25rem 8.5rem; }
+      .hero-inner { padding: 4rem 1.25rem 12rem; }
       .hero-stats .inner { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+      .hero-stats strong { font-size: 1.6rem; }
       .hero-arrow { top: auto; bottom: 12rem; transform: none; width: 2.4rem; height: 2.4rem; font-size: .85rem; }
       .hero-arrow:hover { transform: scale(1.05); }
       .hero-arrow.prev { left: 1rem; }
@@ -560,6 +565,8 @@
     <div class="hero-slide bg-2"></div>
     <div class="hero-slide bg-3"></div>
     <div class="hero-slide bg-4"></div>
+    <div class="hero-slide bg-5"></div>
+    <div class="hero-slide bg-6"></div>
   </div>
   <div class="hero-inner">
     <span class="badge">Professional Construction Support Since 2019</span>
