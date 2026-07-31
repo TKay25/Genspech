@@ -1209,7 +1209,15 @@
       });
       const data = await res.json();
       if (data.ok) {
-        document.getElementById('result').innerHTML = `<div style="background:#e7f0ec; padding:0.8rem; border-radius:0.5rem"><strong>✅ Estimate</strong><br/>${MACHINE_NAMES[machine]} | ${days} day(s) | ${urgency}<br/><strong style="font-size:1.3rem; color:#1d4a37;">$${data.quote.total}</strong><br/><small>Quote ID: ${data.quoteId}</small></div>`;
+        lastQuote = { machine, days, urgency, name, phone, total: data.quote.total, quoteId: data.quoteId };
+        const canDownload = name.trim() !== '' && phone.trim() !== '';
+        const dlBtn = canDownload
+          ? `<button type="button" class="btn btn-primary btn-block" style="margin-top:.9rem;" onclick="downloadQuote()"><i class="fas fa-download"></i> Download Quote</button>`
+          : `<button type="button" class="btn btn-block" style="margin-top:.9rem;" disabled><i class="fas fa-download"></i> Download Quote</button>`;
+        const dlHint = canDownload
+          ? ''
+          : `<small style="display:block;margin-top:.55rem;color:#5c6661;"><i class="fas fa-info-circle"></i> Add your name &amp; phone, then generate again, to download the quote.</small>`;
+        document.getElementById('result').innerHTML = `<div style="background:#e7f0ec; padding:0.8rem; border-radius:0.5rem"><strong>✅ Estimate</strong><br/>${MACHINE_NAMES[machine]} | ${days} day(s) | ${urgency}<br/><strong style="font-size:1.3rem; color:#1d4a37;">$${data.quote.total}</strong><br/><small>Quote ID: ${data.quoteId}</small>${dlBtn}${dlHint}</div>`;
       } else {
         document.getElementById('result').innerHTML = `<p>Error: ${data.error}</p>`;
       }
@@ -1219,6 +1227,253 @@
       if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = submitHtml; }
     }
   });
+
+  // ============ DOWNLOAD QUOTE (elegant PDF, requires name + phone) ============
+  let lastQuote = null;
+
+  function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      if (window.jspdf && window.jspdf.jsPDF) return resolve();
+      const s = document.createElement('script');
+      s.src = src;
+      s.onload = resolve;
+      s.onerror = () => reject(new Error('Failed to load PDF library'));
+      document.head.appendChild(s);
+    });
+  }
+
+  function logoDataUrl() {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        try {
+          const c = document.createElement('canvas');
+          c.width = img.naturalWidth;
+          c.height = img.naturalHeight;
+          c.getContext('2d').drawImage(img, 0, 0);
+          resolve(c.toDataURL('image/png'));
+        } catch (e) { resolve(null); }
+      };
+      img.onerror = () => resolve(null);
+      img.src = '/static/images/logo.png';
+    });
+  }
+
+  function downloadQuoteText() {
+    const q = lastQuote;
+    if (!q) return;
+    const rate = RATES[q.machine] || 0;
+    const subtotal = rate * q.days;
+    const mult = URGENCY_MULTIPLIER[q.urgency] || 1;
+    const urgencyLabel = { standard: 'Standard (x1.0)', priority: 'Priority (x1.15)', urgent: 'Urgent (x1.3)' }[q.urgency] || q.urgency;
+    const money = (n) => '$' + Number(n).toFixed(2);
+    const line = '='.repeat(44);
+    const thin = '-'.repeat(44);
+    const txt = [
+      line,
+      '        GENSPECH INVESTMENTS',
+      '   Equipment. Energy. Construction.',
+      line,
+      '                QUOTATION',
+      '',
+      'Quote ID:    ' + q.quoteId,
+      'Date:        ' + new Date().toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }),
+      thin,
+      'Client:',
+      'Name:        ' + (q.name || '-'),
+      'Phone:       ' + (q.phone || '-'),
+      thin,
+      'Machine:     ' + MACHINE_NAMES[q.machine],
+      'Days:        ' + q.days + ' (1 day = 9-hour shift)',
+      'Urgency:     ' + urgencyLabel,
+      '',
+      'Daily rate:  ' + money(rate),
+      'Subtotal:    ' + money(subtotal),
+      'Urgency adj: x' + Number(mult).toFixed(2),
+      thin,
+      'TOTAL:       ' + money(q.total),
+      line,
+      'ZIMRA Registered & Compliant',
+      '0783 044 407 | genspechinvest@gmail.com',
+      'Hatfield, Harare'
+    ].join('\n');
+
+    const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Genspech_Quote_' + q.quoteId + '.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  async function downloadQuote() {
+    const q = lastQuote;
+    if (!q) return;
+    try {
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+      const W = doc.internal.pageSize.getWidth();
+      const H = doc.internal.pageSize.getHeight();
+      const M = 48;
+
+      const GREEN = [29, 74, 55];
+      const GREEN_DARK = [18, 52, 37];
+      const BRIGHT = [87, 181, 137];
+      const DARK = [21, 25, 23];
+      const MUTED = [92, 102, 97];
+      const LIGHT = [246, 246, 244];
+      const BORDER = [226, 228, 225];
+      const WHITE = [255, 255, 255];
+
+      const money = (n) => '$' + Number(n).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      const rate = RATES[q.machine] || 0;
+      const subtotal = rate * q.days;
+      const mult = URGENCY_MULTIPLIER[q.urgency] || 1;
+      const urgencyLabel = { standard: 'Standard', priority: 'Priority (+15%)', urgent: 'Urgent (+30%)' }[q.urgency] || q.urgency;
+
+      // ---- Header band ----
+      doc.setFillColor(GREEN[0], GREEN[1], GREEN[2]);
+      doc.rect(0, 0, W, 132, 'F');
+      doc.setFillColor(GREEN_DARK[0], GREEN_DARK[1], GREEN_DARK[2]);
+      doc.rect(0, 132, W, 6, 'F');
+
+      let logoX = M;
+      const logo = await logoDataUrl();
+      if (logo) {
+        const lw = 60, lh = 40;
+        doc.addImage(logo, 'PNG', logoX, 46, lw, lh);
+        logoX = M + lw + 16;
+      }
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(22);
+      doc.setTextColor(WHITE[0], WHITE[1], WHITE[2]);
+      doc.text('GENSPECH INVESTMENTS', logoX, 66);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      doc.setTextColor(BRIGHT[0], BRIGHT[1], BRIGHT[2]);
+      doc.text('EQUIPMENT  ·  ENERGY  ·  CONSTRUCTION', logoX, 82);
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(16);
+      doc.setTextColor(WHITE[0], WHITE[1], WHITE[2]);
+      doc.text('QUOTATION', W - M, 58, { align: 'right' });
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.setTextColor(BRIGHT[0], BRIGHT[1], BRIGHT[2]);
+      doc.text('REF ' + (q.quoteId || ''), W - M, 76, { align: 'right' });
+
+      let y = 176;
+
+      // ---- Prepared for block ----
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.setTextColor(GREEN[0], GREEN[1], GREEN[2]);
+      doc.text('PREPARED FOR', M, y);
+      y += 16;
+
+      doc.setFillColor(LIGHT[0], LIGHT[1], LIGHT[2]);
+      doc.setDrawColor(BORDER[0], BORDER[1], BORDER[2]);
+      doc.roundedRect(M, y, W - M * 2, 62, 6, 6, 'FD');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13);
+      doc.setTextColor(DARK[0], DARK[1], DARK[2]);
+      doc.text(q.name || 'Client', M + 18, y + 28);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+      doc.text('Phone:  ' + (q.phone || '-'), M + 18, y + 46);
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+      doc.text('DATE', W - M - 18, y + 14, { align: 'right' });
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.setTextColor(DARK[0], DARK[1], DARK[2]);
+      doc.text(new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }), W - M - 18, y + 32, { align: 'right' });
+
+      y += 62 + 30;
+
+      // ---- Quote details table ----
+      const rows = [
+        ['Machine / Service', MACHINE_NAMES[q.machine]],
+        ['Hire days', String(q.days) + '  (1 day = 9-hour shift)'],
+        ['Urgency', urgencyLabel],
+        ['Daily rate', money(rate)],
+        ['Subtotal (' + q.days + ' day' + (q.days === 1 ? '' : 's') + ')', money(subtotal)],
+        ['Urgency adjustment', 'x' + Number(mult).toFixed(2)]
+      ];
+      const colW = W - M * 2;
+      const labelX = M + 20;
+      const valueX = W - M - 20;
+      const rowH = 30;
+
+      doc.setFillColor(GREEN[0], GREEN[1], GREEN[2]);
+      doc.rect(M, y, colW, rowH, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.setTextColor(WHITE[0], WHITE[1], WHITE[2]);
+      doc.text('QUOTE DETAILS', labelX, y + 19);
+      doc.text('AMOUNT', valueX, y + 19, { align: 'right' });
+      y += rowH;
+
+      doc.setLineWidth(1);
+      for (let i = 0; i < rows.length; i++) {
+        const [label, value] = rows[i];
+        if (i % 2 === 0) {
+          doc.setFillColor(LIGHT[0], LIGHT[1], LIGHT[2]);
+          doc.rect(M, y, colW, rowH, 'F');
+        }
+        doc.setDrawColor(BORDER[0], BORDER[1], BORDER[2]);
+        doc.line(M, y + rowH, M + colW, y + rowH);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+        doc.text(label, labelX, y + 19);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(DARK[0], DARK[1], DARK[2]);
+        doc.text(value, valueX, y + 19, { align: 'right' });
+        y += rowH;
+      }
+
+      // ---- Total row ----
+      doc.setFillColor(GREEN[0], GREEN[1], GREEN[2]);
+      doc.rect(M, y, colW, rowH, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.setTextColor(WHITE[0], WHITE[1], WHITE[2]);
+      doc.text('TOTAL QUOTE', labelX, y + 20);
+      doc.setFontSize(16);
+      doc.text(money(q.total), valueX, y + 20, { align: 'right' });
+      y += rowH + 34;
+
+      // ---- Footer ----
+      doc.setDrawColor(BRIGHT[0], BRIGHT[1], BRIGHT[2]);
+      doc.setLineWidth(2);
+      doc.line(M, H - 92, W - M, H - 92);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+      doc.text('ZIMRA Registered & Compliant', M, H - 74);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.setTextColor(GREEN[0], GREEN[1], GREEN[2]);
+      doc.text('Genspech Investments', M, H - 58);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+      doc.text('0783 044 407  |  0718 029 974  |  genspechinvest@gmail.com', M, H - 44);
+      doc.text('Hatfield, Harare', M, H - 32);
+
+      doc.save('Genspech_Quote_' + q.quoteId + '.pdf');
+    } catch (err) {
+      downloadQuoteText();
+    }
+  }
 
   // ============ REQUEST TO HIRE (pre-select machine in quote form) ============
   document.querySelectorAll('.hire-btn').forEach(btn => {
