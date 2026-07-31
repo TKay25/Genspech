@@ -120,6 +120,7 @@
     .btn-dark { background: var(--dark-soft); color: #fff; border-color: var(--dark-border); }
     .btn-dark:hover { border-color: var(--primary-bright); color: #fff; }
     .btn-block { width: 100%; }
+    .btn:disabled { opacity: .55; cursor: not-allowed; }
 
     /* ============ HERO ============ */
     .hero {
@@ -328,7 +329,8 @@
     }
     .field input:focus, .field select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(29,74,55,0.15); }
     .form-note { margin-top: .9rem; font-size: .75rem; color: var(--muted-foreground); line-height: 1.6; }
-    .result { background: var(--card); border-left: 4px solid var(--primary); border-radius: var(--radius); padding: 1rem; margin-top: 1rem; box-shadow: var(--shadow-sm); }
+    .result { background: var(--card); color: var(--foreground); border-left: 4px solid var(--primary); border-radius: var(--radius); padding: 1rem; margin-top: 1rem; box-shadow: var(--shadow-sm); }
+    .dl-warn { margin-top: .6rem; padding: .55rem .7rem; background: #fdf0ec; border: 1px solid #e8b7a8; color: #8a3b22; border-radius: var(--radius); font-size: .82rem; }
     @media (max-width: 900px) { .quote-layout { grid-template-columns: 1fr; } .field-grid { grid-template-columns: 1fr; } }
 
     /* ============ TRUST ============ */
@@ -1210,14 +1212,9 @@
       const data = await res.json();
       if (data.ok) {
         lastQuote = { machine, days, urgency, name, phone, total: data.quote.total, quoteId: data.quoteId };
-        const canDownload = name.trim() !== '' && phone.trim() !== '';
-        const dlBtn = canDownload
-          ? `<button type="button" class="btn btn-primary btn-block" style="margin-top:.9rem;" onclick="downloadQuote()"><i class="fas fa-download"></i> Download Quote</button>`
-          : `<button type="button" class="btn btn-block" style="margin-top:.9rem;" disabled><i class="fas fa-download"></i> Download Quote</button>`;
-        const dlHint = canDownload
-          ? ''
-          : `<small style="display:block;margin-top:.55rem;color:#5c6661;"><i class="fas fa-info-circle"></i> Add your name &amp; phone, then generate again, to download the quote.</small>`;
-        document.getElementById('result').innerHTML = `<div style="background:#e7f0ec; padding:0.8rem; border-radius:0.5rem"><strong>✅ Estimate</strong><br/>${MACHINE_NAMES[machine]} | ${days} day(s) | ${urgency}<br/><strong style="font-size:1.3rem; color:#1d4a37;">$${data.quote.total}</strong><br/><small>Quote ID: ${data.quoteId}</small>${dlBtn}${dlHint}</div>`;
+        const dlBtn = `<button type="button" class="btn btn-primary btn-block" style="margin-top:.9rem;" onclick="downloadQuote()"><i class="fas fa-download"></i> Download Quote</button>`;
+        const dlHint = `<small style="display:block;margin-top:.55rem;color:#5c6661;"><i class="fas fa-info-circle"></i> Your name &amp; phone will appear on the PDF.</small>`;
+        document.getElementById('result').innerHTML = `<div style="background:#e7f0ec; padding:0.8rem; border-radius:0.5rem; color:#1a1e1c;"><strong>✅ Estimate</strong><br/>${MACHINE_NAMES[machine]} | ${days} day(s) | ${urgency}<br/><strong style="font-size:1.3rem; color:#1d4a37;">$${data.quote.total}</strong><br/><small>Quote ID: ${data.quoteId}</small>${dlBtn}${dlHint}</div>`;
       } else {
         document.getElementById('result').innerHTML = `<p>Error: ${data.error}</p>`;
       }
@@ -1317,6 +1314,27 @@
   async function downloadQuote() {
     const q = lastQuote;
     if (!q) return;
+    // Pull the latest name/phone from the form so filling them in (without
+    // regenerating the estimate) still works and lands on the PDF.
+    const nameEl = document.getElementById('name');
+    const phoneEl = document.getElementById('phone');
+    const name = (nameEl && nameEl.value.trim()) || q.name || '';
+    const phone = (phoneEl && phoneEl.value.trim()) || q.phone || '';
+    if (!name || !phone) {
+      const box = document.getElementById('result');
+      if (box && !box.querySelector('.dl-warn')) {
+        box.insertAdjacentHTML('beforeend', '<div class="dl-warn"><i class="fas fa-exclamation-circle"></i> Please enter your name and phone number above, then click Download Quote again.</div>');
+      }
+      if (nameEl) nameEl.focus();
+      return;
+    }
+    q.name = name;
+    q.phone = phone;
+    const box = document.getElementById('result');
+    if (box) {
+      const oldWarn = box.querySelector('.dl-warn');
+      if (oldWarn) oldWarn.remove();
+    }
     try {
       await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
       const { jsPDF } = window.jspdf;
