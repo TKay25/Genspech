@@ -89,7 +89,7 @@
     .nav-links a:hover, .nav-links a.active { color: #fff; }
     .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
     .navbar.scrolled { box-shadow: 0 6px 24px rgba(0,0,0,0.35); }
-    #home, #about, #services, #machines, #supplies, #quote, #contact { scroll-margin-top: 4.5rem; }
+    #home, #about, #services, #machines, #supplies, #projects, #quote, #contact { scroll-margin-top: 4.5rem; }
     .nav-actions { display: flex; align-items: center; gap: .75rem; }
     .nav-phone {
       display: inline-flex; align-items: center; gap: .5rem;
@@ -357,6 +357,38 @@
     @media (max-width: 900px) { .process-layout { grid-template-columns: 1fr; } .process-visual { display: none; } }
     @media (max-width: 560px) { .process-grid { grid-template-columns: 1fr; } }
 
+    /* ============ GALLERY / PROJECTS ============ */
+    .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+    .gallery-item { position: relative; border-radius: var(--radius); overflow: hidden; display: block; height: 14rem; border: 1px solid var(--dark-border); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+    .gallery-item::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.72), transparent 55%); opacity: .85; transition: opacity .3s; }
+    .gallery-item:hover img { transform: scale(1.06); }
+    .gallery-item:hover::after { opacity: 1; }
+    .gallery-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: .9rem 1rem; z-index: 2; }
+    .gallery-caption span { color: #fff; font-family: var(--font-head); font-weight: 700; font-size: 1.2rem; text-transform: uppercase; letter-spacing: .02em; }
+    .gallery-zoom { position: absolute; top: .75rem; right: .75rem; z-index: 3; width: 2rem; height: 2rem; border-radius: 50%; background: rgba(15,19,17,0.55); color: #fff; display: flex; align-items: center; justify-content: center; font-size: .8rem; opacity: 0; transition: opacity .3s, background .2s; }
+    .gallery-item:hover .gallery-zoom { opacity: 1; }
+    .gallery-zoom:hover { background: var(--primary); }
+    @media (max-width: 900px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } .gallery-item { height: 12rem; } }
+    @media (max-width: 560px) { .gallery-grid { grid-template-columns: 1fr; } }
+
+    .lightbox {
+      position: fixed; inset: 0; z-index: 2000;
+      background: rgba(10,13,12,0.92); backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      display: none; align-items: center; justify-content: center; padding: 2rem;
+    }
+    .lightbox:target { display: flex; }
+    .lightbox img { max-width: 100%; max-height: 90vh; border-radius: var(--radius); box-shadow: var(--shadow-lg); }
+    .lb-close {
+      position: absolute; top: 1.25rem; right: 1.5rem;
+      width: 2.75rem; height: 2.75rem; border-radius: 50%;
+      background: var(--primary); color: var(--primary-foreground);
+      display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+      transition: background .2s, transform .2s;
+    }
+    .lb-close:hover { background: var(--primary-dark); transform: scale(1.05); }
+
     /* ============ CONTACT ============ */
     .contact-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
     .contact-card {
@@ -391,7 +423,7 @@
     }
     .chat-toggle:hover { background: var(--primary-dark); transform: scale(1.02); animation: none; }
     .chat-panel {
-      position: absolute; bottom: 4.6rem; right: 0; width: 400px;
+      position: absolute; bottom: 4.6rem; right: 0; width: 460px;
       max-width: calc(100vw - 2rem); height: 580px; max-height: calc(100vh - 7rem);
       background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
       box-shadow: var(--shadow-lg); display: flex; flex-direction: column; overflow: hidden;
@@ -510,6 +542,7 @@
       <a href="#services">Services</a>
       <a href="#machines">Fleet</a>
       <a href="#supplies">Supplies</a>
+      <a href="#projects">Projects</a>
       <a href="#quote">Quote</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -684,6 +717,34 @@
       </div>
     </div>
   </section>
+
+  <!-- ===================== GALLERY / RECENT PROJECTS ===================== -->
+  <section class="section section-dark" id="projects">
+    <div class="shell">
+      <div class="section-head center reveal">
+        <p class="kicker">Our Work</p>
+        <h2 class="section-title">Recent Projects &amp; Developments</h2>
+        <div class="title-bar"></div>
+        <p class="section-desc">A look at recent site developments, equipment deployments and joint projects we've supported across Zimbabwe.</p>
+      </div>
+      <div class="gallery-grid">
+        <a class="gallery-item reveal" href="#proj-1"><img src="{{ url_for('static', filename='images/concrete4.jpeg') }}" alt="Boom Pump Placement" loading="lazy"><div class="gallery-zoom"><i class="fas fa-search-plus"></i></div><div class="gallery-caption"><span>Boom Pump Placement</span></div></a>
+        <a class="gallery-item reveal" href="#proj-2"><img src="{{ url_for('static', filename='images/concrete3.jpeg') }}" alt="Concrete Pumping" loading="lazy"><div class="gallery-zoom"><i class="fas fa-search-plus"></i></div><div class="gallery-caption"><span>Concrete Pumping</span></div></a>
+        <a class="gallery-item reveal" href="#proj-3"><img src="{{ url_for('static', filename='images/concrete-mixer.jpg') }}" alt="Site Concreting" loading="lazy"><div class="gallery-zoom"><i class="fas fa-search-plus"></i></div><div class="gallery-caption"><span>Site Concreting</span></div></a>
+        <a class="gallery-item reveal" href="#proj-4"><img src="{{ url_for('static', filename='images/concrete5.jpeg') }}" alt="Surface Finishing" loading="lazy"><div class="gallery-zoom"><i class="fas fa-search-plus"></i></div><div class="gallery-caption"><span>Surface Finishing</span></div></a>
+        <a class="gallery-item reveal" href="#proj-5"><img src="{{ url_for('static', filename='images/concrete6.jpeg') }}" alt="Concrete Works" loading="lazy"><div class="gallery-zoom"><i class="fas fa-search-plus"></i></div><div class="gallery-caption"><span>Concrete Works</span></div></a>
+        <a class="gallery-item reveal" href="#proj-6"><img src="{{ url_for('static', filename='images/generator.jpg') }}" alt="Power Solutions" loading="lazy"><div class="gallery-zoom"><i class="fas fa-search-plus"></i></div><div class="gallery-caption"><span>Power Solutions</span></div></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lightbox overlays (pure CSS, no JS) -->
+  <div class="lightbox" id="proj-1"><a href="#projects" class="lb-close" aria-label="Close"><i class="fas fa-times"></i></a><img src="{{ url_for('static', filename='images/concrete4.jpeg') }}" alt="Boom Pump Placement"></div>
+  <div class="lightbox" id="proj-2"><a href="#projects" class="lb-close" aria-label="Close"><i class="fas fa-times"></i></a><img src="{{ url_for('static', filename='images/concrete3.jpeg') }}" alt="Concrete Pumping"></div>
+  <div class="lightbox" id="proj-3"><a href="#projects" class="lb-close" aria-label="Close"><i class="fas fa-times"></i></a><img src="{{ url_for('static', filename='images/concrete-mixer.jpg') }}" alt="Site Concreting"></div>
+  <div class="lightbox" id="proj-4"><a href="#projects" class="lb-close" aria-label="Close"><i class="fas fa-times"></i></a><img src="{{ url_for('static', filename='images/concrete5.jpeg') }}" alt="Surface Finishing"></div>
+  <div class="lightbox" id="proj-5"><a href="#projects" class="lb-close" aria-label="Close"><i class="fas fa-times"></i></a><img src="{{ url_for('static', filename='images/concrete6.jpeg') }}" alt="Concrete Works"></div>
+  <div class="lightbox" id="proj-6"><a href="#projects" class="lb-close" aria-label="Close"><i class="fas fa-times"></i></a><img src="{{ url_for('static', filename='images/generator.jpg') }}" alt="Power Solutions"></div>
 
   <!-- ===================== QUOTE ===================== -->
   <section class="section section-primary" id="quote">
