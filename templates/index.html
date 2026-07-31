@@ -89,7 +89,7 @@
     .nav-links a:hover, .nav-links a.active { color: #fff; }
     .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
     .navbar.scrolled { box-shadow: 0 6px 24px rgba(0,0,0,0.35); }
-    #home, #about, #services, #machines, #supplies, #projects, #quote, #contact { scroll-margin-top: 4.5rem; }
+    #home, #about, #services, #supplies, #projects, #quote, #contact { scroll-margin-top: 4.5rem; }
     .nav-actions { display: flex; align-items: center; gap: .75rem; }
     .nav-phone {
       display: inline-flex; align-items: center; gap: .5rem;
@@ -293,9 +293,6 @@
       padding: .25rem .6rem; border-radius: 2px;
     }
     @media (max-width: 900px) { .service-grid { grid-template-columns: 1fr; } }
-
-    /* ============ FLEET ============ */
-    .machine-note { text-align: center; margin-top: 1.1rem; font-size: .82rem; color: rgba(255,255,255,0.6); }
 
     /* ============ SUPPLIES ============ */
     .supplies-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
@@ -542,7 +539,6 @@
     <nav class="nav-links" id="navLinks">
       <a href="#about">About</a>
       <a href="#services">Services</a>
-      <a href="#machines">Fleet</a>
       <a href="#supplies">Supplies</a>
       <a href="#projects">Projects</a>
       <a href="#quote">Quote</a>
@@ -672,78 +668,6 @@
           </div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- ===================== FLEET / MACHINES ===================== -->
-  <section class="section section-dark" id="machines">
-    <div class="shell">
-      <div class="section-head center reveal">
-        <p class="kicker">Our Fleet</p>
-        <h2 class="section-title">Machines We Hire</h2>
-        <div class="title-bar"></div>
-      </div>
-      <div class="service-grid">
-        <div class="card service-card reveal">
-          <div class="service-top"><img src="{{ url_for('static', filename='images/concrete-mixer.jpg') }}" alt="Concrete Mixer" loading="lazy" /></div>
-          <div class="body">
-            <h3>Concrete Mixer</h3>
-            <p>Combines cement, water &amp; aggregates for reliable site mixing.</p>
-          </div>
-        </div>
-        <div class="card service-card reveal">
-          <div class="service-top"><img src="{{ url_for('static', filename='images/concrete3.jpeg') }}" alt="Static Pump" loading="lazy" /></div>
-          <div class="body">
-            <h3>Static Pump</h3>
-            <p>Essential for efficient concrete pumping on any site.</p>
-          </div>
-        </div>
-        <div class="card service-card reveal">
-          <div class="service-top"><img src="{{ url_for('static', filename='images/concrete4.jpeg') }}" alt="Boom Pump" loading="lazy" /></div>
-          <div class="body">
-            <h3>Boom Pump</h3>
-            <p>Precision &amp; reliability in concrete placement.</p>
-          </div>
-        </div>
-        <div class="card service-card reveal">
-          <div class="service-top"><img src="{{ url_for('static', filename='images/concrete5.jpeg') }}" alt="Power Float" loading="lazy" /></div>
-          <div class="body">
-            <h3>Power Float</h3>
-            <p>Smooth &amp; finish concrete surfaces to a high standard.</p>
-          </div>
-        </div>
-        <div class="card service-card reveal">
-          <div class="service-top"><img src="{{ url_for('static', filename='images/concrete6.jpeg') }}" alt="Poker Vibrator" loading="lazy" /></div>
-          <div class="body">
-            <h3>Poker Vibrator</h3>
-            <p>Eliminate air pockets in fresh concrete.</p>
-          </div>
-        </div>
-        <div class="card service-card reveal">
-          <div class="service-top"><img src="{{ url_for('static', filename='images/mobile concrete mixer.jpeg') }}" alt="Mobile Concrete Mixer" loading="lazy" /></div>
-          <div class="body">
-            <h3>Mobile Concrete Mixer</h3>
-            <p>Efficient &amp; portable mixing solution for remote sites.</p>
-          </div>
-        </div>
-        <div class="card service-card reveal">
-          <div class="service-top"><img src="{{ url_for('static', filename='images/concrete-mixer.jpg') }}" alt="3.5 Cubic Concrete Mixer" loading="lazy" /></div>
-          <div class="body">
-            <h3>3.5 Cubic Mixer</h3>
-            <p>High-output mixing for larger pours.</p>
-            <div class="uses"><span>$550/day dry rate</span><span>Fuel ~60L/day</span></div>
-          </div>
-        </div>
-        <div class="card service-card reveal">
-          <div class="service-top"><img src="{{ url_for('static', filename='images/mixer 2.jpeg') }}" alt="1 Cubic Manual Loading Mixer" loading="lazy" /></div>
-          <div class="body">
-            <h3>1 Cubic Manual Mixer</h3>
-            <p>Compact, manual-loading blue unit.</p>
-            <div class="uses"><span>$200/day</span></div>
-          </div>
-        </div>
-      </div>
-      <p class="machine-note"><i class="fas fa-clock"></i> Our standard day is a 9-hour shift. Fuel surcharges may apply based on consumption.</p>
     </div>
   </section>
 
@@ -1045,7 +969,6 @@
         <li><a href="#home">Home</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#services">Services</a></li>
-        <li><a href="#machines">Fleet</a></li>
         <li><a href="#supplies">Supplies</a></li>
         <li><a href="#quote">Quote</a></li>
         <li><a href="#contact">Contact</a></li>
