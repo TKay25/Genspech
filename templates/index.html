@@ -336,7 +336,6 @@
     .trust-icon:hover { transform: translateY(-2px); border-color: var(--primary); box-shadow: var(--shadow-sm); }
     .trust-icon i { font-size: 1.45rem; color: var(--primary); margin-bottom: .5rem; display: block; }
     .trust-icon span { display: block; font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--foreground); line-height: 1.35; }
-    .trust-icon img { height: 1.85rem; width: auto; object-fit: contain; margin: 0 auto .45rem; }
     @media (max-width: 820px) { .trust-grid { grid-template-columns: 1fr; } }
 
     /* ============ CERTIFICATE ============ */
@@ -351,8 +350,21 @@
 
     /* ============ PROCESS ============ */
     .process-layout { display: grid; grid-template-columns: .85fr 1.15fr; gap: 2rem; align-items: center; }
-    .process-visual { background: #fff; border-radius: var(--radius); padding: 1rem; box-shadow: var(--shadow-md); }
-    .process-visual img { width: 100%; object-fit: contain; }
+    .process-visual { background: #fff; border-radius: var(--radius); padding: 1.1rem; box-shadow: var(--shadow-md); }
+    .process-icons { display: grid; grid-template-columns: repeat(2, 1fr); gap: .75rem; }
+    .process-icon {
+      background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1.25rem .75rem; text-align: center; position: relative;
+      transition: transform .2s, box-shadow .2s, border-color .2s;
+    }
+    .process-icon:hover { transform: translateY(-2px); border-color: var(--primary); box-shadow: var(--shadow-sm); }
+    .process-icon .p-step {
+      position: absolute; top: .5rem; right: .7rem;
+      font-family: var(--font-head); font-weight: 900; font-size: 1.6rem; line-height: 1;
+      color: var(--primary); opacity: .22;
+    }
+    .process-icon i { font-size: 1.6rem; color: var(--primary); margin-bottom: .5rem; display: block; }
+    .process-icon span { display: block; font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--foreground); }
     .process-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
     .process-card { background: var(--dark-soft); border: 1px solid var(--dark-border); border-radius: var(--radius); padding: 1.5rem; position: relative; overflow: hidden; }
     .process-card .step { font-family: var(--font-head); font-weight: 900; font-size: 3rem; line-height: 1; color: var(--primary-bright); opacity: .22; position: absolute; top: .6rem; right: 1rem; }
@@ -868,7 +880,7 @@
         <div class="trust-icon"><i class="fas fa-boxes-stacked"></i><span>Material Sourcing</span></div>
         <div class="trust-icon"><i class="fas fa-headset"></i><span>24/7 Emergency</span></div>
         <div class="trust-icon"><i class="fas fa-file-shield"></i><span>ZIMRA Compliant</span></div>
-        <div class="trust-icon"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="Genspech" loading="lazy"><span>Est. 2019</span></div>
+        <div class="trust-icon"><i class="fas fa-medal"></i><span>Quality Assured</span></div>
       </div>
     </div>
   </section>
@@ -892,8 +904,11 @@
         <div class="title-bar"></div>
       </div>
       <div class="process-layout">
-        <div class="process-visual reveal">
-          <img src="{{ url_for('static', filename='images/hero-operations.svg') }}" alt="Our Process" loading="lazy" />
+        <div class="process-visual process-icons reveal">
+          <div class="process-icon"><span class="p-step">01</span><i class="fas fa-clipboard-list"></i><span>Request</span></div>
+          <div class="process-icon"><span class="p-step">02</span><i class="fas fa-calculator"></i><span>Estimate</span></div>
+          <div class="process-icon"><span class="p-step">03</span><i class="fas fa-truck-fast"></i><span>Deploy</span></div>
+          <div class="process-icon"><span class="p-step">04</span><i class="fas fa-handshake"></i><span>Deliver</span></div>
         </div>
         <div class="process-grid">
           <div class="process-card reveal"><span class="step">01</span><h3>Request</h3><p>Tell us machine, timeline, site needs.</p></div>
