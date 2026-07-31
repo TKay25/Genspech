@@ -310,6 +310,8 @@
     .supplies-sub h3 { font-family: var(--font-head); font-weight: 800; font-size: 1.7rem; text-transform: uppercase; color: var(--foreground); line-height: 1; }
     .supplies-sub .title-bar { width: 4.25rem; height: 4px; background: var(--primary); margin-top: .7rem; }
     .hire-btn { margin-top: 1.1rem; width: 100%; }
+    select.preselected { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(29,74,55,0.25); animation: preFlash 1.4s ease; }
+    @keyframes preFlash { 0% { background: #e7f0ec; } 100% { background: #fff; } }
     @media (max-width: 900px) { .supplies-grid { grid-template-columns: 1fr; } }
 
     /* ============ QUOTE ============ */
@@ -1224,7 +1226,15 @@
       const machineKey = btn.getAttribute('data-machine');
       if (machineKey) {
         const sel = document.getElementById('machine');
-        if (sel) sel.value = machineKey;
+        if (sel) {
+          sel.value = machineKey;
+          // draw attention to the pre-selected machine + make sure it's visible
+          sel.classList.add('preselected');
+          setTimeout(() => {
+            sel.scrollIntoView({ block: 'center', behavior: 'smooth' });
+          }, 400);
+          setTimeout(() => sel.classList.remove('preselected'), 2600);
+        }
       }
     });
   });
