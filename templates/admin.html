@@ -42,6 +42,11 @@
     th { background: #e8f7ec; color: #1e4f28; }
     tr:hover td { background: #f7fcf8; }
     .mono { font-family: Consolas, monospace; font-size: 0.86rem; }
+    .tools { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; margin: 0 0 1rem; flex-wrap: wrap; }
+    .tools p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+    .btn { display: inline-flex; align-items: center; gap: 0.5rem; font-family: inherit; font-weight: 700; font-size: 0.88rem; padding: 0.6rem 1.1rem; border: none; border-radius: 10px; background: var(--brand); color: #fff; cursor: pointer; transition: opacity .2s, transform .15s; }
+    .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn:disabled { opacity: 0.6; cursor: wait; }
     @media (max-width: 900px) {
       .head { grid-template-columns: 1fr; }
       table { font-size: 0.82rem; }
@@ -64,6 +69,11 @@
         <p>Last Updated</p>
         <h2>{{ quotes[0].created_at.strftime('%Y-%m-%d %H:%M') if quotes else 'No data' }}</h2>
       </article>
+    </div>
+
+    <div class="tools">
+      <p><strong>{{ total_downloads }}</strong> quote PDF(s) downloaded</p>
+      <button type="button" class="btn" id="logPdfBtn">&#128229; Download Contact Log (PDF)</button>
     </div>
 
     <table>
@@ -99,5 +109,29 @@
       </tbody>
     </table>
   </main>
+  <script src="{{ url_for('static', filename='js/log-export.js') }}"></script>
+  <script>
+    (function () {
+      var btn = document.getElementById('logPdfBtn');
+      if (!btn) return;
+      var key = new URLSearchParams(location.search).get('key') || '';
+      btn.addEventListener('click', async function () {
+        btn.disabled = true;
+        var original = btn.textContent;
+        btn.textContent = 'Preparing PDF...';
+        try {
+          var res = await fetch('/api/export-log?key=' + encodeURIComponent(key));
+          var data = await res.json();
+          if (!data.ok) { alert('Unauthorized or invalid key.'); return; }
+          await window.buildLogPdf(data.logs);
+        } catch (e) {
+          alert('Could not generate the log PDF.');
+        } finally {
+          btn.disabled = false;
+          btn.textContent = original;
+        }
+      });
+    })();
+  </script>
 </body>
 </html>

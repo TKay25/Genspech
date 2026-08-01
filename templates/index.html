@@ -331,6 +331,20 @@
     .form-note { margin-top: .9rem; font-size: .75rem; color: var(--muted-foreground); line-height: 1.6; }
     .result { background: var(--card); color: var(--foreground); border-left: 4px solid var(--primary); border-radius: var(--radius); padding: 1rem; margin-top: 1rem; box-shadow: var(--shadow-sm); }
     .dl-warn { margin-top: .6rem; padding: .55rem .7rem; background: #fdf0ec; border: 1px solid #e8b7a8; color: #8a3b22; border-radius: var(--radius); font-size: .82rem; }
+
+    /* ============ DOWNLOAD LOG MODAL ============ */
+    .log-modal { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; background: rgba(10,15,13,0.62); padding: 1rem; }
+    .log-modal[hidden] { display: none; }
+    .log-modal-box { background: #fff; color: var(--foreground); border-radius: var(--radius); padding: 1.6rem; width: min(380px, 100%); box-shadow: 0 20px 60px rgba(0,0,0,.4); }
+    .log-modal-box h3 { font-family: var(--font-head); font-size: 1.25rem; text-transform: uppercase; letter-spacing: .04em; color: var(--primary); margin: 0 0 .35rem; }
+    .log-modal-box p { color: var(--muted-foreground); font-size: .9rem; margin: 0 0 1rem; }
+    .log-modal-box input[type="password"] { width: 100%; padding: .7rem .85rem; border: 1px solid var(--border); border-radius: var(--radius); font-family: var(--font-body); font-size: .95rem; margin-bottom: .9rem; outline: none; color: var(--foreground); }
+    .log-modal-box input[type="password"]:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(29,74,55,0.15); }
+    .log-modal-actions { display: flex; gap: .6rem; }
+    .log-modal-actions .btn { flex: 1; }
+    #logMsg { margin: .75rem 0 0; font-size: .85rem; min-height: 1em; }
+    #logMsg.err { color: #b33a2b; }
+    #logMsg.ok { color: var(--primary); }
     @media (max-width: 900px) { .quote-layout { grid-template-columns: 1fr; } .field-grid { grid-template-columns: 1fr; } }
 
     /* ============ TRUST ============ */
@@ -1093,6 +1107,7 @@
         <li><a href="#supplies">Supplies</a></li>
         <li><a href="#quote">Quote</a></li>
         <li><a href="#contact">Contact</a></li>
+        <li><a href="#" id="logLink">Download Log</a></li>
         <li><a href="/admin">Admin</a></li>
       </ul>
     </div>
@@ -1114,6 +1129,21 @@
   </div>
 </footer>
 
+<!-- ===================== DOWNLOAD LOG (password-protected) ===================== -->
+<div class="log-modal" id="logModal" hidden>
+  <div class="log-modal-box">
+    <h3>Download Contact Log</h3>
+    <p>Enter the access password to download the log of names &amp; phone numbers as a PDF.</p>
+    <input type="password" id="logPassword" placeholder="Password" autocomplete="off" />
+    <div class="log-modal-actions">
+      <button type="button" class="btn btn-primary" id="logDownloadBtn"><i class="fas fa-file-pdf"></i> Download PDF</button>
+      <button type="button" class="btn" id="logCancelBtn">Cancel</button>
+    </div>
+    <p id="logMsg"></p>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/log-export.js') }}"></script>
 <script>
   // ============ MOBILE MENU ============
   document.getElementById('menuToggle')?.addEventListener('click', () => {
@@ -1335,6 +1365,12 @@
       const oldWarn = box.querySelector('.dl-warn');
       if (oldWarn) oldWarn.remove();
     }
+    // Log this download (fire-and-forget; never blocks the PDF)
+    fetch('/api/log-download', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: q.name, phone: q.phone, machine: q.machine })
+    }).catch(() => {});
     try {
       await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
       const { jsPDF } = window.jspdf;
@@ -1668,6 +1704,42 @@
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(r => observer.observe(r));
   document.getElementById('year').innerText = new Date().getFullYear();
+
+  // ============ DOWNLOAD LOG (password-protected PDF) ============
+  const logModal = document.getElementById('logModal');
+  const logPassword = document.getElementById('logPassword');
+  const logMsg = document.getElementById('logMsg');
+  const logDownloadBtn = document.getElementById('logDownloadBtn');
+
+  document.getElementById('logLink')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (!logModal) return;
+    logModal.hidden = false;
+    if (logPassword) { logPassword.value = ''; if (logMsg) logMsg.textContent = ''; logPassword.focus(); }
+  });
+  document.getElementById('logCancelBtn')?.addEventListener('click', () => { if (logModal) logModal.hidden = true; });
+  if (logModal) logModal.addEventListener('click', (e) => { if (e.target === logModal) logModal.hidden = true; });
+
+  logDownloadBtn?.addEventListener('click', async () => {
+    const key = (logPassword ? logPassword.value : '').trim();
+    if (logMsg) { logMsg.className = ''; logMsg.textContent = 'Downloading...'; }
+    logDownloadBtn.disabled = true;
+    try {
+      const res = await fetch('/api/export-log?key=' + encodeURIComponent(key));
+      const data = await res.json();
+      if (!data.ok) {
+        if (logMsg) { logMsg.className = 'err'; logMsg.textContent = 'Incorrect password. Please try again.'; }
+        return;
+      }
+      await window.buildLogPdf(data.logs);
+      if (logMsg) { logMsg.className = 'ok'; logMsg.textContent = 'Log downloaded (' + data.count + ' entries).'; }
+      setTimeout(() => { if (logModal) logModal.hidden = true; }, 1400);
+    } catch (err) {
+      if (logMsg) { logMsg.className = 'err'; logMsg.textContent = 'Could not download the log. Please try again.'; }
+    } finally {
+      logDownloadBtn.disabled = false;
+    }
+  });
 </script>
 </body>
 </html>

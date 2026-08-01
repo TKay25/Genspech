@@ -93,6 +93,20 @@ class QuoteRequest(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
 
+class LeadLog(db.Model):
+    """Lightweight log of every name/phone captured when a visitor generates a
+    quote or downloads a quote PDF. action is either "quote" or "download"."""
+
+    __tablename__ = "lead_logs"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), nullable=True)
+    phone = db.Column(db.String(40), nullable=True)
+    machine = db.Column(db.String(60), nullable=True)
+    action = db.Column(db.String(20), nullable=False, default="quote")
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+
 @dataclass
 class QuoteResult:
     machine: str
@@ -257,6 +271,18 @@ def save_quote_request(
     return int(record.id)
 
 
+def log_lead(*, action: str, name: str | None, phone: str | None, machine: str | None) -> None:
+    """Record a lead event (quote generated or PDF downloaded). Never raises,
+    so logging can't break the request that triggered it."""
+    if not name and not phone:
+        return
+    try:
+        db.session.add(LeadLog(name=name, phone=phone, machine=machine, action=action))
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+
+
 @app.before_request
 def init_db() -> None:
     db.create_all()
@@ -277,11 +303,13 @@ def admin() -> str:
     quotes = QuoteRequest.query.order_by(QuoteRequest.created_at.desc()).limit(200).all()
     total_quotes = QuoteRequest.query.count()
     total_value = db.session.query(db.func.coalesce(db.func.sum(QuoteRequest.total), 0.0)).scalar() or 0.0
+    total_downloads = LeadLog.query.filter_by(action="download").count()
     return render_template(
         "admin.html",
         quotes=quotes,
         total_quotes=total_quotes,
         total_value=round(float(total_value), 2),
+        total_downloads=total_downloads,
     )
 
 
@@ -313,8 +341,43 @@ def api_quote():
         name=name,
         phone=phone,
     )
+    log_lead(action="quote", name=name, phone=phone, machine=quote.machine)
 
     return jsonify({"ok": True, "quote": quote.as_dict(), "quoteId": quote_id})
+
+
+@app.post("/api/log-download")
+def api_log_download():
+    """Client calls this when a visitor clicks Download Quote."""
+    payload = request.get_json(silent=True) or {}
+    name = str(payload.get("name", "")).strip() or None
+    phone = str(payload.get("phone", "")).strip() or None
+    machine = str(payload.get("machine", "")).strip() or None
+    log_lead(action="download", name=name, phone=phone, machine=machine)
+    return jsonify({"ok": True})
+
+
+@app.get("/api/export-log")
+def api_export_log():
+    """Password-protected export of the captured contact log (JSON)."""
+    key = request.args.get("key", "")
+    expected_key = os.getenv("ADMIN_DASHBOARD_KEY", "genspech-admin")
+    if key != expected_key:
+        return jsonify({"ok": False, "error": "Unauthorized"}), 403
+
+    logs = LeadLog.query.order_by(LeadLog.created_at.desc()).limit(1000).all()
+    data = [
+        {
+            "id": r.id,
+            "name": r.name or "",
+            "phone": r.phone or "",
+            "machine": r.machine or "",
+            "action": r.action,
+            "created": r.created_at.strftime("%Y-%m-%d %H:%M"),
+        }
+        for r in logs
+    ]
+    return jsonify({"ok": True, "count": len(data), "logs": data})
 
 
 @app.post("/api/chatbot")
@@ -345,6 +408,7 @@ def api_chatbot():
             name=name,
             phone=phone,
         )
+        log_lead(action="quote", name=name, phone=phone, machine=quote.machine)
         response_payload["quote"] = quote.as_dict()
         response_payload["quoteId"] = quote_id
 
