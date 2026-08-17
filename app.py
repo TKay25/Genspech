@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
 
-from flask import Flask, Response, abort, jsonify, render_template, request
+from flask import Flask, Response, abort, jsonify, render_template, request, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -336,6 +336,24 @@ def sitemap_xml():
         "</urlset>\n"
     )
     return Response(xml, mimetype="application/xml")
+
+
+@app.get("/<path:filename>")
+def google_verification(filename: str):
+    """Serve Google Search Console HTML verification files (e.g. google1234....html).
+
+    Google's HTML-file method only checks that the file exists at the site root and
+    contains a single line: 'google-site-verification: <filename>'. The token is
+    embedded in the filename Google generates, so we can serve it directly. If you'd
+    rather use the actual downloaded file, drop it into the /verification folder and
+    it will be served byte-for-byte instead.
+    """
+    if re.fullmatch(r"google[a-zA-Z0-9_-]+\.html", filename):
+        local = os.path.join("verification", filename)
+        if os.path.isfile(local):
+            return send_from_directory("verification", filename)
+        return Response(f"google-site-verification: {filename}\n", mimetype="text/html")
+    abort(404)
 
 
 @app.get("/admin")
