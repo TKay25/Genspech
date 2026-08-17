@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
 
-from flask import Flask, abort, jsonify, render_template, request
+from flask import Flask, Response, abort, jsonify, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -17,6 +17,26 @@ def normalize_database_url(url: str) -> str:
 
 
 app = Flask(__name__)
+
+
+def _normalize_site_url(url: str) -> str:
+    """Make sure SITE_URL is an absolute URL with no trailing slash.
+
+    Accepts 'www.genspech.co.zw' or 'genspech.co.zw' (scheme added) as well
+    as fully-qualified 'https://www.genspech.co.zw'.
+    """
+    url = (url or "").strip()
+    if not url:
+        return url
+    if not url.startswith(("http://", "https://")):
+        url = "https://" + url
+    return url.rstrip("/")
+
+
+# Public site URL used for canonical tags, sitemap and structured data.
+# Override with the SITE_URL env var if needed (e.g. staging).
+SITE_URL = _normalize_site_url(os.getenv("SITE_URL", "https://www.genspech.co.zw"))
+
 raw_database_url = os.getenv(
     "DATABASE_URL",
     "postgresql://lmsdatabase_8ag3_user:6WD9lOnHkiU7utlUUjT88m4XgEYQMTLb@dpg-ctp9h0aj1k6c739h9di0-a.oregon-postgres.render.com/lmsdatabase_8ag3",
@@ -290,7 +310,32 @@ def init_db() -> None:
 
 @app.get("/")
 def home() -> str:
-    return render_template("index.html")
+    return render_template("index.html", site_url=SITE_URL)
+
+
+@app.get("/robots.txt")
+def robots_txt():
+    content = (
+        "User-agent: *\n"
+        "Allow: /\n"
+        "Disallow: /admin\n"
+        "Disallow: /api/\n"
+        "\n"
+        f"Sitemap: {SITE_URL}/sitemap.xml\n"
+    )
+    return Response(content, mimetype="text/plain")
+
+
+@app.get("/sitemap.xml")
+def sitemap_xml():
+    xml = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        f'  <url><loc>{SITE_URL}/</loc><lastmod>2026-08-16</lastmod>'
+        "<changefreq>weekly</changefreq><priority>1.0</priority></url>\n"
+        "</urlset>\n"
+    )
+    return Response(xml, mimetype="application/xml")
 
 
 @app.get("/admin")
