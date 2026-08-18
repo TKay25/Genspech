@@ -111,6 +111,21 @@
     ]
   }
   </script>
+  <!-- FAQ Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "How do I get a hire quote?", "acceptedAnswer": { "@type": "Answer", "text": "Use the instant quote form, the chat assistant, or WhatsApp us at 0718 029 974. 1 day equals a 9-hour shift." } },
+      { "@type": "Question", "name": "Where do you deliver?", "acceptedAnswer": { "@type": "Answer", "text": "We operate from 52 Kelvin Road, Graniteside, Harare and dispatch equipment and supplies across Zimbabwe." } },
+      { "@type": "Question", "name": "Is fuel included in the hire rate?", "acceptedAnswer": { "@type": "Answer", "text": "For dry-rate machines such as the 3.5 cubic mixer, fuel is not included (approx. 60L/day). Confirm fuel terms for your machine when you book." } },
+      { "@type": "Question", "name": "Do you supply ready-mix concrete and materials?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, Genspech supplies ready-mix concrete and construction materials in addition to equipment hire." } },
+      { "@type": "Question", "name": "Are you a registered and compliant contractor?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, Genspech Investments is ZIMRA registered with tax clearance available." } },
+      { "@type": "Question", "name": "Can you dispatch urgently?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, we offer 24/7 support with standard, priority and urgent dispatch options." } }
+    ]
+  }
+  </script>
   <link rel="preload" as="image" href="{{ url_for('static', filename='images/concrete-mixer.jpg') }}" />
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -194,7 +209,7 @@
     .nav-links a:hover, .nav-links a.active { color: #fff; }
     .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
     .navbar.scrolled { box-shadow: 0 6px 24px rgba(0,0,0,0.35); }
-    #home, #about, #generator, #supplies, #projects, #quote, #contact, section[id^="sec-"] { scroll-margin-top: 4.5rem; }
+    #home, #about, #generator, #projects, #quote, #contact, section[id^="sec-"] { scroll-margin-top: 4.5rem; }
     .nav-actions { display: flex; align-items: center; gap: .75rem; }
     .nav-phone {
       display: inline-flex; align-items: center; gap: .5rem;
@@ -738,7 +753,8 @@
     .nav-inner { height: 4.25rem; transition: height .25s ease; }
     .navbar.scrolled { background: rgba(255,255,255,0.94); box-shadow: 0 10px 30px rgba(12,20,16,0.10); }
     .navbar.scrolled .nav-inner { height: 3.8rem; }
-    .brand-name { color: var(--primary); font-size: 1.15rem; letter-spacing: .03em; }
+    .brand { flex-shrink: 0; white-space: nowrap; }
+    .brand-name { color: var(--primary); font-size: 1.15rem; letter-spacing: .03em; white-space: nowrap; }
     .brand-tag { color: var(--muted-foreground); }
     .nav-links a { color: var(--muted-foreground); font-size: .72rem; }
     .nav-links a::after { background: var(--primary); height: 2px; bottom: -.45rem; }
@@ -1139,6 +1155,88 @@
       .hero-stats article + article { border-left: none; }
       .hero-stats article:nth-child(odd) + article { border-left: 1px solid rgba(255,255,255,0.10); }
     }
+
+    /* ==========================================================
+       UI UPGRADE V — world-class rental patterns
+       (availability, details modal, FAQ, mobile action bar)
+       ========================================================== */
+    .avail-badge {
+      position: absolute; top: .85rem; left: .85rem; z-index: 3;
+      display: inline-flex; align-items: center; gap: .35rem;
+      background: rgba(10,14,12,0.72); border: 1px solid rgba(255,255,255,0.22);
+      color: #fff; font-size: .6rem; font-weight: 800; letter-spacing: .08em;
+      text-transform: uppercase; padding: .3rem .65rem; border-radius: 999px;
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    }
+    .avail-badge i { color: var(--primary-bright); font-size: .45rem; }
+    .details-link {
+      display: inline-flex; align-items: center; gap: .45rem; margin-top: .7rem;
+      background: none; border: none; cursor: pointer; color: var(--muted-foreground);
+      font-family: var(--font-body); font-size: .72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .08em; padding: 0; transition: color .2s;
+    }
+    .details-link:hover { color: var(--primary); }
+    .details-link i { color: var(--primary-bright); font-size: .7rem; }
+
+    /* FAQ */
+    .faq-list { max-width: 52rem; margin: 0 auto; display: flex; flex-direction: column; gap: .7rem; }
+    .faq-item {
+      background: var(--card); border: 1px solid var(--border); border-radius: calc(var(--radius) + 4px);
+      overflow: hidden; box-shadow: var(--shadow-sm); transition: box-shadow .25s, border-color .25s;
+    }
+    .faq-item:hover { border-color: var(--primary-bright); box-shadow: var(--shadow-md); }
+    .faq-item summary {
+      cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      padding: 1.1rem 1.3rem; font-weight: 700; font-size: .98rem; color: var(--foreground);
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after { content: '+'; font-size: 1.3rem; line-height: 1; color: var(--primary-bright); font-weight: 800; transition: transform .2s; }
+    .faq-item[open] summary::after { content: '−'; }
+    .faq-item p { padding: 0 1.3rem 1.2rem; color: var(--muted-foreground); font-size: .92rem; line-height: 1.7; margin: 0; }
+
+    /* Machine details modal */
+    .machine-modal { position: fixed; inset: 0; z-index: 2000; display: flex; align-items: center; justify-content: center; background: rgba(10,13,12,0.8); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); padding: 1.2rem; }
+    .machine-modal[hidden] { display: none; }
+    .machine-modal-box {
+      background: var(--card); border-radius: calc(var(--radius) + 6px); overflow: hidden;
+      width: min(640px, 100%); max-height: 90vh; overflow-y: auto; position: relative; box-shadow: var(--shadow-lg);
+    }
+    .machine-modal-box img { width: 100%; height: 16rem; object-fit: cover; }
+    .machine-modal-close {
+      position: absolute; top: .9rem; right: .9rem; width: 2.6rem; height: 2.6rem; border-radius: 50%;
+      background: rgba(10,14,12,0.6); border: 1px solid rgba(255,255,255,0.3); color: #fff;
+      font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s;
+    }
+    .machine-modal-close:hover { background: var(--primary); }
+    .machine-modal-body { padding: 1.4rem 1.5rem 1.6rem; display: flex; flex-direction: column; gap: .6rem; }
+    .machine-modal-body h3 { font-family: var(--font-head); font-weight: 900; font-size: 1.7rem; text-transform: uppercase; color: var(--foreground); line-height: 1; }
+    .machine-modal-price { font-family: var(--font-head); font-weight: 800; font-size: 1.2rem; color: var(--primary); }
+    .machine-modal-body p { color: var(--muted-foreground); line-height: 1.7; font-size: .95rem; }
+    .machine-modal-actions { display: flex; gap: .7rem; flex-wrap: wrap; margin-top: .4rem; }
+    .machine-modal-actions .btn { flex: 1; }
+
+    /* Sticky mobile action bar */
+    .mobile-cta { display: none; }
+    @media (max-width: 700px) {
+      .mobile-cta {
+        display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 1001;
+        background: var(--dark); border-top: 1px solid var(--dark-border);
+        box-shadow: 0 -8px 24px rgba(0,0,0,0.3);
+      }
+      .mobile-cta a {
+        flex: 1; display: flex; flex-direction: column; align-items: center; gap: .18rem;
+        color: rgba(255,255,255,0.85); font-size: .6rem; font-weight: 800;
+        text-transform: uppercase; letter-spacing: .08em; padding: .55rem .3rem;
+      }
+      .mobile-cta a i { font-size: 1.05rem; color: var(--primary-bright); }
+      .mobile-cta a.m-cta-primary { background: var(--grad-cta); color: #fff; }
+      .mobile-cta a.m-cta-primary i { color: #fff; }
+      body { padding-bottom: 3.3rem; }
+      .wa-float { display: none; }
+      .chatbot-shell { bottom: 4.1rem; }
+      .chat-panel { max-height: calc(100vh - 11rem); }
+      .to-top { bottom: 4.6rem; }
+    }
   </style>
 </head>
 <body>
@@ -1161,7 +1259,6 @@
       <a href="#sec-{{ sd.section.key }}">{{ sd.section.nav_label }}</a>
       {% endfor %}
       <a href="#generator">Generator Hire</a>
-      <a href="#supplies">Supplies</a>
       <a href="#projects">Projects</a>
       <a href="#quote">Quote</a>
       <a href="#contact">Contact</a>
@@ -1311,10 +1408,11 @@
       <div class="supplies-grid">
         {% for c in sd.cards %}
         <div class="card media-card supply-card reveal">
-          <div class="media"><img src="{{ url_for('static', filename='images/' + c.image) }}" alt="{{ c.title }}" loading="lazy"><span class="rate-chip">{{ c.price }}</span><h3>{{ c.title }}</h3></div>
+          <div class="media"><img src="{{ url_for('static', filename='images/' + c.image) }}" alt="{{ c.title }}" loading="lazy"><span class="avail-badge"><i class="fas fa-circle"></i> Available</span><span class="rate-chip">{{ c.price }}</span><h3>{{ c.title }}</h3></div>
           <div class="body">
             <p>{{ c.description }}</p>
             <a class="btn btn-primary hire-btn" href="#quote" data-machine="{{ c.machine_key }}"><i class="fas fa-truck"></i> Request to Hire</a>
+            <button type="button" class="details-link machine-details" data-title="{{ c.title }}" data-desc="{{ c.description }}" data-price="{{ c.price }}" data-image="{{ c.image }}" data-machine="{{ c.machine_key }}"><i class="fas fa-expand"></i> View details</button>
           </div>
         </div>
         {% endfor %}
@@ -1345,31 +1443,6 @@
             <div class="gen-icon"><i class="fas fa-hospital"></i><span>Hospitals</span></div>
           </div>
           <a class="btn btn-primary hire-btn" href="#quote" data-machine="generator"><i class="fas fa-bolt"></i> Request a Generator</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== SUPPLIES ===================== -->
-  <section class="section" id="supplies">
-    <div class="shell">
-      <div class="section-head reveal">
-        <p class="kicker">Materials &amp; Supplies</p>
-        <h2 class="section-title">Construction Supplies</h2>
-        <div class="title-bar"></div>
-      </div>
-      <div class="supplies-grid">
-        <div class="card media-card supply-card reveal">
-          <div class="media"><img src="{{ url_for('static', filename='images/mixer 2.jpeg') }}" alt="Concrete Mixer" loading="lazy"><h3>Concrete Mixers</h3></div>
-          <div class="body"><p>3.5 Cubic (dry rate $550/day) &amp; 1 Cubic Manual Loading ($200/day). Fuel ~60L/day. Standard day = 9hr shift.</p></div>
-        </div>
-        <div class="card media-card supply-card reveal">
-          <div class="media"><img src="{{ url_for('static', filename='images/concrete-mixer.jpg') }}" alt="Concrete Batching" loading="lazy"><h3>Ready-Mix Concrete</h3></div>
-          <div class="body"><p>Quality-assured concrete supply for foundations, slabs, and structures.</p></div>
-        </div>
-        <div class="card media-card supply-card reveal">
-          <div class="media"><img src="{{ url_for('static', filename='images/generator.jpg') }}" alt="Generator" loading="lazy"><h3>Power Solutions</h3></div>
-          <div class="body"><p>Generators &amp; power distribution for sites without grid access.</p></div>
         </div>
       </div>
     </div>
@@ -1520,6 +1593,44 @@
     </div>
   </section>
 
+  <!-- ===================== FAQ ===================== -->
+  <section class="section" id="faq">
+    <div class="shell">
+      <div class="section-head center reveal">
+        <p class="kicker">Help &amp; Support</p>
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <div class="title-bar"></div>
+        <p class="section-desc">Everything you need to know about hiring with Genspech — answers in seconds.</p>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item reveal" open>
+          <summary>How do I get a hire quote?</summary>
+          <p>Use the instant quote form, the chat assistant, or WhatsApp us at 0718 029 974 — you'll get an estimate in under a minute. 1 day equals a 9-hour shift.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary>Where do you deliver?</summary>
+          <p>We operate from 52 Kelvin Road, Graniteside, Harare and dispatch equipment, concrete and supplies across Zimbabwe — including urgent site calls.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary>Is fuel included in the hire rate?</summary>
+          <p>For dry-rate machines such as the 3.5 cubic mixer, fuel is not included (approx. 60L/day). We'll confirm the exact fuel terms for your machine when you book.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary>Do you supply ready-mix concrete and materials?</summary>
+          <p>Yes — alongside equipment hire, Genspech supplies ready-mix concrete and construction materials for foundations, slabs and structures.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary>Are you registered and compliant?</summary>
+          <p>Absolutely. Genspech Investments is ZIMRA registered with tax clearance available on request.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary>Can you dispatch urgently?</summary>
+          <p>Yes. We offer 24/7 support with standard, priority and urgent dispatch options so your project keeps moving.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
   <!-- ===================== CONTACT ===================== -->
   <section class="section" id="contact">
     <div class="shell">
@@ -1571,6 +1682,30 @@
 <a class="wa-float" href="https://wa.me/263718029974?text=Hello%20Genspech!%20I%20would%20like%20a%20hire%20quote." target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
 <button class="to-top" id="toTop" aria-label="Back to top"><i class="fas fa-chevron-up"></i></button>
 
+<!-- ===================== MACHINE DETAILS MODAL ===================== -->
+<div class="machine-modal" id="machineModal" hidden>
+  <div class="machine-modal-box">
+    <button class="machine-modal-close" id="machineModalClose" aria-label="Close">&times;</button>
+    <img id="mmImg" alt="">
+    <div class="machine-modal-body">
+      <h3 id="mmTitle"></h3>
+      <div class="machine-modal-price" id="mmPrice"></div>
+      <p id="mmDesc"></p>
+      <div class="machine-modal-actions">
+        <a id="mmHire" class="btn btn-primary hire-btn" href="#quote" data-machine=""><i class="fas fa-truck"></i> Request to Hire</a>
+        <a id="mmWa" class="btn btn-wa" target="_blank" rel="noopener" href="https://wa.me/263718029974"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MOBILE ACTION BAR ===================== -->
+<div class="mobile-cta" id="mobileCta">
+  <a href="tel:+263783044407"><i class="fas fa-phone"></i> Call</a>
+  <a href="https://wa.me/263718029974?text=Hello%20Genspech!%20I%20would%20like%20a%20hire%20quote." target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+  <a class="m-cta-primary" href="#quote"><i class="fas fa-calculator"></i> Get Quote</a>
+</div>
+
 <!-- ===================== CHAT ASSISTANT (FULL CLICKABLE UI) ===================== -->
 <aside class="chatbot-shell" id="chatbotShell">
   <button id="chatToggle" class="chat-toggle"><i class="fas fa-comment-dots"></i> Quotation Assistant</button>
@@ -1616,7 +1751,6 @@
         <li><a href="#home">Home</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#services">Services</a></li>
-        <li><a href="#supplies">Supplies</a></li>
         <li><a href="#quote">Quote</a></li>
         <li><a href="#contact">Contact</a></li>
         <li><a href="#" id="logLink">Download Log</a></li>
@@ -2108,6 +2242,32 @@
       }
     });
   });
+
+  // ============ MACHINE DETAILS MODAL ============
+  const mm = document.getElementById('machineModal');
+  const mmImg = document.getElementById('mmImg');
+  const mmTitle = document.getElementById('mmTitle');
+  const mmPrice = document.getElementById('mmPrice');
+  const mmDesc = document.getElementById('mmDesc');
+  const mmHire = document.getElementById('mmHire');
+  const mmWa = document.getElementById('mmWa');
+  function closeMM() { if (mm) mm.hidden = true; }
+  document.querySelectorAll('.machine-details').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (!mm) return;
+      mmImg.src = '/static/images/' + btn.getAttribute('data-image');
+      mmImg.alt = btn.getAttribute('data-title');
+      mmTitle.textContent = btn.getAttribute('data-title');
+      mmPrice.textContent = btn.getAttribute('data-price');
+      mmDesc.textContent = btn.getAttribute('data-desc');
+      mmHire.setAttribute('data-machine', btn.getAttribute('data-machine'));
+      mmWa.href = 'https://wa.me/263718029974?text=' + encodeURIComponent('Hello Genspech! I would like to hire ' + btn.getAttribute('data-title') + '. Please share details.');
+      mm.hidden = false;
+    });
+  });
+  document.getElementById('machineModalClose')?.addEventListener('click', closeMM);
+  mm?.addEventListener('click', (e) => { if (e.target === mm) closeMM(); });
+  mmHire?.addEventListener('click', closeMM);
 
   // ============ CHAT ASSISTANT (FULL CLICKABLE FUNCTIONALITY) ============
   let chatContext = { machine: null, days: null, urgency: "standard" };

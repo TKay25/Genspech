@@ -676,6 +676,24 @@ def admin_card_move():
     return _admin_redirect("cards")
 
 
+@app.post("/admin/card/reorder")
+def admin_card_reorder():
+    """Update card ordering after drag & drop within a section."""
+    if not _admin_ok():
+        abort(403)
+    section = request.form.get("section", "")
+    ids = [
+        int(x) for x in request.form.get("ids", "").split(",")
+        if x.strip().isdigit()
+    ]
+    for i, cid in enumerate(ids):
+        card = db.session.get(HireCard, cid)
+        if card and card.section == section:
+            card.sort_order = i + 1
+    db.session.commit()
+    return _admin_redirect("sections")
+
+
 @app.post("/admin/card/delete")
 def admin_card_delete():
     if not _admin_ok():
@@ -792,6 +810,34 @@ def admin_section_add():
                 sort_order=max_order + 1,
             )
         )
+        db.session.flush()
+        # Cards added together with the section (from the modal repeater)
+        card_titles = request.form.getlist("card_title")
+        card_descs = request.form.getlist("card_desc")
+        card_prices = request.form.getlist("card_price")
+        card_images = request.form.getlist("card_image")
+        card_mks = request.form.getlist("card_machine_key")
+        card_files = request.files.getlist("card_image_file")
+        n = max(len(card_titles), len(card_descs), len(card_prices), len(card_images), len(card_mks), len(card_files))
+        for i in range(n):
+            ct = card_titles[i].strip() if i < len(card_titles) else ""
+            if not ct:
+                continue
+            image = card_images[i].strip() if i < len(card_images) else ""
+            up = _uploaded_image(card_files[i]) if i < len(card_files) else None
+            if up:
+                image = up
+            db.session.add(
+                HireCard(
+                    machine_key=card_mks[i].strip() if i < len(card_mks) else "",
+                    title=ct,
+                    description=card_descs[i].strip() if i < len(card_descs) else "",
+                    price=card_prices[i].strip() if i < len(card_prices) else "",
+                    image=image,
+                    section=slug,
+                    sort_order=i + 1,
+                )
+            )
         db.session.commit()
     return _admin_redirect("sections")
 
