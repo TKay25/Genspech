@@ -1,11 +1,13 @@
+import json
 import os
 import re
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
 
-from flask import Flask, Response, abort, jsonify, render_template, request, send_from_directory
+from flask import Flask, Response, abort, jsonify, redirect, render_template, request, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.utils import secure_filename
 
 
 def normalize_database_url(url: str) -> str:
@@ -56,6 +58,7 @@ RATES = {
     "poker": 90.0,
     "3.5-cubic": 550.0,
     "1-cubic-manual": 200.0,
+    "lowbed": 3.0,
 }
 
 URGENCY_MULTIPLIER = {
@@ -73,6 +76,7 @@ MACHINE_NAMES = {
     "poker": "Poker Vibrator",
     "3.5-cubic": "3.5 Cubic Concrete Mixer (Dry Rate)",
     "1-cubic-manual": "1 Cubic Manual Loading Mixer",
+    "lowbed": "Lowbed Transport (per km)",
 }
 
 MACHINE_ALIASES = {
@@ -96,6 +100,10 @@ MACHINE_ALIASES = {
     "1 cubic": "1-cubic-manual",
     "manual loading": "1-cubic-manual",
     "blue": "1-cubic-manual",
+    "lowbed": "lowbed",
+    "low bed": "lowbed",
+    "low-bed": "lowbed",
+    "transport": "lowbed",
 }
 
 
@@ -125,6 +133,137 @@ class LeadLog(db.Model):
     machine = db.Column(db.String(60), nullable=True)
     action = db.Column(db.String(20), nullable=False, default="quote")
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+
+class SiteContent(db.Model):
+    """Simple key/value store for site-wide settings (hero images, etc.)."""
+
+    __tablename__ = "genspech_site_content"
+
+    key = db.Column(db.String(80), primary_key=True)
+    value = db.Column(db.Text, nullable=False, default="{}")
+
+
+class HireCard(db.Model):
+    """Content-managed hire cards shown in the Machines / Vehicles sections."""
+
+    __tablename__ = "genspech_hire_cards"
+
+    id = db.Column(db.Integer, primary_key=True)
+    machine_key = db.Column(db.String(60), nullable=False, default="")
+    title = db.Column(db.String(140), nullable=False)
+    description = db.Column(db.String(400), nullable=False, default="")
+    price = db.Column(db.String(60), nullable=False, default="")
+    image = db.Column(db.String(200), nullable=False, default="")
+    section = db.Column(db.String(20), nullable=False, default="machines")  # machines | vehicles
+    sort_order = db.Column(db.Integer, nullable=False, default=0)
+    active = db.Column(db.Boolean, nullable=False, default=True)
+
+
+class GalleryItem(db.Model):
+    """Content-managed entries for the Recent Projects gallery."""
+
+    __tablename__ = "genspech_gallery_items"
+
+    id = db.Column(db.Integer, primary_key=True)
+    image = db.Column(db.String(200), nullable=False)
+    category = db.Column(db.String(80), nullable=False, default="")
+    title = db.Column(db.String(140), nullable=False)
+    description = db.Column(db.String(400), nullable=False, default="")
+    featured = db.Column(db.Boolean, nullable=False, default=False)
+    sort_order = db.Column(db.Integer, nullable=False, default=0)
+    active = db.Column(db.Boolean, nullable=False, default=True)
+
+
+class Section(db.Model):
+    """Content-managed hire sections (Machines, Vehicles, custom sections...)."""
+
+    __tablename__ = "genspech_sections"
+
+    id = db.Column(db.Integer, primary_key=True)
+    key = db.Column(db.String(60), unique=True, nullable=False)
+    title = db.Column(db.String(140), nullable=False)
+    kicker = db.Column(db.String(140), nullable=False, default="")
+    nav_label = db.Column(db.String(60), nullable=False, default="")
+    description = db.Column(db.String(300), nullable=False, default="")
+    sort_order = db.Column(db.Integer, nullable=False, default=0)
+    active = db.Column(db.Boolean, nullable=False, default=True)
+
+
+def get_content(key: str, default: str = "") -> str:
+    row = db.session.get(SiteContent, key)
+    return row.value if row else default
+
+
+DEFAULT_SECTIONS = [
+    # (key, title, kicker, nav_label, description)
+    ("machines", "Machines We Hire", "Machines Available For Hire", "Concrete Mixers", "Machines, pumps and finishing equipment available for hire across Zimbabwe."),
+    ("vehicles", "Vehicles We Hire", "Vehicles Available For Hire", "Vehicles", "Heavy transport to move your construction & mining equipment safely across Zimbabwe."),
+]
+
+
+DEFAULT_HIRE_CARDS = [
+    # (machine_key, title, description, price, image, section)
+    ("3.5-cubic", "Self-Loading Concrete Mixer (3.5 Cubic)", "Combines cement, water & aggregates for reliable site mixing.", "From $550/day", "mixer truck.jpeg", "machines"),
+    ("static-pump", "Static Pump", "Essential for efficient concrete pumping on any site.", "From $480/day", "static pump.jpeg", "machines"),
+    ("boom-pump", "Boom Pump", "Precision & reliability in concrete placement.", "From $650/day", "boom pump.jpeg", "machines"),
+    ("power-float", "Power Float", "Smooth & finish concrete surfaces to a high standard.", "From $120/day", "concrete5.jpeg", "machines"),
+    ("poker", "Poker Vibrator", "Eliminate air pockets in fresh concrete.", "From $90/day", "concrete vibrator or poker.jpeg", "machines"),
+    ("self-loader", "Mobile Concrete Mixer", "Efficient & portable mixing solution for remote sites.", "From $420/day", "mobile concrete mixer.jpeg", "machines"),
+    ("3.5-cubic", "3.5 Cubic Mixer", "High-output mixing — $550/day dry rate (fuel ~60L/day).", "From $550/day", "concrete-mixer.jpg", "machines"),
+    ("1-cubic-manual", "1 Cubic Manual Mixer", "Compact manual-loading blue unit — $200/day.", "From $200/day", "mixer 2.jpeg", "machines"),
+    ("lowbed", "Lowbed Transport", "Heavy-duty lowbed to ferry construction & mining machines — excavators, loaders, rollers, backhoes, generators and more — $3/km across Zimbabwe.", "From $3/km", "lowbed.jpeg", "vehicles"),
+]
+
+DEFAULT_GALLERY = [
+    # (image, category, title, description, featured)
+    ("concrete4.jpeg", "Concrete Placement", "Boom Pump Placement", "High-reach concrete placement for multi-storey structures — precision and reliability on every pour.", True),
+    ("concrete3.jpeg", "Concrete Pumping", "Concrete Pumping", "Reliable line pumping for slabs, footings and foundations.", False),
+    ("concrete-mixer.jpg", "Site Concreting", "Site Concreting", "Mixer-supported pours keeping sites moving on schedule.", False),
+    ("concrete5.jpeg", "Finishing", "Surface Finishing", "Power-float finishing for smooth, level concrete floors.", False),
+    ("concrete6.jpeg", "Concrete Works", "Concrete Works", "Complete pours with vibration and curing for lasting strength.", False),
+    ("generator.jpg", "Power", "Power Solutions", "Generator backup keeping sites powered around the clock.", False),
+]
+
+DEFAULT_HERO_IMAGES = [
+    "mixer truck.jpeg",
+    "generator.jpg",
+    "boom pump.jpeg",
+    "static pump.jpeg",
+    "mobile concrete mixer.jpeg",
+    "concrete vibrator or poker.jpeg",
+]
+
+
+def seed_default_content() -> None:
+    """Populate content tables + site settings on first run."""
+    if Section.query.count() == 0:
+        for i, (key, title, kicker, nav, desc) in enumerate(DEFAULT_SECTIONS):
+            db.session.add(
+                Section(
+                    key=key, title=title, kicker=kicker,
+                    nav_label=nav, description=desc, sort_order=i + 1,
+                )
+            )
+    if HireCard.query.count() == 0:
+        for i, (mk, title, desc, price, image, section) in enumerate(DEFAULT_HIRE_CARDS):
+            db.session.add(
+                HireCard(
+                    machine_key=mk, title=title, description=desc,
+                    price=price, image=image, section=section, sort_order=i + 1,
+                )
+            )
+    if GalleryItem.query.count() == 0:
+        for i, (image, cat, title, desc, featured) in enumerate(DEFAULT_GALLERY):
+            db.session.add(
+                GalleryItem(
+                    image=image, category=cat, title=title,
+                    description=desc, featured=featured, sort_order=i + 1,
+                )
+            )
+    if db.session.get(SiteContent, "hero_images") is None:
+        db.session.add(SiteContent(key="hero_images", value=json.dumps(DEFAULT_HERO_IMAGES)))
+    db.session.commit()
 
 
 @dataclass
@@ -306,11 +445,43 @@ def log_lead(*, action: str, name: str | None, phone: str | None, machine: str |
 @app.before_request
 def init_db() -> None:
     db.create_all()
+    seed_default_content()
 
 
 @app.get("/")
 def home() -> str:
-    return render_template("index.html", site_url=SITE_URL)
+    sections = (
+        Section.query.filter_by(active=True)
+        .order_by(Section.sort_order)
+        .all()
+    )
+    sections_data = []
+    for s in sections:
+        cards = (
+            HireCard.query.filter_by(active=True, section=s.key)
+            .order_by(HireCard.sort_order)
+            .all()
+        )
+        if cards:
+            sections_data.append({"section": s, "cards": cards})
+    gallery = (
+        GalleryItem.query.filter_by(active=True)
+        .order_by(GalleryItem.sort_order)
+        .all()
+    )
+    try:
+        hero_images = json.loads(get_content("hero_images", "[]"))
+    except Exception:
+        hero_images = []
+    if not isinstance(hero_images, list):
+        hero_images = []
+    return render_template(
+        "index.html",
+        site_url=SITE_URL,
+        sections_data=sections_data,
+        gallery=gallery,
+        hero_images=hero_images,
+    )
 
 
 @app.get("/robots.txt")
@@ -367,13 +538,339 @@ def admin() -> str:
     total_quotes = QuoteRequest.query.count()
     total_value = db.session.query(db.func.coalesce(db.func.sum(QuoteRequest.total), 0.0)).scalar() or 0.0
     total_downloads = LeadLog.query.filter_by(action="download").count()
+    cards = HireCard.query.order_by(HireCard.section, HireCard.sort_order).all()
+    gallery_items = GalleryItem.query.order_by(GalleryItem.sort_order).all()
+    sections = Section.query.order_by(Section.sort_order).all()
+    try:
+        image_library = sorted(
+            f
+            for f in os.listdir(os.path.join("static", "images"))
+            if f.lower().endswith((".png", ".jpg", ".jpeg", ".gif", ".webp"))
+        )
+    except Exception:
+        image_library = []
+    try:
+        hero_list = json.loads(get_content("hero_images", "[]"))
+        hero_csv = ", ".join(hero_list) if isinstance(hero_list, list) else ""
+    except Exception:
+        hero_csv = ""
     return render_template(
         "admin.html",
+        key=key,
         quotes=quotes,
         total_quotes=total_quotes,
         total_value=round(float(total_value), 2),
         total_downloads=total_downloads,
+        cards=cards,
+        gallery=gallery_items,
+        sections=sections,
+        image_library=image_library,
+        hero_images=hero_csv,
     )
+
+
+def _admin_ok() -> bool:
+    expected = os.getenv("ADMIN_DASHBOARD_KEY", "genspech-admin")
+    return request.args.get("key", request.form.get("key", "")) == expected
+
+
+def _admin_redirect(tab: str = "overview") -> str:
+    key = request.args.get("key", request.form.get("key", ""))
+    return redirect(f"/admin?key={key}&tab={tab}")
+
+
+ALLOWED_IMAGE_EXT = (".png", ".jpg", ".jpeg", ".gif", ".webp")
+
+
+def _uploaded_image(file) -> str | None:
+    """Save an uploaded image into static/images and return its filename."""
+    if not file or not file.filename:
+        return None
+    filename = secure_filename(file.filename)
+    if not filename.lower().endswith(ALLOWED_IMAGE_EXT):
+        return None
+    dest = os.path.join("static", "images", filename)
+    try:
+        file.save(dest)
+        return filename
+    except Exception:
+        return None
+
+
+@app.post("/admin/card/add")
+def admin_card_add():
+    if not _admin_ok():
+        abort(403)
+    title = request.form.get("title", "").strip()
+    if title:
+        image = (request.form.get("image", "") or "").strip()
+        up = _uploaded_image(request.files.get("image_file"))
+        if up:
+            image = up
+        section = request.form.get("section", "machines")
+        max_order = db.session.query(
+            db.func.coalesce(db.func.max(HireCard.sort_order), 0)
+        ).scalar() or 0
+        db.session.add(
+            HireCard(
+                machine_key=request.form.get("machine_key", "").strip(),
+                title=title,
+                description=request.form.get("description", "").strip(),
+                price=request.form.get("price", "").strip(),
+                image=image,
+                section=section,
+                sort_order=max_order + 1,
+            )
+        )
+        db.session.commit()
+    return _admin_redirect("cards")
+
+
+@app.post("/admin/card/edit")
+def admin_card_edit():
+    if not _admin_ok():
+        abort(403)
+    card = db.session.get(HireCard, int(request.form.get("id", 0) or 0))
+    if card:
+        card.machine_key = request.form.get("machine_key", card.machine_key).strip()
+        card.title = request.form.get("title", card.title).strip()
+        card.description = request.form.get("description", card.description).strip()
+        card.price = request.form.get("price", card.price).strip()
+        typed_image = (request.form.get("image", "") or "").strip()
+        up = _uploaded_image(request.files.get("image_file"))
+        if up:
+            card.image = up
+        elif typed_image:
+            card.image = typed_image
+        card.section = request.form.get("section", card.section)
+        card.active = request.form.get("active", "1") == "1"
+        db.session.commit()
+    return _admin_redirect("cards")
+
+
+@app.post("/admin/card/move")
+def admin_card_move():
+    if not _admin_ok():
+        abort(403)
+    card = db.session.get(HireCard, int(request.form.get("id", 0) or 0))
+    if card:
+        direction = request.form.get("dir", "up")
+        q = HireCard.query.filter(
+            HireCard.section == card.section, HireCard.id != card.id
+        )
+        if direction == "up":
+            neighbor = (
+                q.filter(HireCard.sort_order < card.sort_order)
+                .order_by(HireCard.sort_order.desc())
+                .first()
+            )
+        else:
+            neighbor = (
+                q.filter(HireCard.sort_order > card.sort_order)
+                .order_by(HireCard.sort_order.asc())
+                .first()
+            )
+        if neighbor:
+            card.sort_order, neighbor.sort_order = neighbor.sort_order, card.sort_order
+            db.session.commit()
+    return _admin_redirect("cards")
+
+
+@app.post("/admin/card/delete")
+def admin_card_delete():
+    if not _admin_ok():
+        abort(403)
+    card = db.session.get(HireCard, int(request.form.get("id", 0) or 0))
+    if card:
+        db.session.delete(card)
+        db.session.commit()
+    return _admin_redirect("cards")
+
+
+@app.post("/admin/gallery/add")
+def admin_gallery_add():
+    if not _admin_ok():
+        abort(403)
+    title = request.form.get("title", "").strip()
+    if title:
+        image = (request.form.get("image", "") or "").strip()
+        up = _uploaded_image(request.files.get("image_file"))
+        if up:
+            image = up
+        max_order = db.session.query(
+            db.func.coalesce(db.func.max(GalleryItem.sort_order), 0)
+        ).scalar() or 0
+        db.session.add(
+            GalleryItem(
+                image=image,
+                category=request.form.get("category", "").strip(),
+                title=title,
+                description=request.form.get("description", "").strip(),
+                featured=request.form.get("featured", "0") == "1",
+                sort_order=max_order + 1,
+            )
+        )
+        db.session.commit()
+    return _admin_redirect("gallery")
+
+
+@app.post("/admin/gallery/edit")
+def admin_gallery_edit():
+    if not _admin_ok():
+        abort(403)
+    item = db.session.get(GalleryItem, int(request.form.get("id", 0) or 0))
+    if item:
+        typed_image = (request.form.get("image", "") or "").strip()
+        up = _uploaded_image(request.files.get("image_file"))
+        if up:
+            item.image = up
+        elif typed_image:
+            item.image = typed_image
+        item.category = request.form.get("category", item.category).strip()
+        item.title = request.form.get("title", item.title).strip()
+        item.description = request.form.get("description", item.description).strip()
+        item.featured = request.form.get("featured", "0") == "1"
+        item.active = request.form.get("active", "1") == "1"
+        db.session.commit()
+    return _admin_redirect("gallery")
+
+
+@app.post("/admin/gallery/move")
+def admin_gallery_move():
+    if not _admin_ok():
+        abort(403)
+    item = db.session.get(GalleryItem, int(request.form.get("id", 0) or 0))
+    if item:
+        direction = request.form.get("dir", "up")
+        q = GalleryItem.query.filter(GalleryItem.id != item.id)
+        if direction == "up":
+            neighbor = (
+                q.filter(GalleryItem.sort_order < item.sort_order)
+                .order_by(GalleryItem.sort_order.desc())
+                .first()
+            )
+        else:
+            neighbor = (
+                q.filter(GalleryItem.sort_order > item.sort_order)
+                .order_by(GalleryItem.sort_order.asc())
+                .first()
+            )
+        if neighbor:
+            item.sort_order, neighbor.sort_order = neighbor.sort_order, item.sort_order
+            db.session.commit()
+    return _admin_redirect("gallery")
+
+
+@app.post("/admin/gallery/delete")
+def admin_gallery_delete():
+    if not _admin_ok():
+        abort(403)
+    item = db.session.get(GalleryItem, int(request.form.get("id", 0) or 0))
+    if item:
+        db.session.delete(item)
+        db.session.commit()
+    return _admin_redirect("gallery")
+
+
+@app.post("/admin/section/add")
+def admin_section_add():
+    if not _admin_ok():
+        abort(403)
+    title = request.form.get("title", "").strip()
+    slug = (request.form.get("slug", "") or "").strip().lower().replace(" ", "-")
+    if title and slug and db.session.get(Section, slug) is None:
+        max_order = db.session.query(
+            db.func.coalesce(db.func.max(Section.sort_order), 0)
+        ).scalar() or 0
+        db.session.add(
+            Section(
+                key=slug,
+                title=title,
+                kicker=request.form.get("kicker", "").strip(),
+                nav_label=(request.form.get("nav_label", "").strip() or title),
+                description=request.form.get("description", "").strip(),
+                sort_order=max_order + 1,
+            )
+        )
+        db.session.commit()
+    return _admin_redirect("sections")
+
+
+@app.post("/admin/section/edit")
+def admin_section_edit():
+    if not _admin_ok():
+        abort(403)
+    s = db.session.get(Section, int(request.form.get("id", 0) or 0))
+    if s:
+        s.title = request.form.get("title", s.title).strip()
+        s.kicker = request.form.get("kicker", s.kicker).strip()
+        s.nav_label = request.form.get("nav_label", s.nav_label).strip()
+        s.description = request.form.get("description", s.description).strip()
+        s.active = request.form.get("active", "1") == "1"
+        db.session.commit()
+    return _admin_redirect("sections")
+
+
+@app.post("/admin/section/move")
+def admin_section_move():
+    if not _admin_ok():
+        abort(403)
+    s = db.session.get(Section, int(request.form.get("id", 0) or 0))
+    if s:
+        direction = request.form.get("dir", "up")
+        q = Section.query.filter(Section.id != s.id)
+        if direction == "up":
+            neighbor = (
+                q.filter(Section.sort_order < s.sort_order)
+                .order_by(Section.sort_order.desc())
+                .first()
+            )
+        else:
+            neighbor = (
+                q.filter(Section.sort_order > s.sort_order)
+                .order_by(Section.sort_order.asc())
+                .first()
+            )
+        if neighbor:
+            s.sort_order, neighbor.sort_order = neighbor.sort_order, s.sort_order
+            db.session.commit()
+    return _admin_redirect("sections")
+
+
+@app.post("/admin/section/delete")
+def admin_section_delete():
+    if not _admin_ok():
+        abort(403)
+    s = db.session.get(Section, int(request.form.get("id", 0) or 0))
+    if s:
+        HireCard.query.filter_by(section=s.key).delete()
+        db.session.delete(s)
+        db.session.commit()
+    return _admin_redirect("sections")
+
+
+@app.post("/admin/images/upload")
+def admin_images_upload():
+    if not _admin_ok():
+        abort(403)
+    for f in request.files.getlist("files"):
+        _uploaded_image(f)
+    return _admin_redirect("images")
+
+
+@app.post("/admin/settings")
+def admin_settings():
+    if not _admin_ok():
+        abort(403)
+    hero = request.form.get("hero_images", "")
+    items = [x.strip() for x in hero.split(",") if x.strip()]
+    row = db.session.get(SiteContent, "hero_images")
+    if row:
+        row.value = json.dumps(items)
+    else:
+        db.session.add(SiteContent(key="hero_images", value=json.dumps(items)))
+    db.session.commit()
+    return _admin_redirect("settings")
 
 
 @app.post("/api/quote")

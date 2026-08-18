@@ -102,7 +102,8 @@
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Self Loading Concrete Mixer Hire", "description": "Portable mixing solution for remote sites.", "offers": { "@type": "Offer", "price": "420.00", "priceCurrency": "USD", "description": "Per day, 9-hour shift" } } },
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "3.5 Cubic Concrete Mixer Hire", "description": "High-output dry-rate mixing.", "offers": { "@type": "Offer", "price": "550.00", "priceCurrency": "USD", "description": "Dry rate per day" } } },
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Generator Hire", "description": "Reliable power for events, factories, mining, hospitals and backup.", "offers": { "@type": "Offer", "price": "180.00", "priceCurrency": "USD", "description": "Per day, 9-hour shift" } } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Power Float Hire", "description": "Smooth and finish concrete surfaces.", "offers": { "@type": "Offer", "price": "120.00", "priceCurrency": "USD", "description": "Per day, 9-hour shift" } } }
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Power Float Hire", "description": "Smooth and finish concrete surfaces.", "offers": { "@type": "Offer", "price": "120.00", "priceCurrency": "USD", "description": "Per day, 9-hour shift" } } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Lowbed Transport Hire", "description": "Ferry construction and mining machines across Zimbabwe.", "offers": { "@type": "Offer", "price": "3.00", "priceCurrency": "USD", "description": "Per kilometre" } } }
       ]
     },
     "sameAs": [
@@ -193,7 +194,7 @@
     .nav-links a:hover, .nav-links a.active { color: #fff; }
     .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
     .navbar.scrolled { box-shadow: 0 6px 24px rgba(0,0,0,0.35); }
-    #home, #about, #concretemixers, #generator, #supplies, #projects, #quote, #contact { scroll-margin-top: 4.5rem; }
+    #home, #about, #generator, #supplies, #projects, #quote, #contact, section[id^="sec-"] { scroll-margin-top: 4.5rem; }
     .nav-actions { display: flex; align-items: center; gap: .75rem; }
     .nav-phone {
       display: inline-flex; align-items: center; gap: .5rem;
@@ -769,8 +770,7 @@
     .hero::before {
       background:
         linear-gradient(90deg, rgba(8,12,10,0.95) 0%, rgba(8,12,10,0.82) 38%, rgba(8,12,10,0.42) 100%),
-        linear-gradient(0deg, rgba(8,12,10,0.92) 0%, rgba(8,12,10,0.4) 32%, rgba(8,12,10,0.12) 60%, transparent 82%),
-        radial-gradient(50rem 26rem at 78% 16%, rgba(95,196,146,0.14), transparent 65%);
+        linear-gradient(0deg, rgba(8,12,10,0.92) 0%, rgba(8,12,10,0.4) 32%, rgba(8,12,10,0.12) 60%, transparent 82%);
     }
     .hero::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; z-index: 3; background: linear-gradient(90deg, transparent, var(--primary-bright), transparent); }
     .badge {
@@ -964,9 +964,186 @@
     .gallery-grid .reveal:nth-child(4) { transition-delay: .18s; }
     .gallery-grid .reveal:nth-child(5) { transition-delay: .24s; }
     .gallery-grid .reveal:nth-child(6) { transition-delay: .3s; }
+
+    /* ==========================================================
+       UI UPGRADE II — marquee, WhatsApp float, stat counters
+       ========================================================== */
+    .marquee-band {
+      position: relative; z-index: 5;
+      background: var(--primary-dark);
+      border-top: 1px solid rgba(95,196,146,0.22);
+      overflow: hidden;
+    }
+    .marquee-track { display: flex; width: max-content; animation: marqueeScroll 34s linear infinite; }
+    .marquee-track:hover { animation-play-state: paused; }
+    .marquee-half { display: flex; gap: 2.75rem; align-items: center; padding: .9rem 1.5rem; white-space: nowrap; }
+    .marquee-half span {
+      display: inline-flex; align-items: center; gap: .6rem;
+      color: rgba(255,255,255,0.72); font-size: .7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .16em;
+    }
+    .marquee-half span i { color: var(--primary-bright); font-size: .8rem; }
+    @keyframes marqueeScroll { to { transform: translateX(-50%); } }
+    @media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
+
+    /* Floating WhatsApp */
+    .wa-float {
+      position: fixed; bottom: 5.2rem; left: 1.5rem; z-index: 999;
+      width: 3rem; height: 3rem; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      background: #25d366; color: #fff; font-size: 1.45rem;
+      box-shadow: 0 10px 26px -6px rgba(37,211,102,0.55);
+      transition: transform .2s, box-shadow .2s;
+      animation: waPulse 2.6s infinite;
+    }
+    .wa-float:hover { transform: translateY(-3px) scale(1.06); box-shadow: 0 16px 34px -8px rgba(37,211,102,0.65); color: #fff; }
+    @keyframes waPulse {
+      0% { box-shadow: 0 0 0 0 rgba(37,211,102,0.45); }
+      70% { box-shadow: 0 0 0 14px rgba(37,211,102,0); }
+      100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); }
+    }
+    @media (max-width: 700px) { .wa-float { bottom: 1.4rem; } }
+
+    /* ==========================================================
+       UI UPGRADE III — scroll progress, CTA band, glow & polish
+       ========================================================== */
+    .scroll-progress {
+      position: fixed; top: 0; left: 0; height: 3px; z-index: 9999;
+      width: 0; background: linear-gradient(90deg, var(--primary), var(--primary-bright));
+      box-shadow: 0 0 12px rgba(95,196,146,0.6);
+      transition: width .1s linear;
+    }
+
+    /* Hero typography polish */
+    .hero h1 { text-shadow: 0 4px 30px rgba(0,0,0,0.35); }
+    .hero-sub { color: rgba(255,255,255,0.82); }
+
+    /* Cards — gradient ring + image shine on hover */
+    .card::before {
+      content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1px;
+      background: linear-gradient(135deg, rgba(95,196,146,0), rgba(95,196,146,0));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+      pointer-events: none; opacity: 0; transition: opacity .3s ease;
+    }
+    .card:hover::before { opacity: 1; background: linear-gradient(135deg, rgba(95,196,146,0.6), rgba(15,76,54,0.2)); }
+    .media-card .media::before {
+      content: ''; position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.25) 50%, transparent 60%);
+      transform: translateX(-120%); transition: transform .85s ease; pointer-events: none;
+    }
+    .media-card:hover .media::before { transform: translateX(120%); }
+
+    /* Section head glow */
+    .section-head { position: relative; }
+    .section-head::after {
+      content: ''; position: absolute; top: -3.5rem; left: -4rem; width: 16rem; height: 16rem; z-index: -1;
+      background: radial-gradient(circle, rgba(95,196,146,0.10), transparent 65%);
+      pointer-events: none;
+    }
+    .section-head.center::after { left: 50%; transform: translateX(-50%); top: -4.5rem; }
+    .section-title { letter-spacing: .015em; }
+
+    /* Gallery caption slide-up */
+    .gallery-item .gallery-caption p { max-height: 0; opacity: 0; overflow: hidden; transition: max-height .4s ease, opacity .4s ease; }
+    .gallery-item:hover .gallery-caption p { max-height: 5rem; opacity: 1; }
+    .gallery-item.featured .gallery-caption p { max-height: none; opacity: 1; }
+
+    /* CTA band */
+    .cta-band {
+      position: relative; overflow: hidden; padding: 4.5rem 0;
+      background: linear-gradient(135deg, #0c100e 0%, #142019 60%, #0f4c36 140%);
+      color: #fff;
+    }
+    .cta-band::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(38rem 20rem at 85% 10%, rgba(95,196,146,0.20), transparent 62%),
+        radial-gradient(30rem 18rem at 8% 90%, rgba(95,196,146,0.12), transparent 60%);
+    }
+    .cta-inner { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+    .cta-copy h2 { font-family: var(--font-head); font-weight: 900; font-size: clamp(1.9rem, 4vw, 2.8rem); text-transform: uppercase; color: #fff; line-height: 1; margin-bottom: .6rem; letter-spacing: .01em; }
+    .cta-copy h2 span { color: var(--primary-bright); }
+    .cta-copy p { color: rgba(255,255,255,0.8); max-width: 34rem; line-height: 1.7; }
+    .cta-actions { display: flex; gap: .8rem; flex-wrap: wrap; }
+    @media (max-width: 820px) { .cta-inner { flex-direction: column; align-items: flex-start; } }
+
+    /* Footer socials */
+    .footer-socials { display: flex; gap: .6rem; margin-top: 1rem; }
+    .footer-socials a {
+      width: 2.4rem; height: 2.4rem; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,0.07); border: 1px solid var(--dark-border); color: #fff;
+      font-size: .95rem; transition: background .2s, transform .2s, color .2s;
+    }
+    .footer-socials a:hover { background: var(--primary-bright); color: #06281c; transform: translateY(-2px); }
+
+    /* ==========================================================
+       UI UPGRADE IV — Hero showpiece
+       ========================================================== */
+    .hero h1 { font-size: clamp(2.9rem, 6.4vw, 5rem); }
+
+    /* Floating glass cards */
+    .hero-float-card {
+      position: absolute; z-index: 4; display: flex; align-items: center; gap: .7rem;
+      background: rgba(12,16,14,0.55); border: 1px solid rgba(255,255,255,0.16);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-radius: 1rem; padding: .8rem 1rem; color: #fff;
+      box-shadow: 0 20px 40px -18px rgba(0,0,0,0.5);
+      animation: floatCard 6s ease-in-out infinite;
+    }
+    .hero-float-card .fc-icon {
+      width: 2.5rem; height: 2.5rem; border-radius: .75rem; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--grad-brand); color: #fff; font-size: 1.1rem;
+    }
+    .hero-float-card strong { display: block; font-family: var(--font-head); font-weight: 800; text-transform: uppercase; letter-spacing: .04em; font-size: 1rem; line-height: 1.05; }
+    .hero-float-card span { display: block; font-size: .68rem; color: rgba(255,255,255,0.65); margin-top: .15rem; }
+    .hero-float-card.card-a { right: 5%; top: 30%; }
+    .hero-float-card.card-b { right: 9%; bottom: 34%; animation-delay: -3s; }
+    @keyframes floatCard { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+    /* Vertical side note */
+    .hero-side-note {
+      position: absolute; right: 2.4rem; top: 22%; z-index: 4; pointer-events: none;
+      color: rgba(255,255,255,0.42); font-size: .6rem; font-weight: 700;
+      letter-spacing: .42em; text-transform: uppercase; white-space: nowrap;
+      transform: rotate(90deg); transform-origin: right center;
+    }
+    @media (max-width: 900px) { .hero-float-card, .hero-side-note { display: none; } }
+
+    /* WhatsApp CTA button */
+    .btn-wa { background: #25d366; color: #fff; border: 1px solid rgba(255,255,255,0.16); box-shadow: 0 10px 26px -10px rgba(37,211,102,0.55); }
+    .btn-wa:hover { background: #1fbd5a; transform: translateY(-2px); color: #fff; box-shadow: 0 16px 34px -12px rgba(37,211,102,0.6); }
+
+    /* Hero trust line */
+    .hero-trust { display: flex; gap: 1.4rem; flex-wrap: wrap; margin-top: 1.6rem; }
+    .hero-trust span { display: inline-flex; align-items: center; gap: .45rem; color: rgba(255,255,255,0.72); font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; }
+    .hero-trust span i { color: var(--primary-bright); font-size: .8rem; }
+
+    /* Slider dot progress fill */
+    .hero-dot { position: relative; overflow: hidden; }
+    .hero-dot.active::after {
+      content: ''; position: absolute; inset: 0; border-radius: inherit;
+      background: #fff; opacity: .9; transform-origin: left;
+      animation: dotFill 5.5s linear forwards;
+    }
+    @keyframes dotFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+    /* Stats icons + dividers */
+    .hero-stats article { gap: .2rem; }
+    .hero-stats .stat-ico { font-size: 1rem; color: var(--primary-bright); }
+    .hero-stats article + article { border-left: 1px solid rgba(255,255,255,0.10); }
+    @media (max-width: 700px) {
+      .hero-stats article + article { border-left: none; }
+      .hero-stats article:nth-child(odd) + article { border-left: 1px solid rgba(255,255,255,0.10); }
+    }
   </style>
 </head>
 <body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
 
 <!-- ===================== NAVBAR ===================== -->
 <header class="navbar">
@@ -980,7 +1157,9 @@
     </a>
     <nav class="nav-links" id="navLinks">
       <a href="#about">About</a>
-      <a href="#concretemixers">Concrete Mixers</a>
+      {% for sd in sections_data %}
+      <a href="#sec-{{ sd.section.key }}">{{ sd.section.nav_label }}</a>
+      {% endfor %}
       <a href="#generator">Generator Hire</a>
       <a href="#supplies">Supplies</a>
       <a href="#projects">Projects</a>
@@ -997,22 +1176,34 @@
 <!-- ===================== HERO ===================== -->
 <section class="hero" id="home">
   <div class="hero-slides" id="heroSlides">
-    <div class="hero-slide active bg-1"></div>
-    <div class="hero-slide bg-2"></div>
-    <div class="hero-slide bg-3"></div>
-    <div class="hero-slide bg-4"></div>
-    <div class="hero-slide bg-5"></div>
-    <div class="hero-slide bg-6"></div>
+    {% for img in hero_images %}
+    <div class="hero-slide{% if loop.first %} active{% endif %}" data-bg="{{ url_for('static', filename='images/' + img) }}"></div>
+    {% endfor %}
   </div>
   <div class="hero-inner">
     <span class="badge">Professional Construction Support Since 2019</span>
     <h1>Deliver Every Project With <span class="accent">Speed, Power, And Precision</span></h1>
     <p class="hero-sub">Genspech Investments is a versatile Generic Service Provider offering tailored solutions in technology, operations, customer service and construction. We deliver high-quality services, innovation and growth for diverse clients.</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="#quote">Get Quote</a>
+      <a class="btn btn-primary" href="#quote"><i class="fas fa-calculator"></i> Get A Free Quote</a>
       <a class="btn btn-dark" href="tel:+263783044407"><i class="fas fa-phone"></i> Talk To Operations</a>
+      <a class="btn btn-wa" href="https://wa.me/263718029974?text=Hello%20Genspech!%20I%20would%20like%20a%20hire%20quote." target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+    </div>
+    <div class="hero-trust">
+      <span><i class="fas fa-shield-halved"></i> ZIMRA Registered</span>
+      <span><i class="fas fa-headset"></i> 24/7 Dispatch</span>
+      <span><i class="fas fa-award"></i> Trusted Since 2019</span>
     </div>
   </div>
+  <div class="hero-float-card card-a">
+    <div class="fc-icon"><i class="fas fa-truck-fast"></i></div>
+    <div><strong>24/7 Dispatch</strong><span>Rapid response across Zimbabwe</span></div>
+  </div>
+  <div class="hero-float-card card-b">
+    <div class="fc-icon"><i class="fas fa-file-shield"></i></div>
+    <div><strong>ZIMRA Registered</strong><span>Fully compliant &amp; trusted</span></div>
+  </div>
+  <div class="hero-side-note" aria-hidden="true">EST. 2019 · Harare, ZW</div>
   <div class="hero-controls">
     <button class="hero-arrow prev" id="heroPrev" aria-label="Previous image"><i class="fas fa-chevron-left"></i></button>
     <button class="hero-arrow next" id="heroNext" aria-label="Next image"><i class="fas fa-chevron-right"></i></button>
@@ -1021,13 +1212,39 @@
   <div class="scroll-cue"><span></span></div>
   <div class="hero-stats">
     <div class="inner">
-      <article><strong>2019</strong><span>Established</span></article>
-      <article><strong>40%+</strong><span>Annual Growth</span></article>
-      <article><strong>100%</strong><span>Safety Target</span></article>
-      <article><strong>24/7</strong><span>Support</span></article>
+      <article><i class="stat-ico fas fa-building"></i><strong>2019</strong><span>Established</span></article>
+      <article><i class="stat-ico fas fa-chart-line"></i><strong>40%+</strong><span>Annual Growth</span></article>
+      <article><i class="stat-ico fas fa-shield-halved"></i><strong>100%</strong><span>Safety Target</span></article>
+      <article><i class="stat-ico fas fa-headset"></i><strong>24/7</strong><span>Support</span></article>
     </div>
   </div>
 </section>
+
+<!-- ===================== TRUST MARQUEE ===================== -->
+<div class="marquee-band" aria-hidden="true">
+  <div class="marquee-track">
+    <div class="marquee-half">
+      <span><i class="fas fa-truck"></i> Concrete Mixers</span>
+      <span><i class="fas fa-tower-observation"></i> Boom Pumps</span>
+      <span><i class="fas fa-water"></i> Static Pumps</span>
+      <span><i class="fas fa-bolt"></i> Generators</span>
+      <span><i class="fas fa-layer-group"></i> Power Floats</span>
+      <span><i class="fas fa-circle-notch"></i> Poker Vibrators</span>
+      <span><i class="fas fa-drum-steelpan"></i> Ready-Mix Concrete</span>
+      <span><i class="fas fa-headset"></i> 24/7 Dispatch</span>
+    </div>
+    <div class="marquee-half">
+      <span><i class="fas fa-truck"></i> Concrete Mixers</span>
+      <span><i class="fas fa-tower-observation"></i> Boom Pumps</span>
+      <span><i class="fas fa-water"></i> Static Pumps</span>
+      <span><i class="fas fa-bolt"></i> Generators</span>
+      <span><i class="fas fa-layer-group"></i> Power Floats</span>
+      <span><i class="fas fa-circle-notch"></i> Poker Vibrators</span>
+      <span><i class="fas fa-drum-steelpan"></i> Ready-Mix Concrete</span>
+      <span><i class="fas fa-headset"></i> 24/7 Dispatch</span>
+    </div>
+  </div>
+</div>
 
 <main>
 
@@ -1081,74 +1298,30 @@
   </section>
 
 
-  <section class="section" id="concretemixers">
+  {% for sd in sections_data %}
+  <section class="section" id="sec-{{ sd.section.key }}">
     <div class="shell">
       <div class="section-head reveal">
-        <p class="kicker">Machines Available For Hire</p>
-        <h2 class="section-title">Machines We Hire</h2>
+        <p class="kicker">{{ sd.section.kicker }}</p>
+        <h2 class="section-title">{{ sd.section.title }}</h2>
         <div class="title-bar"></div>
+        {% if sd.section.description %}<p class="section-desc">{{ sd.section.description }}</p>{% endif %}
       </div>
 
       <div class="supplies-grid">
+        {% for c in sd.cards %}
         <div class="card media-card supply-card reveal">
-          <div class="media"><img src="{{ url_for('static', filename='images/mixer truck.jpeg') }}" alt="Self-Loading Concrete Mixer (3.5 Cubic)" loading="lazy"><span class="rate-chip">From <b>$550</b>/day</span><h3>Self-Loading Concrete Mixer (3.5 Cubic)</h3></div>
+          <div class="media"><img src="{{ url_for('static', filename='images/' + c.image) }}" alt="{{ c.title }}" loading="lazy"><span class="rate-chip">{{ c.price }}</span><h3>{{ c.title }}</h3></div>
           <div class="body">
-            <p>Combines cement, water &amp; aggregates for reliable site mixing.</p>
-            <a class="btn btn-primary hire-btn" href="#quote" data-machine="3.5-cubic"><i class="fas fa-truck"></i> Request to Hire</a>
+            <p>{{ c.description }}</p>
+            <a class="btn btn-primary hire-btn" href="#quote" data-machine="{{ c.machine_key }}"><i class="fas fa-truck"></i> Request to Hire</a>
           </div>
         </div>
-        <div class="card media-card supply-card reveal">
-          <div class="media"><img src="{{ url_for('static', filename='images/static pump.jpeg') }}" alt="Static Pump" loading="lazy"><span class="rate-chip">From <b>$480</b>/day</span><h3>Static Pump</h3></div>
-          <div class="body">
-            <p>Essential for efficient concrete pumping on any site.</p>
-            <a class="btn btn-primary hire-btn" href="#quote" data-machine="static-pump"><i class="fas fa-truck"></i> Request to Hire</a>
-          </div>
-        </div>
-        <div class="card media-card supply-card reveal">
-          <div class="media"><img src="{{ url_for('static', filename='images/boom pump.jpeg') }}" alt="Boom Pump" loading="lazy"><span class="rate-chip">From <b>$650</b>/day</span><h3>Boom Pump</h3></div>
-          <div class="body">
-            <p>Precision &amp; reliability in concrete placement.</p>
-            <a class="btn btn-primary hire-btn" href="#quote" data-machine="boom-pump"><i class="fas fa-truck"></i> Request to Hire</a>
-          </div>
-        </div>
-        <div class="card media-card supply-card reveal">
-          <div class="media"><img src="{{ url_for('static', filename='images/concrete5.jpeg') }}" alt="Power Float" loading="lazy"><span class="rate-chip">From <b>$120</b>/day</span><h3>Power Float</h3></div>
-          <div class="body">
-            <p>Smooth &amp; finish concrete surfaces to a high standard.</p>
-            <a class="btn btn-primary hire-btn" href="#quote" data-machine="power-float"><i class="fas fa-truck"></i> Request to Hire</a>
-          </div>
-        </div>
-        <div class="card media-card supply-card reveal">
-          <div class="media"><img src="{{ url_for('static', filename='images/concrete vibrator or poker.jpeg') }}" alt="Poker Vibrator" loading="lazy"><span class="rate-chip">From <b>$90</b>/day</span><h3>Poker Vibrator</h3></div>
-          <div class="body">
-            <p>Eliminate air pockets in fresh concrete.</p>
-            <a class="btn btn-primary hire-btn" href="#quote" data-machine="poker"><i class="fas fa-truck"></i> Request to Hire</a>
-          </div>
-        </div>
-        <div class="card media-card supply-card reveal">
-          <div class="media"><img src="{{ url_for('static', filename='images/mobile concrete mixer.jpeg') }}" alt="Mobile Concrete Mixer" loading="lazy"><span class="rate-chip">From <b>$420</b>/day</span><h3>Mobile Concrete Mixer</h3></div>
-          <div class="body">
-            <p>Efficient &amp; portable mixing solution for remote sites.</p>
-            <a class="btn btn-primary hire-btn" href="#quote" data-machine="self-loader"><i class="fas fa-truck"></i> Request to Hire</a>
-          </div>
-        </div>
-        <div class="card media-card supply-card reveal">
-          <div class="media"><img src="{{ url_for('static', filename='images/concrete-mixer.jpg') }}" alt="3.5 Cubic Concrete Mixer" loading="lazy"><span class="rate-chip">From <b>$550</b>/day</span><h3>3.5 Cubic Mixer</h3></div>
-          <div class="body">
-            <p>High-output mixing — $550/day dry rate (fuel ~60L/day).</p>
-            <a class="btn btn-primary hire-btn" href="#quote" data-machine="3.5-cubic"><i class="fas fa-truck"></i> Request to Hire</a>
-          </div>
-        </div>
-        <div class="card media-card supply-card reveal">
-          <div class="media"><img src="{{ url_for('static', filename='images/mixer 2.jpeg') }}" alt="1 Cubic Manual Loading Mixer" loading="lazy"><span class="rate-chip">From <b>$200</b>/day</span><h3>1 Cubic Manual Mixer</h3></div>
-          <div class="body">
-            <p>Compact manual-loading blue unit — $200/day.</p>
-            <a class="btn btn-primary hire-btn" href="#quote" data-machine="1-cubic-manual"><i class="fas fa-truck"></i> Request to Hire</a>
-          </div>
-        </div>
+        {% endfor %}
       </div>
     </div>
   </section>
+  {% endfor %}
 
   <!-- ===================== SERVICES ===================== -->
   <section class="section" id="generator">
@@ -1212,71 +1385,25 @@
         <p class="section-desc">A look at recent site developments, equipment deployments and joint projects we've supported across Zimbabwe.</p>
       </div>
       <div class="gallery-grid">
-        <a class="gallery-item featured reveal" href="#proj-1">
-          <img src="{{ url_for('static', filename='images/concrete4.jpeg') }}" alt="Boom Pump Placement" loading="lazy">
+        {% for g in gallery %}
+        <a class="gallery-item{% if g.featured %} featured{% endif %} reveal" href="#proj-{{ g.id }}">
+          <img src="{{ url_for('static', filename='images/' + g.image) }}" alt="{{ g.title }}" loading="lazy">
           <div class="gallery-zoom"><i class="fas fa-search-plus"></i></div>
           <div class="gallery-caption">
-            <span class="gallery-cat">Concrete Placement</span>
-            <h3>Boom Pump Placement</h3>
-            <p>High-reach concrete placement for multi-storey structures — precision and reliability on every pour.</p>
+            <span class="gallery-cat">{{ g.category }}</span>
+            <h3>{{ g.title }}</h3>
+            <p>{{ g.description }}</p>
           </div>
         </a>
-        <a class="gallery-item reveal" href="#proj-2">
-          <img src="{{ url_for('static', filename='images/concrete3.jpeg') }}" alt="Concrete Pumping" loading="lazy">
-          <div class="gallery-zoom"><i class="fas fa-search-plus"></i></div>
-          <div class="gallery-caption">
-            <span class="gallery-cat">Concrete Pumping</span>
-            <h3>Concrete Pumping</h3>
-            <p>Reliable line pumping for slabs, footings and foundations.</p>
-          </div>
-        </a>
-        <a class="gallery-item reveal" href="#proj-3">
-          <img src="{{ url_for('static', filename='images/concrete-mixer.jpg') }}" alt="Site Concreting" loading="lazy">
-          <div class="gallery-zoom"><i class="fas fa-search-plus"></i></div>
-          <div class="gallery-caption">
-            <span class="gallery-cat">Site Concreting</span>
-            <h3>Site Concreting</h3>
-            <p>Mixer-supported pours keeping sites moving on schedule.</p>
-          </div>
-        </a>
-        <a class="gallery-item reveal" href="#proj-4">
-          <img src="{{ url_for('static', filename='images/concrete5.jpeg') }}" alt="Surface Finishing" loading="lazy">
-          <div class="gallery-zoom"><i class="fas fa-search-plus"></i></div>
-          <div class="gallery-caption">
-            <span class="gallery-cat">Finishing</span>
-            <h3>Surface Finishing</h3>
-            <p>Power-float finishing for smooth, level concrete floors.</p>
-          </div>
-        </a>
-        <a class="gallery-item reveal" href="#proj-5">
-          <img src="{{ url_for('static', filename='images/concrete6.jpeg') }}" alt="Concrete Works" loading="lazy">
-          <div class="gallery-zoom"><i class="fas fa-search-plus"></i></div>
-          <div class="gallery-caption">
-            <span class="gallery-cat">Concrete Works</span>
-            <h3>Concrete Works</h3>
-            <p>Complete pours with vibration and curing for lasting strength.</p>
-          </div>
-        </a>
-        <a class="gallery-item reveal" href="#proj-6">
-          <img src="{{ url_for('static', filename='images/generator.jpg') }}" alt="Power Solutions" loading="lazy">
-          <div class="gallery-zoom"><i class="fas fa-search-plus"></i></div>
-          <div class="gallery-caption">
-            <span class="gallery-cat">Power</span>
-            <h3>Power Solutions</h3>
-            <p>Generator backup keeping sites powered around the clock.</p>
-          </div>
-        </a>
+        {% endfor %}
       </div>
     </div>
   </section>
 
   <!-- Lightbox overlays (pure CSS, no JS) -->
-  <div class="lightbox" id="proj-1"><a href="#projects" class="lb-close" aria-label="Close"><i class="fas fa-times"></i></a><img src="{{ url_for('static', filename='images/concrete4.jpeg') }}" alt="Boom Pump Placement"></div>
-  <div class="lightbox" id="proj-2"><a href="#projects" class="lb-close" aria-label="Close"><i class="fas fa-times"></i></a><img src="{{ url_for('static', filename='images/concrete3.jpeg') }}" alt="Concrete Pumping"></div>
-  <div class="lightbox" id="proj-3"><a href="#projects" class="lb-close" aria-label="Close"><i class="fas fa-times"></i></a><img src="{{ url_for('static', filename='images/concrete-mixer.jpg') }}" alt="Site Concreting"></div>
-  <div class="lightbox" id="proj-4"><a href="#projects" class="lb-close" aria-label="Close"><i class="fas fa-times"></i></a><img src="{{ url_for('static', filename='images/concrete5.jpeg') }}" alt="Surface Finishing"></div>
-  <div class="lightbox" id="proj-5"><a href="#projects" class="lb-close" aria-label="Close"><i class="fas fa-times"></i></a><img src="{{ url_for('static', filename='images/concrete6.jpeg') }}" alt="Concrete Works"></div>
-  <div class="lightbox" id="proj-6"><a href="#projects" class="lb-close" aria-label="Close"><i class="fas fa-times"></i></a><img src="{{ url_for('static', filename='images/generator.jpg') }}" alt="Power Solutions"></div>
+  {% for g in gallery %}
+  <div class="lightbox" id="proj-{{ g.id }}"><a href="#projects" class="lb-close" aria-label="Close"><i class="fas fa-times"></i></a><img src="{{ url_for('static', filename='images/' + g.image) }}" alt="{{ g.title }}"></div>
+  {% endfor %}
 
   <!-- ===================== QUOTE ===================== -->
   <section class="section section-primary" id="quote">
@@ -1301,6 +1428,7 @@
               <option value="poker">Poker Vibrator</option>
               <option value="3.5-cubic">3.5 Cubic Concrete Mixer (Dry Rate)</option>
               <option value="1-cubic-manual">1 Cubic Manual Loading Mixer</option>
+              <option value="lowbed">Lowbed Transport ($3/km)</option>
             </select>
           </div>
           <div class="field">
@@ -1424,7 +1552,23 @@
 
 </main>
 
+<!-- ===================== CTA BAND ===================== -->
+<section class="cta-band">
+  <div class="shell cta-inner">
+    <div class="cta-copy">
+      <h2>Ready To Get <span>Building?</span></h2>
+      <p>Get an instant quote in under a minute — or talk to our operations team directly. 24/7 dispatch across Zimbabwe.</p>
+    </div>
+    <div class="cta-actions">
+      <a class="btn btn-primary" href="#quote"><i class="fas fa-calculator"></i> Get A Free Quote</a>
+      <a class="btn btn-dark" href="tel:+263783044407"><i class="fas fa-phone"></i> 0783 044 407</a>
+      <a class="btn btn-wa" href="https://wa.me/263718029974?text=Hello%20Genspech!%20I%20would%20like%20a%20hire%20quote." target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+    </div>
+  </div>
+</section>
+
 <!-- ===================== BACK TO TOP ===================== -->
+<a class="wa-float" href="https://wa.me/263718029974?text=Hello%20Genspech!%20I%20would%20like%20a%20hire%20quote." target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
 <button class="to-top" id="toTop" aria-label="Back to top"><i class="fas fa-chevron-up"></i></button>
 
 <!-- ===================== CHAT ASSISTANT (FULL CLICKABLE UI) ===================== -->
@@ -1459,6 +1603,12 @@
         <span>Genspech Investments</span>
       </div>
       <p>Equipment, energy and construction support you can rely on across Zimbabwe. We supply hardware, machines, generators and concrete mixers.</p>
+      <div class="footer-socials">
+        <a href="https://www.facebook.com/GenspechInvestments/" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://wa.me/263718029974" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <a href="tel:+263783044407" aria-label="Call"><i class="fas fa-phone"></i></a>
+        <a href="mailto:genspechinvest@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+      </div>
     </div>
     <div class="footer-col">
       <h4>Explore</h4>
@@ -1512,6 +1662,10 @@
   });
 
   // ============ HERO IMAGE SLIDER ============
+  // Apply hero slide backgrounds from the data-bg attribute
+  document.querySelectorAll('.hero-slide[data-bg]').forEach(s => {
+    s.style.backgroundImage = "url('" + s.getAttribute('data-bg') + "')";
+  });
   const heroSlides = document.querySelectorAll('.hero-slide');
   let heroIndex = 0;
   let heroTimer = null;
@@ -1578,10 +1732,50 @@
   onScrollFx();
   toTopBtn?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
+  // ============ COUNT-UP HERO STATS ============
+  document.querySelectorAll('.hero-stats strong').forEach(el => {
+    const raw = el.textContent;
+    const match = raw.match(/^([\d.]+)(.*)$/);
+    if (!match) return;
+    const target = parseFloat(match[1]);
+    const suffix = match[2];
+    const dur = 1400;
+    let started = false;
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting && !started) {
+          started = true;
+          const t0 = performance.now();
+          const tick = (now) => {
+            const p = Math.min(1, (now - t0) / dur);
+            const eased = 1 - Math.pow(1 - p, 3);
+            el.textContent = Math.round(target * eased) + suffix;
+            if (p < 1) requestAnimationFrame(tick);
+            else el.textContent = target + suffix;
+          };
+          requestAnimationFrame(tick);
+          obs.disconnect();
+        }
+      });
+    }, { threshold: 0.4 });
+    obs.observe(el);
+  });
+
+  // ============ SCROLL PROGRESS BAR ============
+  const scrollProgress = document.getElementById('scrollProgress');
+  const onProgress = () => {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    if (scrollProgress) scrollProgress.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+  };
+  window.addEventListener('scroll', onProgress, { passive: true });
+  window.addEventListener('resize', onProgress, { passive: true });
+  onProgress();
+
   // ============ QUOTE CALCULATION (MAIN FORM) ============
-  const RATES = { generator: 180, "self-loader": 420, "boom-pump": 650, "static-pump": 480, "power-float": 120, poker: 90, "3.5-cubic": 550, "1-cubic-manual": 200 };
+  const RATES = { generator: 180, "self-loader": 420, "boom-pump": 650, "static-pump": 480, "power-float": 120, poker: 90, "3.5-cubic": 550, "1-cubic-manual": 200, lowbed: 3 };
   const URGENCY_MULTIPLIER = { standard: 1, priority: 1.15, urgent: 1.3 };
-  const MACHINE_NAMES = { generator: "Generator Hire", "self-loader": "Self Loading Mixer", "boom-pump": "Boom Pump", "static-pump": "Static Pump", "power-float": "Power Float", poker: "Poker Vibrator", "3.5-cubic": "3.5 Cubic Concrete Mixer (Dry Rate)", "1-cubic-manual": "1 Cubic Manual Loading Mixer" };
+  const MACHINE_NAMES = { generator: "Generator Hire", "self-loader": "Self Loading Mixer", "boom-pump": "Boom Pump", "static-pump": "Static Pump", "power-float": "Power Float", poker: "Poker Vibrator", "3.5-cubic": "3.5 Cubic Concrete Mixer (Dry Rate)", "1-cubic-manual": "1 Cubic Manual Loading Mixer", lowbed: "Lowbed Transport (per km)" };
 
   document.getElementById('quoteForm')?.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -1605,7 +1799,8 @@
         lastQuote = { machine, days, urgency, name, phone, total: data.quote.total, quoteId: data.quoteId };
         const dlBtn = `<button type="button" class="btn btn-primary btn-block" style="margin-top:.9rem;" onclick="downloadQuote()"><i class="fas fa-download"></i> Download Quote</button>`;
         const dlHint = `<small style="display:block;margin-top:.55rem;color:#5c6661;"><i class="fas fa-info-circle"></i> Your name &amp; phone will appear on the PDF.</small>`;
-        document.getElementById('result').innerHTML = `<div style="background:linear-gradient(135deg,#eaf5ef,#e3f2ea); padding:1rem 1.1rem; border-radius:0.75rem; color:#1a1e1c; border:1px solid #d8e6dc;"><strong style="color:#0f4c36;">✅ Estimate Ready</strong><br/>${MACHINE_NAMES[machine]} | ${days} day(s) | ${urgency}<br/><strong style="font-size:1.4rem; color:#0f4c36;">$${data.quote.total}</strong><br/><small>Quote ID: ${data.quoteId}</small>${dlBtn}${dlHint}</div>`;
+        const waBtn = `<a class="btn btn-block" style="margin-top:.6rem;background:#25d366;color:#fff;border-color:#25d366;" target="_blank" rel="noopener" href="https://wa.me/263718029974?text=${encodeURIComponent('Hello Genspech! I would like to hire ' + MACHINE_NAMES[machine] + ' for ' + days + ' day(s) (' + urgency + '). My estimated total is $' + data.quote.total + '. Quote ID: ' + data.quoteId + '.')}"><i class="fab fa-whatsapp"></i> Send via WhatsApp</a>`;
+        document.getElementById('result').innerHTML = `<div style="background:linear-gradient(135deg,#eaf5ef,#e3f2ea); padding:1rem 1.1rem; border-radius:0.75rem; color:#1a1e1c; border:1px solid #d8e6dc;"><strong style="color:#0f4c36;">✅ Estimate Ready</strong><br/>${MACHINE_NAMES[machine]} | ${days} day(s) | ${urgency}<br/><strong style="font-size:1.4rem; color:#0f4c36;">$${data.quote.total}</strong><br/><small>Quote ID: ${data.quoteId}</small>${waBtn}${dlBtn}${dlHint}</div>`;
       } else {
         document.getElementById('result').innerHTML = `<p>Error: ${data.error}</p>`;
       }
@@ -1947,7 +2142,7 @@
   const updateQuickReplies = () => {
     let replies = [];
     if (!chatContext.machine) {
-      replies = ["Generator", "Boom Pump", "Self Loader", "Power Float", "Poker", "3.5 Cubic", "1 Cubic Manual"];
+      replies = ["Generator", "Boom Pump", "Self Loader", "Power Float", "Poker", "3.5 Cubic", "1 Cubic Manual", "Lowbed"];
     } else if (!chatContext.days) {
       replies = ["2 days", "3 days", "5 days", "7 days", "10 days"];
     } else {
@@ -2048,7 +2243,7 @@
       if (window.innerWidth > 700) chatInput?.focus();
       if (chatMessages.children.length === 0) {
         addMessage("👋 Hi! I'm your Genspech quote assistant. Tell me:", false);
-        addMessage("📌 Machine type (Generator, Boom Pump, Self Loader, 3.5 Cubic Mixer, 1 Cubic Manual, Power Float, Poker)", false);
+        addMessage("📌 Machine type (Generator, Boom Pump, Self Loader, 3.5 Cubic Mixer, 1 Cubic Manual, Lowbed Transport, Power Float, Poker)", false);
         addMessage("📅 Number of days (1 day = 9hr shift)", false);
         addMessage("⚡ Urgency (Standard, Priority, Urgent)", false);
         addMessage("💡 Try: '3.5 cubic for 3 days' or 'generator for 3 days priority'", false);
