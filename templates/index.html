@@ -209,7 +209,7 @@
     .nav-links a:hover, .nav-links a.active { color: #fff; }
     .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
     .navbar.scrolled { box-shadow: 0 6px 24px rgba(0,0,0,0.35); }
-    #home, #about, #generator, #projects, #quote, #contact, section[id^="sec-"] { scroll-margin-top: 4.5rem; }
+    #home, #about, #generator, #projects, #faq, #quote, #contact, section[id^="sec-"] { scroll-margin-top: 4.5rem; }
     .nav-actions { display: flex; align-items: center; gap: .75rem; }
     .nav-phone {
       display: inline-flex; align-items: center; gap: .5rem;
@@ -1416,12 +1416,8 @@
 
     /* --- Rotating halo ring around primary CTA --- */
     .cta-halo { position: relative; display: inline-flex; }
-    .cta-halo::before {
-      content: ''; position: absolute; inset: -5px; z-index: -1; border-radius: 999px;
-      background: conic-gradient(from 0deg, transparent 0%, rgba(95,196,146,0.9) 14%, transparent 32%, transparent 54%, rgba(159,224,191,0.85) 74%, transparent 96%);
-      animation: haloSpin 3.2s linear infinite; filter: blur(1px);
-    }
-    @keyframes haloSpin { to { transform: rotate(360deg); } }
+    .hero-actions .btn-primary { animation: pulse-green 2.2s infinite; }
+    .hero-actions .btn-primary:hover { animation: none; }
 
     /* --- Glass cards upgrade --- */
     .hero-float-card {
@@ -1439,6 +1435,69 @@
     @media (max-width: 900px) {
       .hero-aurora, .hero-motes, .hero-ghost { display: none; }
     }
+
+    /* ==========================================================
+       PREMIUM FINISH — featured card, spec strips, nav CTA,
+       glowing conic hover
+       ========================================================== */
+
+    /* --- Nav "Get Quote" CTA --- */
+    .nav-cta {
+      display: inline-flex; align-items: center; gap: .45rem;
+      background: var(--grad-cta); color: #fff; font-size: .72rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .1em; padding: .55rem 1rem; border-radius: 999px;
+      box-shadow: var(--shadow-cta); border: 1px solid rgba(255,255,255,0.14);
+      transition: transform .15s, box-shadow .2s; position: relative; overflow: hidden;
+    }
+    .nav-cta::after {
+      content: ''; position: absolute; top: 0; left: -80%; width: 55%; height: 100%;
+      background: linear-gradient(100deg, transparent, rgba(255,255,255,0.4), transparent);
+      transform: skewX(-20deg); transition: left .5s ease; pointer-events: none;
+    }
+    .nav-cta:hover::after { left: 135%; }
+    .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -10px rgba(15,76,54,0.55); }
+    @media (max-width: 900px) { .nav-cta { display: none; } }
+
+    /* --- Featured (bento) first card --- */
+    .supply-card.featured { grid-column: span 2; }
+    .supply-card.featured .media { height: 13.5rem; }
+    .supply-card.featured .body { padding: 1.5rem 1.6rem 1.6rem; }
+    .supply-card.featured .body p { font-size: 1rem; }
+    .feat-tag {
+      position: absolute; top: .85rem; right: .85rem; z-index: 3; margin-right: 6.5rem;
+      display: inline-flex; align-items: center; gap: .35rem;
+      background: linear-gradient(135deg, #1f7a54, #0f4c36); color: #fff;
+      font-size: .58rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+      padding: .3rem .7rem; border-radius: 999px; box-shadow: 0 8px 20px -8px rgba(15,76,54,0.7);
+    }
+    .feat-tag i { color: #ffd98a; font-size: .55rem; }
+    @media (max-width: 900px) { .supply-card.featured { grid-column: span 1; } .feat-tag { margin-right: 0; } }
+
+    /* --- Spec strip on hire cards --- */
+    .spec-strip {
+      display: flex; flex-wrap: wrap; gap: .4rem .9rem; margin: .85rem 0 .4rem;
+      padding: .6rem 0; border-top: 1px dashed var(--border); border-bottom: 1px dashed var(--border);
+    }
+    .spec-strip span { display: inline-flex; align-items: center; gap: .35rem; font-size: .66rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted-foreground); }
+    .spec-strip i { color: var(--primary); font-size: .68rem; }
+
+    /* --- Premium glowing conic border on hover --- */
+    @property --ring { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+    .supply-card { position: relative; }
+    .supply-card::before {
+      content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      border-radius: inherit; padding: 2px;
+      background: conic-gradient(from var(--ring), transparent 0%, transparent 40%, rgba(95,196,146,0.9) 60%, transparent 80%);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+      opacity: 0; transition: opacity .3s;
+      animation: ringSpin 3s linear infinite;
+    }
+    .supply-card:hover::before { opacity: 1; }
+    @keyframes ringSpin { to { --ring: 360deg; } }
+    .supply-card.featured::before { opacity: .55; }
+    .supply-card.featured:hover::before { opacity: 1; }
   </style>
 </head>
 <body>
@@ -1471,10 +1530,12 @@
       {% endfor %}
       <a href="#generator">Generator Hire</a>
       <a href="#projects">Projects</a>
+      <a href="#faq">FAQs</a>
       <a href="#quote">Quote</a>
       <a href="#contact">Contact</a>
     </nav>
     <div class="nav-actions">
+      <a class="nav-cta" href="#quote"><i class="fas fa-calculator"></i> Get Quote</a>
       <a class="nav-phone" href="tel:+263783044407"><i class="fas fa-phone"></i> 0783 044 407</a>
       <button class="nav-burger" id="menuToggle" aria-label="Toggle menu"><i class="fas fa-bars"></i></button>
     </div>
@@ -1624,10 +1685,21 @@
       <div class="cat-bar" data-grid="grid-{{ sd.section.key }}"></div>
       <div class="supplies-grid" id="grid-{{ sd.section.key }}">
         {% for c in sd.cards %}
-        <div class="card media-card supply-card reveal" data-cat="{{ CAT_MAP.get(c.machine_key, 'Equipment') }}">
-          <div class="media"><img src="{{ url_for('static', filename='images/' + c.image) }}" alt="{{ c.title }}" loading="lazy"><span class="avail-badge"><i class="fas fa-circle"></i> Available</span><span class="rate-chip">{{ c.price }}</span><h3>{{ c.title }}</h3></div>
+        <div class="card media-card supply-card{% if loop.first and sd.cards|length > 1 %} featured{% endif %} reveal" data-cat="{{ CAT_MAP.get(c.machine_key, 'Equipment') }}">
+          <div class="media">
+            <img src="{{ url_for('static', filename='images/' + c.image) }}" alt="{{ c.title }}" loading="lazy">
+            <span class="avail-badge"><i class="fas fa-circle"></i> Available</span>
+            {% if loop.first and sd.cards|length > 1 %}<span class="feat-tag"><i class="fas fa-star"></i> Most Popular</span>{% endif %}
+            <span class="rate-chip">{{ c.price }}</span>
+            <h3>{{ c.title }}</h3>
+          </div>
           <div class="body">
             <p>{{ c.description }}</p>
+            <div class="spec-strip">
+              <span><i class="fas fa-clock"></i> 9-hr shift</span>
+              <span><i class="fas fa-truck-fast"></i> Nationwide</span>
+              <span><i class="fas fa-shield-halved"></i> Compliant</span>
+            </div>
             <a class="btn btn-primary hire-btn" href="#quote" data-machine="{{ c.machine_key }}"><i class="fas fa-truck"></i> Request to Hire</a>
             <button type="button" class="details-link machine-details" data-title="{{ c.title }}" data-desc="{{ c.description }}" data-price="{{ c.price }}" data-image="{{ c.image }}" data-machine="{{ c.machine_key }}"><i class="fas fa-expand"></i> View details</button>
           </div>
