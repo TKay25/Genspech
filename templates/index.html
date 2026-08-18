@@ -1346,6 +1346,99 @@
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
       mix-blend-mode: overlay;
     }
+
+    /* ==========================================================
+       HERO SHOWPIECE — cinematic light, motes, ghost type,
+       halo ring, live pill, parallax depth
+       ========================================================== */
+    .hero { isolation: isolate; }
+
+    /* --- Cinematic aurora (subtle, behind the dark overlay) --- */
+    .hero-aurora {
+      position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden;
+      mix-blend-mode: screen; opacity: .55; transform: translate(var(--mx, 0px), var(--my, 0px));
+    }
+    .hero-aurora i { position: absolute; border-radius: 50%; filter: blur(70px); display: block; }
+    .hero-aurora .a1 { width: 46vw; height: 46vw; left: -12vw; top: -16vh; background: radial-gradient(circle, rgba(95,196,146,0.55), transparent 60%); animation: aurora1 18s ease-in-out infinite alternate; }
+    .hero-aurora .a2 { width: 40vw; height: 40vw; right: -10vw; top: 6vh; background: radial-gradient(circle, rgba(70,180,140,0.42), transparent 60%); animation: aurora2 22s ease-in-out infinite alternate; }
+    .hero-aurora .a3 { width: 34vw; height: 34vw; left: 22vw; bottom: -18vh; background: radial-gradient(circle, rgba(160,230,200,0.32), transparent 60%); animation: aurora3 26s ease-in-out infinite alternate; }
+    @keyframes aurora1 { from { transform: translate(0,0) scale(1); } to { transform: translate(9vw,6vh) scale(1.2); } }
+    @keyframes aurora2 { from { transform: translate(0,0) scale(1); } to { transform: translate(-8vw,5vh) scale(1.25); } }
+    @keyframes aurora3 { from { transform: translate(0,0) scale(1); } to { transform: translate(6vw,-7vh) scale(1.15); } }
+
+    /* --- Floating light motes --- */
+    .hero-motes { position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
+    .mote {
+      position: absolute; bottom: -2vh; border-radius: 50%; opacity: 0;
+      background: radial-gradient(circle, rgba(210,252,232,0.95), rgba(95,196,146,0.5) 55%, transparent 72%);
+      box-shadow: 0 0 10px rgba(95,196,146,0.55);
+      animation: moteUp linear infinite;
+    }
+    @keyframes moteUp {
+      0% { transform: translateY(0) translateX(0); opacity: 0; }
+      10% { opacity: .75; }
+      85% { opacity: .4; }
+      100% { transform: translateY(-118vh) translateX(var(--dx, 3vw)); opacity: 0; }
+    }
+
+    /* --- Ghost outline watermark --- */
+    .hero-ghost {
+      position: absolute; right: -1.5rem; bottom: 5.5rem; z-index: 1; pointer-events: none; user-select: none;
+      font-family: var(--font-head); font-weight: 900; font-size: clamp(5rem, 16vw, 12rem);
+      line-height: 1; text-transform: uppercase; letter-spacing: .04em; white-space: nowrap;
+      color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.14);
+      opacity: .85; transform: translate(calc(var(--mx, 0px) * -0.6), calc(var(--my, 0px) * -0.6));
+    }
+
+    /* --- Live dispatch pill --- */
+    .hero-live {
+      display: flex; align-items: center; gap: .5rem; margin-bottom: 1.1rem; width: fit-content;
+      font-size: .64rem; font-weight: 800; letter-spacing: .2em; text-transform: uppercase;
+      color: rgba(255,255,255,0.85); background: rgba(10,16,13,0.5);
+      border: 1px solid rgba(95,196,146,0.45); padding: .42rem .9rem; border-radius: 999px;
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      animation: heroRise .8s cubic-bezier(.22,1,.36,1) both; animation-delay: .02s;
+    }
+    .live-dot { width: .5rem; height: .5rem; border-radius: 50%; background: var(--primary-bright); animation: livePulse 1.6s ease-out infinite; }
+    @keyframes livePulse { 0% { box-shadow: 0 0 0 0 rgba(95,196,146,0.6); } 100% { box-shadow: 0 0 0 9px rgba(95,196,146,0); } }
+
+    /* --- Word-by-word headline reveal --- */
+    .hero-inner > *:nth-child(3) { animation: none; }
+    .hero-inner > *:nth-child(6) { animation-delay: .6s; }
+    .hero h1 .hword {
+      display: inline-block; opacity: 0;
+      animation: hwordIn .7s cubic-bezier(.22,1,.36,1) forwards;
+      animation-delay: calc(var(--i, 0) * 0.055s + 0.18s);
+    }
+    @keyframes hwordIn { from { opacity: 0; transform: translateY(0.7em) rotate(2deg); filter: blur(4px); } to { opacity: 1; transform: none; filter: blur(0); } }
+    .hero h1 .accent { background-size: 200% auto; animation: accentFlow 6s ease-in-out infinite; }
+    @keyframes accentFlow { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+    /* --- Rotating halo ring around primary CTA --- */
+    .cta-halo { position: relative; display: inline-flex; }
+    .cta-halo::before {
+      content: ''; position: absolute; inset: -5px; z-index: -1; border-radius: 999px;
+      background: conic-gradient(from 0deg, transparent 0%, rgba(95,196,146,0.9) 14%, transparent 32%, transparent 54%, rgba(159,224,191,0.85) 74%, transparent 96%);
+      animation: haloSpin 3.2s linear infinite; filter: blur(1px);
+    }
+    @keyframes haloSpin { to { transform: rotate(360deg); } }
+
+    /* --- Glass cards upgrade --- */
+    .hero-float-card {
+      border-color: rgba(95,196,146,0.35);
+      box-shadow: 0 20px 50px -18px rgba(0,0,0,0.6), 0 0 0 1px rgba(95,196,146,0.12), 0 0 34px -8px rgba(95,196,146,0.3);
+    }
+    .hero-float-card:hover { animation-play-state: paused; transform: translateY(-6px) scale(1.03); }
+    .hero-float-card .fc-icon { position: relative; box-shadow: 0 0 0 4px rgba(95,196,146,0.15), 0 8px 22px -6px rgba(0,0,0,0.5); }
+    .hero-float-card .fc-icon::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(circle, rgba(95,196,146,0.5), transparent 70%); opacity: 0; transition: opacity .3s; }
+    .hero-float-card:hover .fc-icon::after { opacity: 1; }
+
+    /* --- Parallax on the content block --- */
+    .hero-inner { transform: translate(calc(var(--mx, 0px) * 0.5), calc(var(--my, 0px) * 0.5)); }
+
+    @media (max-width: 900px) {
+      .hero-aurora, .hero-motes, .hero-ghost { display: none; }
+    }
   </style>
 </head>
 <body>
@@ -1395,12 +1488,16 @@
     <div class="hero-slide{% if loop.first %} active{% endif %}" data-bg="{{ url_for('static', filename='images/' + img) }}"></div>
     {% endfor %}
   </div>
+  <div class="hero-aurora" aria-hidden="true"><i class="a1"></i><i class="a2"></i><i class="a3"></i></div>
+  <div class="hero-motes" id="heroMotes" aria-hidden="true"></div>
+  <div class="hero-ghost" aria-hidden="true">Genspech</div>
   <div class="hero-inner">
+    <span class="hero-live"><span class="live-dot"></span> Dispatching Now &middot; Harare</span>
     <span class="badge">Professional Construction Support Since 2019</span>
     <h1>Deliver Every Project With <span class="accent">Speed, Power, And Precision</span></h1>
     <p class="hero-sub">Genspech Investments is a versatile Generic Service Provider offering tailored solutions in technology, operations, customer service and construction. We deliver high-quality services, innovation and growth for diverse clients.</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="#quote"><i class="fas fa-calculator"></i> Get A Free Quote</a>
+      <span class="cta-halo"><a class="btn btn-primary" href="#quote"><i class="fas fa-calculator"></i> Get A Free Quote</a></span>
       <a class="btn btn-dark" href="tel:+263783044407"><i class="fas fa-phone"></i> Talk To Operations</a>
       <a class="btn btn-wa" href="https://wa.me/263718029974?text=Hello%20Genspech!%20I%20would%20like%20a%20hire%20quote." target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
     </div>
@@ -2587,6 +2684,68 @@
     scan.className = 'hero-scan';
     scan.setAttribute('aria-hidden', 'true');
     heroEl2.insertBefore(scan, heroEl2.firstChild);
+  }
+
+  // ============ HERO LIGHT MOTES ============
+  const motesBox = document.getElementById('heroMotes');
+  if (motesBox) {
+    const MOTE_COUNT = window.innerWidth < 700 ? 10 : 22;
+    for (let i = 0; i < MOTE_COUNT; i++) {
+      const m = document.createElement('span');
+      m.className = 'mote';
+      const size = (2 + Math.random() * 5).toFixed(1);
+      m.style.width = size + 'px';
+      m.style.height = size + 'px';
+      m.style.left = (Math.random() * 100).toFixed(2) + '%';
+      m.style.setProperty('--dx', (Math.random() * 8 - 4).toFixed(2) + 'vw');
+      m.style.animationDuration = (9 + Math.random() * 12).toFixed(2) + 's';
+      m.style.animationDelay = (-Math.random() * 14).toFixed(2) + 's';
+      motesBox.appendChild(m);
+    }
+  }
+
+  // ============ HERO WORD-BY-WORD REVEAL ============
+  const heroH1 = document.querySelector('.hero h1');
+  if (heroH1) {
+    const wrapWords = (node, delay) => {
+      Array.from(node.childNodes).forEach(child => {
+        if (child.nodeType === 3) {
+          const text = child.textContent;
+          if (!text.trim()) return;
+          const frag = document.createDocumentFragment();
+          text.split(/(\s+)/).forEach((part) => {
+            if (!part) return;
+            if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(' ')); return; }
+            const s = document.createElement('span');
+            s.className = 'hword';
+            s.textContent = part;
+            s.style.setProperty('--i', delay++);
+            frag.appendChild(s);
+          });
+          node.replaceChild(frag, child);
+        } else if (child.nodeType === 1 && child.classList.contains('accent')) {
+          wrapWords(child, delay);
+        }
+      });
+    };
+    wrapWords(heroH1, 0);
+  }
+
+  // ============ HERO MOUSE PARALLAX (desktop only) ============
+  const heroEl3 = document.querySelector('.hero');
+  if (heroEl3 && window.matchMedia('(pointer:fine)').matches && window.innerWidth > 900) {
+    let parRaf = null;
+    heroEl3.addEventListener('mousemove', (e) => {
+      if (parRaf) return;
+      parRaf = requestAnimationFrame(() => {
+        const r = heroEl3.getBoundingClientRect();
+        const mx = ((e.clientX - r.left) / r.width - 0.5) * 2;
+        const my = ((e.clientY - r.top) / r.height - 0.5) * 2;
+        heroEl3.style.setProperty('--mx', (mx * 16).toFixed(1) + 'px');
+        heroEl3.style.setProperty('--my', (my * 11).toFixed(1) + 'px');
+        parRaf = null;
+      });
+    });
   }
 
   // ============ FILM GRAIN ============
