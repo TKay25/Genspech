@@ -1237,6 +1237,39 @@
       .chat-panel { max-height: calc(100vh - 11rem); }
       .to-top { bottom: 4.6rem; }
     }
+
+    /* ==========================================================
+       UI SHAKE-UP — engineered / blueprint character
+       ========================================================== */
+    /* Blueprint grid + angled edges on dark sections */
+    .section-dark {
+      background-image:
+        repeating-linear-gradient(0deg, rgba(95,196,146,0.05) 0 1px, transparent 1px 46px),
+        repeating-linear-gradient(90deg, rgba(95,196,146,0.05) 0 1px, transparent 1px 46px),
+        linear-gradient(135deg, #0a3627 0%, #0c100e 70%);
+      clip-path: polygon(0 2rem, 100% 0, 100% calc(100% - 2rem), 0 100%);
+      padding: calc(5.5rem + 2rem) 0;
+    }
+    /* Angled edges on the quote (primary) section */
+    .section-primary {
+      clip-path: polygon(0 0, 100% 2rem, 100% calc(100% - 2rem), 0 100%);
+      padding: calc(5.5rem + 2rem) 0;
+    }
+    /* Engineering corner bracket on section heads */
+    .section-head::before {
+      content: ''; position: absolute; left: -0.5rem; top: -0.7rem;
+      width: 1.3rem; height: 1.3rem;
+      border-left: 2px solid var(--primary-bright);
+      border-top: 2px solid var(--primary-bright);
+      opacity: .75; pointer-events: none;
+    }
+    /* Subtle 3D tilt on hire cards */
+    .supply-card { transform-style: preserve-3d; }
+    .supply-card:hover { transform: perspective(900px) translateY(-6px) rotateX(1.2deg) rotateY(-1.2deg); }
+    /* Hero bottom accent bar */
+    .hero::after { height: 3px; background: linear-gradient(90deg, transparent, var(--primary-bright) 35%, var(--primary-bright) 65%, transparent); }
+    /* Keep reveal animations smooth on tilted cards */
+    .supply-card.reveal { transition: opacity .6s ease, transform .6s ease, box-shadow .25s ease; }
   </style>
 </head>
 <body>
