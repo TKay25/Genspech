@@ -2853,7 +2853,14 @@
           });
           node.replaceChild(frag, child);
         } else if (child.nodeType === 1 && child.classList.contains('accent')) {
-          wrapWords(child, delay);
+          // Keep the gradient accent phrase INTACT (splitting it would break
+          // background-clip:text and make the words invisible). Animate it as
+          // one unit so it still participates in the staggered reveal.
+          const w = document.createElement('span');
+          w.className = 'hword accent-hword';
+          w.style.setProperty('--i', delay++);
+          child.parentNode.replaceChild(w, child);
+          w.appendChild(child);
         }
       });
     };
