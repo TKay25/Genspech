@@ -275,6 +275,7 @@ class QuoteResult:
     daily_rate: float
     subtotal: float
     total: float
+    unit: str
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -285,7 +286,11 @@ class QuoteResult:
             "dailyRate": round(self.daily_rate, 2),
             "subtotal": round(self.subtotal, 2),
             "total": round(self.total, 2),
+            "unit": self.unit,
         }
+
+
+PER_KM_MACHINES = {"lowbed"}
 
 
 def build_quote(machine: str, days: int, urgency: str) -> QuoteResult:
@@ -293,8 +298,14 @@ def build_quote(machine: str, days: int, urgency: str) -> QuoteResult:
         raise ValueError("Unsupported machine type")
     if urgency not in URGENCY_MULTIPLIER:
         raise ValueError("Unsupported urgency level")
-    if days < 1 or days > 365:
-        raise ValueError("Days must be between 1 and 365")
+    if machine in PER_KM_MACHINES:
+        if days < 1 or days > 20000:
+            raise ValueError("Distance must be between 1 and 20000 km")
+        unit = "km"
+    else:
+        if days < 1 or days > 365:
+            raise ValueError("Days must be between 1 and 365")
+        unit = "days"
 
     daily_rate = RATES[machine]
     subtotal = daily_rate * days
@@ -308,6 +319,7 @@ def build_quote(machine: str, days: int, urgency: str) -> QuoteResult:
         daily_rate=daily_rate,
         subtotal=subtotal,
         total=total,
+        unit=unit,
     )
 
 
@@ -324,7 +336,17 @@ def extract_days(message: str) -> int | None:
     if match:
         return int(match.group(1))
 
-    standalone = re.search(r"\b(\d{1,3})\b", message)
+    standalone = re.search(r"\b(\d{1,5})\b", message)
+    if standalone:
+        return int(standalone.group(1))
+    return None
+
+
+def extract_km(message: str) -> int | None:
+    match = re.search(r"\b(\d{1,5})\s*(?:km|kms|kilometre|kilometer|kilometres|kilometers|k)\b", message.lower())
+    if match:
+        return int(match.group(1))
+    standalone = re.search(r"\b(\d{1,5})\b", message)
     if standalone:
         return int(standalone.group(1))
     return None
@@ -358,19 +380,22 @@ def chatbot_reply(message: str, context: dict[str, Any]) -> tuple[str, dict[str,
         )
 
     detected_machine = extract_machine(cleaned)
-    detected_days = extract_days(cleaned)
     detected_urgency = extract_urgency(cleaned)
 
     if detected_machine:
         new_context["machine"] = detected_machine
-    if detected_days is not None:
-        new_context["days"] = detected_days
     if detected_urgency:
         new_context["urgency"] = detected_urgency
 
+    # Lowbed is billed per km; other machines per day.
+    is_km = new_context.get("machine") in PER_KM_MACHINES
+    detected_qty = extract_km(cleaned) if is_km else extract_days(cleaned)
+    if detected_qty is not None:
+        new_context["days"] = detected_qty
+
     if any(word in lowered for word in ["hello", "hi", "hey"]):
         return (
-            "Hi, I can prepare a hire estimate. Example: 'generator for 3 days urgent'.",
+            "Hi, I can prepare a hire estimate. Example: 'generator for 3 days urgent' or 'lowbed 150 km'.",
             new_context,
             None,
         )
@@ -383,11 +408,11 @@ def chatbot_reply(message: str, context: dict[str, Any]) -> tuple[str, dict[str,
 
     if missing:
         if missing == ["machine", "days"]:
-            prompt = "Tell me the machine and number of days. Example: boom pump for 2 days."
+            prompt = "Tell me the machine and " + ("distance in km" if is_km else "number of days") + ". Example: " + ("lowbed 150 km" if is_km else "boom pump for 2 days") + "."
         elif "machine" in missing:
-            prompt = "Which machine do you need? Generator, self loader, boom pump, static pump, power float, or poker vibrator?"
+            prompt = "Which machine do you need? Generator, self loader, boom pump, static pump, power float, poker vibrator, or lowbed transport?"
         else:
-            prompt = "How many days do you want to hire for?"
+            prompt = "How many " + ("kilometres of transport distance" if is_km else "days do you want to hire for") + "?"
         return (prompt, new_context, None)
 
     try:
@@ -400,7 +425,7 @@ def chatbot_reply(message: str, context: dict[str, Any]) -> tuple[str, dict[str,
         return (f"I could not calculate that quote: {exc}.", new_context, None)
 
     reply = (
-        f"Estimated total for {quote.machine_name} ({quote.days} day(s), {quote.urgency}) is "
+        f"Estimated total for {quote.machine_name} ({quote.days} {quote.unit}, {quote.urgency}) is "
         f"${quote.total:.2f}. Reply with 'reset' to start another quote."
     )
     return (reply, new_context, quote)
