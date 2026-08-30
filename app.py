@@ -57,6 +57,7 @@ RATES = {
     "poker": 30.0,
     "3.5-cubic": 500.0,
     "1-cubic-manual": 200.0,
+    "mixer-truck": 450.0,
     "lowbed": 3.0,
 }
 
@@ -73,6 +74,7 @@ MACHINE_NAMES = {
     "power-float": "Power Float",
     "poker": "Poker Vibrator",
     "3.5-cubic": "Self Loading Concrete Mixer (3.5 Cubic)",
+    "mixer-truck": "Concrete Mixer Truck (Transit Mixer)",
     "1-cubic-manual": "1 Cubic Manual Loading Mixer",
     "lowbed": "Lowbed Transport (per km)",
 }
@@ -83,6 +85,10 @@ MACHINE_ALIASES = {
     "self loader": "3.5-cubic",
     "self-loading": "3.5-cubic",
     "self loading": "3.5-cubic",
+    "mixer truck": "mixer-truck",
+    "transit mixer": "mixer-truck",
+    "ready mix": "mixer-truck",
+    "ready-mix": "mixer-truck",
     "mixer": "3.5-cubic",
     "boom": "boom-pump",
     "boom pump": "boom-pump",
@@ -208,6 +214,7 @@ DEFAULT_HIRE_CARDS = [
     ("power-float", "Power Float", "Smooth & finish concrete surfaces to a high standard.", "From $120/day", "powerfloat.jpeg", "machines"),
     ("poker", "Poker Vibrator", "Eliminate air pockets in fresh concrete.", "From $30/day", "concrete vibrator or poker.jpeg", "machines"),
     ("1-cubic-manual", "1 Cubic Manual Mixer", "Compact manual-loading blue unit — $200/day.", "From $200/day", "mixer 2.jpeg", "machines"),
+    ("mixer-truck", "Concrete Mixer Truck (Transit Mixer)", "Loads concrete from the batch plant to the customer.", "From $450/day", "mixer truck.jpeg", "machines"),
     ("lowbed", "Lowbed Transport", "Heavy-duty lowbed to ferry construction & mining machines — excavators, loaders, rollers, backhoes, generators and more — $3/km across Zimbabwe.", "From $3/km", "lowbed.jpeg", "vehicles"),
 ]
 
