@@ -70,8 +70,8 @@ URGENCY_MULTIPLIER = {
 
 MACHINE_NAMES = {
     "generator": "Generator Hire",
-    "boom-pump": "Boom Pump",
-    "static-pump": "Static Pump",
+    "boom-pump": "Concrete Boom Pump",
+    "static-pump": "Concrete Static Pump",
     "power-float": "Power Float",
     "poker": "Poker Vibrator",
     "3.5-cubic": "Self Loading Concrete Mixer (3.5 Cubic)",
@@ -216,8 +216,8 @@ DEFAULT_SECTIONS = [
 DEFAULT_HIRE_CARDS = [
     # (machine_key, title, description, price, image, section)
     ("3.5-cubic", "Self-Loading Concrete Mixer (3.5 Cubic)", "Combines cement, water & aggregates for reliable site mixing.", "From $500/day", "selfloadingmixer.jpeg", "machines"),
-    ("static-pump", "Static Pump", "Essential for efficient concrete pumping on any site.", "From $500/day", "static pump.jpeg", "machines"),
-    ("boom-pump", "Boom Pump", "Precision & reliability in concrete placement.", "From $700/day", "boom pump.jpeg", "machines"),
+    ("static-pump", "Concrete Static Pump", "Essential for efficient concrete pumping on any site.", "From $500/day", "static pump.jpeg", "machines"),
+    ("boom-pump", "Concrete Boom Pump", "Precision & reliability in concrete placement.", "From $700/day", "boom pump.jpeg", "machines"),
     ("power-float", "Power Float", "Smooth & finish concrete surfaces to a high standard.", "From $120/day", "powerfloat.jpeg", "machines"),
     ("poker", "Poker Vibrator", "Eliminate air pockets in fresh concrete.", "From $30/day", "concrete vibrator or poker.jpeg", "machines"),
     ("1-cubic-manual", "1 Cubic Manual Mixer", "Compact manual-loading blue unit — $200/day.", "From $200/day", "mixer 2.jpeg", "machines"),
@@ -229,9 +229,9 @@ DEFAULT_HIRE_CARDS = [
 DEFAULT_GALLERY = [
     # (image, category, title, description, featured)
     ("concrete4.jpeg", "Concrete Placement", "Boom Pump Placement", "High-reach concrete placement for multi-storey structures — precision and reliability on every pour.", True),
-    ("concrete6.jpeg", "Concrete Pumping", "Concrete Pumping", "Reliable line pumping for slabs, footings and foundations.", False),
+    ("concrete5.jpeg", "Concrete Pumping", "Concrete Pumping", "Reliable line pumping for slabs, footings and foundations.", False),
     ("concrete-mixer.jpg", "Site Concreting", "Site Concreting", "Mixer-supported pours keeping sites moving on schedule.", False),
-    ("concrete5.jpeg", "Finishing", "Surface Finishing", "Power-float finishing for smooth, level concrete floors.", False),
+    ("concrete6.jpeg", "Finishing", "Surface Finishing", "Power-float finishing for smooth, level concrete floors.", False),
     ("concrete3.jpeg", "Concrete Works", "Concrete Works", "Complete pours with vibration and curing for lasting strength.", False),
     ("generator.jpg", "Power", "Power Solutions", "Generator backup keeping sites powered around the clock.", False),
 ]
@@ -421,7 +421,7 @@ def chatbot_reply(message: str, context: dict[str, Any]) -> tuple[str, dict[str,
         if missing == ["machine", "days"]:
             prompt = "Tell me the machine and " + ("distance in km" if is_km else "number of days") + ". Example: " + ("lowbed 150 km" if is_km else "boom pump for 2 days") + "."
         elif "machine" in missing:
-            prompt = "Which machine do you need? Generator, self loader, boom pump, static pump, power float, poker vibrator, or lowbed transport?"
+            prompt = "Which machine do you need? Generator, self loader, concrete boom pump, concrete static pump, power float, poker vibrator, or lowbed transport?"
         else:
             prompt = "How many " + ("kilometres of transport distance" if is_km else "days do you want to hire for") + "?"
         return (prompt, new_context, None)

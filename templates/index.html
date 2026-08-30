@@ -97,8 +97,8 @@
       "@type": "OfferCatalog",
       "name": "Equipment Hire & Construction Services",
       "itemListElement": [
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Boom Pump Hire", "description": "High-reach concrete placement for multi-storey structures.", "offers": { "@type": "Offer", "price": "700.00", "priceCurrency": "USD", "description": "Per day, 9-hour shift" } } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Static Pump Hire", "description": "Reliable line pumping for slabs, footings and foundations.", "offers": { "@type": "Offer", "price": "500.00", "priceCurrency": "USD", "description": "Per day, 9-hour shift" } } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Concrete Boom Pump Hire", "description": "High-reach concrete placement for multi-storey structures.", "offers": { "@type": "Offer", "price": "700.00", "priceCurrency": "USD", "description": "Per day, 9-hour shift" } } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Concrete Static Pump Hire", "description": "Reliable line pumping for slabs, footings and foundations.", "offers": { "@type": "Offer", "price": "500.00", "priceCurrency": "USD", "description": "Per day, 9-hour shift" } } },
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Self Loading Concrete Mixer (3.5 Cubic) Hire", "description": "Combines cement, water & aggregates for reliable site mixing.", "offers": { "@type": "Offer", "price": "500.00", "priceCurrency": "USD", "description": "Per day, 9-hour shift" } } },
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Concrete Mixer Truck Hire", "description": "Loads concrete from the batch plant to the customer.", "offers": { "@type": "Offer", "price": "450.00", "priceCurrency": "USD", "description": "Per day, 9-hour shift" } } },
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Generator Hire", "description": "Reliable power for events, factories, mining, hospitals and backup.", "offers": { "@type": "Offer", "price": "180.00", "priceCurrency": "USD", "description": "Per day, 9-hour shift" } } },
@@ -1614,8 +1614,8 @@
   <div class="marquee-track">
     <div class="marquee-half">
       <span><i class="fas fa-truck"></i> Concrete Mixers</span>
-      <span><i class="fas fa-tower-observation"></i> Boom Pumps</span>
-      <span><i class="fas fa-water"></i> Static Pumps</span>
+      <span><i class="fas fa-tower-observation"></i> Concrete Boom Pumps</span>
+      <span><i class="fas fa-water"></i> Concrete Static Pumps</span>
       <span><i class="fas fa-bolt"></i> Generators</span>
       <span><i class="fas fa-layer-group"></i> Power Floats</span>
       <span><i class="fas fa-circle-notch"></i> Poker Vibrators</span>
@@ -1624,8 +1624,8 @@
     </div>
     <div class="marquee-half">
       <span><i class="fas fa-truck"></i> Concrete Mixers</span>
-      <span><i class="fas fa-tower-observation"></i> Boom Pumps</span>
-      <span><i class="fas fa-water"></i> Static Pumps</span>
+      <span><i class="fas fa-tower-observation"></i> Concrete Boom Pumps</span>
+      <span><i class="fas fa-water"></i> Concrete Static Pumps</span>
       <span><i class="fas fa-bolt"></i> Generators</span>
       <span><i class="fas fa-layer-group"></i> Power Floats</span>
       <span><i class="fas fa-circle-notch"></i> Poker Vibrators</span>
@@ -1799,8 +1799,8 @@
             <select id="machine">
               <option value="">Select</option>
               <option value="generator">Generator Hire</option>
-              <option value="boom-pump">Boom Pump</option>
-              <option value="static-pump">Static Pump</option>
+              <option value="boom-pump">Concrete Boom Pump</option>
+              <option value="static-pump">Concrete Static Pump</option>
               <option value="power-float">Power Float</option>
               <option value="poker">Poker Vibrator</option>
               <option value="3.5-cubic">Self Loading Concrete Mixer (3.5 Cubic)</option>
@@ -2226,7 +2226,7 @@
   // ============ QUOTE CALCULATION (MAIN FORM) ============
   const RATES = { generator: 180, "boom-pump": 700, "static-pump": 500, "power-float": 120, poker: 30, "3.5-cubic": 500, "mixer-truck": 450, "1-cubic-manual": 200, lowbed: 3, "side-curtain": 3 };
   const URGENCY_MULTIPLIER = { standard: 1, priority: 1.15, urgent: 1.3 };
-  const MACHINE_NAMES = { generator: "Generator Hire", "boom-pump": "Boom Pump", "static-pump": "Static Pump", "power-float": "Power Float", poker: "Poker Vibrator", "3.5-cubic": "Self Loading Concrete Mixer (3.5 Cubic)", "mixer-truck": "Concrete Mixer Truck (Transit Mixer)", "1-cubic-manual": "1 Cubic Manual Loading Mixer", lowbed: "Lowbed Transport (per km)", "side-curtain": "Side Curtain Truck" };
+  const MACHINE_NAMES = { generator: "Generator Hire", "boom-pump": "Concrete Boom Pump", "static-pump": "Concrete Static Pump", "power-float": "Power Float", poker: "Poker Vibrator", "3.5-cubic": "Self Loading Concrete Mixer (3.5 Cubic)", "mixer-truck": "Concrete Mixer Truck (Transit Mixer)", "1-cubic-manual": "1 Cubic Manual Loading Mixer", lowbed: "Lowbed Transport (per km)", "side-curtain": "Side Curtain Truck" };
   const PER_KM = { lowbed: true, "side-curtain": true };
   const qtyUnit = (m) => PER_KM[m] ? 'km' : 'day';
 
@@ -2658,7 +2658,7 @@
     let replies = [];
     const chatIsKm = PER_KM[chatContext.machine];
     if (!chatContext.machine) {
-      replies = ["Generator", "Boom Pump", "Self Loader", "Power Float", "Poker", "3.5 Cubic", "1 Cubic Manual", "Lowbed", "Side Curtain"];
+      replies = ["Generator", "Concrete Boom Pump", "Self Loader", "Power Float", "Poker", "3.5 Cubic", "1 Cubic Manual", "Lowbed", "Side Curtain"];
     } else if (!chatContext.days) {
       replies = chatIsKm ? ["50 km", "100 km", "150 km", "250 km"] : ["2 days", "3 days", "5 days", "7 days", "10 days"];
     } else {
@@ -2761,7 +2761,7 @@
       if (window.innerWidth > 700) chatInput?.focus();
       if (chatMessages.children.length === 0) {
         addMessage("👋 Hi! I'm your Genspech quote assistant. Tell me:", false);
-        addMessage("📌 Machine type (Generator, Boom Pump, Self Loader, 3.5 Cubic Mixer, 1 Cubic Manual, Lowbed Transport, Power Float, Poker)", false);
+        addMessage("📌 Machine type (Generator, Concrete Boom Pump, Self Loader, 3.5 Cubic Mixer, 1 Cubic Manual, Lowbed Transport, Power Float, Poker)", false);
         addMessage("📅 Machines: number of days (1 day = 9hr shift) · Lowbed: distance in km", false);
         addMessage("⚡ Urgency (Standard, Priority, Urgent)", false);
         addMessage("💡 Try: '3.5 cubic for 3 days', 'generator priority', or 'lowbed 150 km'", false);
