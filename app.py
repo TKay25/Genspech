@@ -52,10 +52,10 @@ db = SQLAlchemy(app)
 RATES = {
     "generator": 180.0,
     "self-loader": 420.0,
-    "boom-pump": 650.0,
-    "static-pump": 480.0,
+    "boom-pump": 700.0,
+    "static-pump": 500.0,
     "power-float": 120.0,
-    "poker": 90.0,
+    "poker": 30.0,
     "3.5-cubic": 550.0,
     "1-cubic-manual": 200.0,
     "lowbed": 3.0,
