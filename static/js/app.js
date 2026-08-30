@@ -10,7 +10,7 @@ const chatInput = document.getElementById("chatInput");
 const chatName = document.getElementById("chatName");
 const chatPhone = document.getElementById("chatPhone");
 
-const WHATSAPP_NUMBER = "263714773827";
+const WHATSAPP_NUMBER = "263783044407";
 
 let chatContext = {
   machine: null,
