@@ -228,7 +228,7 @@ DEFAULT_HIRE_CARDS = [
 
 DEFAULT_GALLERY = [
     # (image, category, title, description, featured)
-    ("concrete4.jpeg", "Concrete Placement", "Boom Pump Placement", "High-reach concrete placement for multi-storey structures — precision and reliability on every pour.", True),
+    ("boompumpplacement.jpeg", "Concrete Placement", "Boom Pump Placement", "High-reach concrete placement for multi-storey structures — precision and reliability on every pour.", True),
     ("concrete5.jpeg", "Concrete Pumping", "Concrete Pumping", "Reliable line pumping for slabs, footings and foundations.", False),
     ("concrete-mixer.jpg", "Site Concreting", "Site Concreting", "Mixer-supported pours keeping sites moving on schedule.", False),
     ("concrete6.jpeg", "Finishing", "Surface Finishing", "Power-float finishing for smooth, level concrete floors.", False),
