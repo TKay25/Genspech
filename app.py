@@ -51,12 +51,11 @@ db = SQLAlchemy(app)
 
 RATES = {
     "generator": 180.0,
-    "self-loader": 420.0,
     "boom-pump": 700.0,
     "static-pump": 500.0,
     "power-float": 120.0,
     "poker": 30.0,
-    "3.5-cubic": 550.0,
+    "3.5-cubic": 500.0,
     "1-cubic-manual": 200.0,
     "lowbed": 3.0,
 }
@@ -69,12 +68,11 @@ URGENCY_MULTIPLIER = {
 
 MACHINE_NAMES = {
     "generator": "Generator Hire",
-    "self-loader": "Self Loading Concrete Mixer",
     "boom-pump": "Boom Pump",
     "static-pump": "Static Pump",
     "power-float": "Power Float",
     "poker": "Poker Vibrator",
-    "3.5-cubic": "3.5 Cubic Concrete Mixer (Dry Rate)",
+    "3.5-cubic": "Self Loading Concrete Mixer (3.5 Cubic)",
     "1-cubic-manual": "1 Cubic Manual Loading Mixer",
     "lowbed": "Lowbed Transport (per km)",
 }
@@ -82,10 +80,10 @@ MACHINE_NAMES = {
 MACHINE_ALIASES = {
     "generator": "generator",
     "genset": "generator",
-    "self loader": "self-loader",
-    "self-loading": "self-loader",
-    "self loading": "self-loader",
-    "mixer": "self-loader",
+    "self loader": "3.5-cubic",
+    "self-loading": "3.5-cubic",
+    "self loading": "3.5-cubic",
+    "mixer": "3.5-cubic",
     "boom": "boom-pump",
     "boom pump": "boom-pump",
     "static": "static-pump",

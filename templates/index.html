@@ -99,8 +99,7 @@
       "itemListElement": [
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Boom Pump Hire", "description": "High-reach concrete placement for multi-storey structures.", "offers": { "@type": "Offer", "price": "700.00", "priceCurrency": "USD", "description": "Per day, 9-hour shift" } } },
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Static Pump Hire", "description": "Reliable line pumping for slabs, footings and foundations.", "offers": { "@type": "Offer", "price": "500.00", "priceCurrency": "USD", "description": "Per day, 9-hour shift" } } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Self Loading Concrete Mixer Hire", "description": "Portable mixing solution for remote sites.", "offers": { "@type": "Offer", "price": "420.00", "priceCurrency": "USD", "description": "Per day, 9-hour shift" } } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "3.5 Cubic Concrete Mixer Hire", "description": "High-output dry-rate mixing.", "offers": { "@type": "Offer", "price": "550.00", "priceCurrency": "USD", "description": "Dry rate per day" } } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Self Loading Concrete Mixer (3.5 Cubic) Hire", "description": "Combines cement, water & aggregates for reliable site mixing.", "offers": { "@type": "Offer", "price": "500.00", "priceCurrency": "USD", "description": "Per day, 9-hour shift" } } },
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Generator Hire", "description": "Reliable power for events, factories, mining, hospitals and backup.", "offers": { "@type": "Offer", "price": "180.00", "priceCurrency": "USD", "description": "Per day, 9-hour shift" } } },
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Power Float Hire", "description": "Smooth and finish concrete surfaces.", "offers": { "@type": "Offer", "price": "120.00", "priceCurrency": "USD", "description": "Per day, 9-hour shift" } } },
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Lowbed Transport Hire", "description": "Ferry construction and mining machines across Zimbabwe.", "offers": { "@type": "Offer", "price": "3.00", "priceCurrency": "USD", "description": "Per kilometre" } } }
@@ -1798,12 +1797,11 @@
             <select id="machine">
               <option value="">Select</option>
               <option value="generator">Generator Hire</option>
-              <option value="self-loader">Self Loading Mixer</option>
               <option value="boom-pump">Boom Pump</option>
               <option value="static-pump">Static Pump</option>
               <option value="power-float">Power Float</option>
               <option value="poker">Poker Vibrator</option>
-              <option value="3.5-cubic">3.5 Cubic Concrete Mixer (Dry Rate)</option>
+              <option value="3.5-cubic">Self Loading Concrete Mixer (3.5 Cubic)</option>
               <option value="1-cubic-manual">1 Cubic Manual Loading Mixer</option>
               <option value="lowbed">Lowbed Transport ($3/km)</option>
             </select>
@@ -2222,9 +2220,9 @@
   onProgress();
 
   // ============ QUOTE CALCULATION (MAIN FORM) ============
-  const RATES = { generator: 180, "self-loader": 420, "boom-pump": 700, "static-pump": 500, "power-float": 120, poker: 30, "3.5-cubic": 550, "1-cubic-manual": 200, lowbed: 3 };
+  const RATES = { generator: 180, "boom-pump": 700, "static-pump": 500, "power-float": 120, poker: 30, "3.5-cubic": 500, "1-cubic-manual": 200, lowbed: 3 };
   const URGENCY_MULTIPLIER = { standard: 1, priority: 1.15, urgent: 1.3 };
-  const MACHINE_NAMES = { generator: "Generator Hire", "self-loader": "Self Loading Mixer", "boom-pump": "Boom Pump", "static-pump": "Static Pump", "power-float": "Power Float", poker: "Poker Vibrator", "3.5-cubic": "3.5 Cubic Concrete Mixer (Dry Rate)", "1-cubic-manual": "1 Cubic Manual Loading Mixer", lowbed: "Lowbed Transport (per km)" };
+  const MACHINE_NAMES = { generator: "Generator Hire", "boom-pump": "Boom Pump", "static-pump": "Static Pump", "power-float": "Power Float", poker: "Poker Vibrator", "3.5-cubic": "Self Loading Concrete Mixer (3.5 Cubic)", "1-cubic-manual": "1 Cubic Manual Loading Mixer", lowbed: "Lowbed Transport (per km)" };
   const PER_KM = { lowbed: true };
   const qtyUnit = (m) => PER_KM[m] ? 'km' : 'day';
 
