@@ -76,7 +76,7 @@ MACHINE_NAMES = {
     "poker": "Poker Vibrator",
     "3.5-cubic": "Self Loading Concrete Mixer (3.5 Cubic)",
     "mixer-truck": "Concrete Mixer Truck (Transit Mixer)",
-    "1-cubic-manual": "1 Cubic Manual Loading Mixer",
+    "1-cubic-manual": "Manual Concrete Mixer (1 Cubic)",
     "lowbed": "Lowbed Transport (per km)",
     "side-curtain": "Side Curtain Truck",
 }
@@ -220,7 +220,7 @@ DEFAULT_HIRE_CARDS = [
     ("boom-pump", "Concrete Boom Pump", "Precision & reliability in concrete placement.", "From $700/day", "boom pump.jpeg", "machines"),
     ("power-float", "Power Float", "Smooth & finish concrete surfaces to a high standard.", "From $120/day", "powerfloat.jpeg", "machines"),
     ("poker", "Poker Vibrator", "Eliminate air pockets in fresh concrete.", "From $30/day", "concrete vibrator or poker.jpeg", "machines"),
-    ("1-cubic-manual", "1 Cubic Manual Mixer", "Compact manual-loading blue unit — $200/day.", "From $200/day", "mixer 2.jpeg", "machines"),
+    ("1-cubic-manual", "Manual Concrete Mixer (1 Cubic)", "Compact manual-loading blue unit — $200/day.", "From $200/day", "mixer 2.jpeg", "machines"),
     ("mixer-truck", "Concrete Mixer Truck (Transit Mixer)", "Loads concrete from the batch plant to the customer.", "From $450/day", "mixer truck.jpeg", "machines"),
     ("lowbed", "Lowbed Transport", "Heavy-duty lowbed to ferry construction & mining machines — excavators, loaders, rollers, backhoes, generators and more — $3/km across Zimbabwe.", "From $3/km", "lowbed.jpeg", "vehicles"),
     ("side-curtain", "Side Curtain Truck", "Used for carrying pallets, building materials, machinery, general freight and agricultural products — crossborder transport available.", "From $3/km", "sidecurtaintruck30tonnesuperlink.jpeg", "vehicles"),

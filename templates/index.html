@@ -1804,7 +1804,7 @@
               <option value="power-float">Power Float</option>
               <option value="poker">Poker Vibrator</option>
               <option value="mixer-truck">Concrete Mixer Truck (Transit Mixer)</option>
-              <option value="1-cubic-manual">1 Cubic Manual Loading Mixer</option>
+              <option value="1-cubic-manual">Manual Concrete Mixer (1 Cubic)</option>
               <option value="generator">Generator Hire</option>
               <option value="lowbed">Lowbed Transport ($3/km)</option>
               <option value="side-curtain">Side Curtain Truck ($3/km)</option>
@@ -2226,7 +2226,7 @@
   // ============ QUOTE CALCULATION (MAIN FORM) ============
   const RATES = { generator: 180, "boom-pump": 700, "static-pump": 500, "power-float": 120, poker: 30, "3.5-cubic": 500, "mixer-truck": 450, "1-cubic-manual": 200, lowbed: 3, "side-curtain": 3 };
   const URGENCY_MULTIPLIER = { standard: 1, priority: 1.15, urgent: 1.3 };
-  const MACHINE_NAMES = { generator: "Generator Hire", "boom-pump": "Concrete Boom Pump", "static-pump": "Concrete Static Pump", "power-float": "Power Float", poker: "Poker Vibrator", "3.5-cubic": "Self Loading Concrete Mixer (3.5 Cubic)", "mixer-truck": "Concrete Mixer Truck (Transit Mixer)", "1-cubic-manual": "1 Cubic Manual Loading Mixer", lowbed: "Lowbed Transport (per km)", "side-curtain": "Side Curtain Truck" };
+  const MACHINE_NAMES = { generator: "Generator Hire", "boom-pump": "Concrete Boom Pump", "static-pump": "Concrete Static Pump", "power-float": "Power Float", poker: "Poker Vibrator", "3.5-cubic": "Self Loading Concrete Mixer (3.5 Cubic)", "mixer-truck": "Concrete Mixer Truck (Transit Mixer)", "1-cubic-manual": "Manual Concrete Mixer (1 Cubic)", lowbed: "Lowbed Transport (per km)", "side-curtain": "Side Curtain Truck" };
   const PER_KM = { lowbed: true, "side-curtain": true };
   const qtyUnit = (m) => PER_KM[m] ? 'km' : 'day';
 
@@ -2658,7 +2658,7 @@
     let replies = [];
     const chatIsKm = PER_KM[chatContext.machine];
     if (!chatContext.machine) {
-      replies = ["Generator", "Concrete Boom Pump", "Self Loader", "Power Float", "Poker", "3.5 Cubic", "1 Cubic Manual", "Lowbed", "Side Curtain"];
+      replies = ["Generator", "Concrete Boom Pump", "Self Loader", "Power Float", "Poker", "3.5 Cubic", "Manual Mixer (1 Cubic)", "Lowbed", "Side Curtain"];
     } else if (!chatContext.days) {
       replies = chatIsKm ? ["50 km", "100 km", "150 km", "250 km"] : ["2 days", "3 days", "5 days", "7 days", "10 days"];
     } else {
@@ -2761,7 +2761,7 @@
       if (window.innerWidth > 700) chatInput?.focus();
       if (chatMessages.children.length === 0) {
         addMessage("👋 Hi! I'm your Genspech quote assistant. Tell me:", false);
-        addMessage("📌 Machine type (Generator, Concrete Boom Pump, Self Loader, 3.5 Cubic Mixer, 1 Cubic Manual, Lowbed Transport, Power Float, Poker)", false);
+        addMessage("📌 Machine type (Generator, Concrete Boom Pump, Self Loader, 3.5 Cubic Mixer, Manual Mixer (1 Cubic), Lowbed Transport, Power Float, Poker)", false);
         addMessage("📅 Machines: number of days (1 day = 9hr shift) · Lowbed: distance in km", false);
         addMessage("⚡ Urgency (Standard, Priority, Urgent)", false);
         addMessage("💡 Try: '3.5 cubic for 3 days', 'generator priority', or 'lowbed 150 km'", false);
