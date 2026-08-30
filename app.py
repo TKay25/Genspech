@@ -59,6 +59,7 @@ RATES = {
     "1-cubic-manual": 200.0,
     "mixer-truck": 450.0,
     "lowbed": 3.0,
+    "side-curtain": 3.0,
 }
 
 URGENCY_MULTIPLIER = {
@@ -77,6 +78,7 @@ MACHINE_NAMES = {
     "mixer-truck": "Concrete Mixer Truck (Transit Mixer)",
     "1-cubic-manual": "1 Cubic Manual Loading Mixer",
     "lowbed": "Lowbed Transport (per km)",
+    "side-curtain": "Side Curtain Truck",
 }
 
 MACHINE_ALIASES = {
@@ -107,6 +109,11 @@ MACHINE_ALIASES = {
     "lowbed": "lowbed",
     "low bed": "lowbed",
     "low-bed": "lowbed",
+    "side curtain": "side-curtain",
+    "curtain side": "side-curtain",
+    "curtainsider": "side-curtain",
+    "sidecurtain": "side-curtain",
+    "superlink": "side-curtain",
     "transport": "lowbed",
 }
 
@@ -216,6 +223,7 @@ DEFAULT_HIRE_CARDS = [
     ("1-cubic-manual", "1 Cubic Manual Mixer", "Compact manual-loading blue unit — $200/day.", "From $200/day", "mixer 2.jpeg", "machines"),
     ("mixer-truck", "Concrete Mixer Truck (Transit Mixer)", "Loads concrete from the batch plant to the customer.", "From $450/day", "mixer truck.jpeg", "machines"),
     ("lowbed", "Lowbed Transport", "Heavy-duty lowbed to ferry construction & mining machines — excavators, loaders, rollers, backhoes, generators and more — $3/km across Zimbabwe.", "From $3/km", "lowbed.jpeg", "vehicles"),
+    ("side-curtain", "Side Curtain Truck", "Used for carrying pallets, building materials, machinery, general freight and agricultural products — crossborder transport available.", "From $3/km", "sidecurtaintruck30tonnesuperlink.jpeg", "vehicles"),
 ]
 
 DEFAULT_GALLERY = [
@@ -293,7 +301,7 @@ class QuoteResult:
         }
 
 
-PER_KM_MACHINES = {"lowbed"}
+PER_KM_MACHINES = {"lowbed", "side-curtain"}
 
 
 def build_quote(machine: str, days: int, urgency: str) -> QuoteResult:
