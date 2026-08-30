@@ -231,8 +231,8 @@ DEFAULT_GALLERY = [
     ("concrete4.jpeg", "Concrete Placement", "Boom Pump Placement", "High-reach concrete placement for multi-storey structures — precision and reliability on every pour.", True),
     ("concrete6.jpeg", "Concrete Pumping", "Concrete Pumping", "Reliable line pumping for slabs, footings and foundations.", False),
     ("concrete-mixer.jpg", "Site Concreting", "Site Concreting", "Mixer-supported pours keeping sites moving on schedule.", False),
-    ("concrete3.jpeg", "Finishing", "Surface Finishing", "Power-float finishing for smooth, level concrete floors.", False),
-    ("concrete5.jpeg", "Concrete Works", "Concrete Works", "Complete pours with vibration and curing for lasting strength.", False),
+    ("concrete5.jpeg", "Finishing", "Surface Finishing", "Power-float finishing for smooth, level concrete floors.", False),
+    ("concrete3.jpeg", "Concrete Works", "Concrete Works", "Complete pours with vibration and curing for lasting strength.", False),
     ("generator.jpg", "Power", "Power Solutions", "Generator backup keeping sites powered around the clock.", False),
 ]
 
