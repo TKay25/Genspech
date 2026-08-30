@@ -208,7 +208,7 @@ DEFAULT_HIRE_CARDS = [
     ("static-pump", "Static Pump", "Essential for efficient concrete pumping on any site.", "From $500/day", "static pump.jpeg", "machines"),
     ("boom-pump", "Boom Pump", "Precision & reliability in concrete placement.", "From $700/day", "boom pump.jpeg", "machines"),
     ("power-float", "Power Float", "Smooth & finish concrete surfaces to a high standard.", "From $120/day", "powerfloat.jpeg", "machines"),
-    ("poker", "Poker Vibrator", "Eliminate air pockets in fresh concrete.", "From $90/day", "concrete vibrator or poker.jpeg", "machines"),
+    ("poker", "Poker Vibrator", "Eliminate air pockets in fresh concrete.", "From $30/day", "concrete vibrator or poker.jpeg", "machines"),
     ("self-loader", "Mobile Concrete Mixer", "Efficient & portable mixing solution for remote sites.", "From $420/day", "mobile concrete mixer.jpeg", "machines"),
     ("3.5-cubic", "3.5 Cubic Mixer", "High-output mixing — $550/day dry rate (fuel ~60L/day).", "From $550/day", "concrete-mixer.jpg", "machines"),
     ("1-cubic-manual", "1 Cubic Manual Mixer", "Compact manual-loading blue unit — $200/day.", "From $200/day", "mixer 2.jpeg", "machines"),
