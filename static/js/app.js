@@ -168,7 +168,7 @@ quoteForm.addEventListener("submit", async (event) => {
     const whatsappLink = buildWhatsAppLink(message);
 
     result.style.display = "block";
-    result.innerHTML = `<strong>Estimate Ready</strong><br><pre>${message}</pre><div class="result-actions"><a class="btn btn-ghost" href="mailto:genspechinvest@gmail.com?subject=Hire%20Request%20-%20${encodeURIComponent(quote.machineName)}&body=${encodeURIComponent(message)}">Email This Request</a><a class="btn btn-primary" href="${whatsappLink}" target="_blank" rel="noopener noreferrer">Send On WhatsApp</a></div>`;
+    result.innerHTML = `<strong>Estimate Ready</strong><br><pre>${message}</pre><div class="result-actions"><a class="btn btn-ghost" href="mailto:info@genspech.co.zw?subject=Hire%20Request%20-%20${encodeURIComponent(quote.machineName)}&body=${encodeURIComponent(message)}">Email This Request</a><a class="btn btn-primary" href="${whatsappLink}" target="_blank" rel="noopener noreferrer">Send On WhatsApp</a></div>`;
   } catch (error) {
     result.style.display = "block";
     result.textContent = error.message;
