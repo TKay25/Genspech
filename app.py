@@ -204,10 +204,10 @@ DEFAULT_SECTIONS = [
 
 DEFAULT_HIRE_CARDS = [
     # (machine_key, title, description, price, image, section)
-    ("3.5-cubic", "Self-Loading Concrete Mixer (3.5 Cubic)", "Combines cement, water & aggregates for reliable site mixing.", "From $550/day", "mixer truck.jpeg", "machines"),
-    ("static-pump", "Static Pump", "Essential for efficient concrete pumping on any site.", "From $480/day", "static pump.jpeg", "machines"),
+    ("3.5-cubic", "Self-Loading Concrete Mixer (3.5 Cubic)", "Combines cement, water & aggregates for reliable site mixing.", "From $500/day", "selfloadingmixer.jpeg", "machines"),
+    ("static-pump", "Static Pump", "Essential for efficient concrete pumping on any site.", "From $500/day", "static pump.jpeg", "machines"),
     ("boom-pump", "Boom Pump", "Precision & reliability in concrete placement.", "From $650/day", "boom pump.jpeg", "machines"),
-    ("power-float", "Power Float", "Smooth & finish concrete surfaces to a high standard.", "From $120/day", "concrete5.jpeg", "machines"),
+    ("power-float", "Power Float", "Smooth & finish concrete surfaces to a high standard.", "From $120/day", "powerfloat.jpeg", "machines"),
     ("poker", "Poker Vibrator", "Eliminate air pockets in fresh concrete.", "From $90/day", "concrete vibrator or poker.jpeg", "machines"),
     ("self-loader", "Mobile Concrete Mixer", "Efficient & portable mixing solution for remote sites.", "From $420/day", "mobile concrete mixer.jpeg", "machines"),
     ("3.5-cubic", "3.5 Cubic Mixer", "High-output mixing — $550/day dry rate (fuel ~60L/day).", "From $550/day", "concrete-mixer.jpg", "machines"),
