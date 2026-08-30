@@ -156,7 +156,7 @@
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(8);
       doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
-      doc.text('ZIMRA Registered & Compliant  ·  Genspech Investments  ·  0783 044 407 / 0718 029 974', M, H - 60);
+      doc.text('ZIMRA Registered & Compliant  ·  Genspech Investments  ·  0783 044 407 / 0714773827', M, H - 60);
       doc.text('Page ' + p + ' of ' + pageCount, W - M, H - 60, { align: 'right' });
     }
 
